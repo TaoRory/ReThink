@@ -43,6 +43,9 @@ export default function RootLayout({
       className={`${scriptFont.variable} ${displayFont.variable} ${bodyFont.variable}`}
     >
       <body className="min-h-screen">
+        <noscript>
+          <style>{`[data-reveal]{opacity:1 !important;transform:none !important}`}</style>
+        </noscript>
         <Reveal />
         <SiteNav />
         <main>{children}</main>

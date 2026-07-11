@@ -168,10 +168,10 @@ export default function HomePage() {
             </div>
 
             <ul className="frame-dashed mt-8 grid gap-3 p-6 text-sm text-cream-100/80">
-              <li className="flex gap-3"><span className="text-lavender-400">✦</span> Chạm vào những <strong>thế giới tư duy khác biệt</strong></li>
-              <li className="flex gap-3"><span className="text-lavender-400">✦</span> Rèn luyện <strong>thói quen rethink</strong> mỗi ngày</li>
-              <li className="flex gap-3"><span className="text-lavender-400">✦</span> Kết nối với <strong>những người cùng tư duy</strong> trong cộng đồng ReThink</li>
-              <li className="flex gap-3"><span className="text-lavender-400">✦</span> Tiếp cận <strong>nguồn lực &amp; mạng lưới</strong> để tạo tác động thật lên xã hội</li>
+              <li className="flex gap-3"><span className="text-lavender-400">✦</span><span>Chạm vào những <strong>thế giới tư duy khác biệt</strong></span></li>
+              <li className="flex gap-3"><span className="text-lavender-400">✦</span><span>Rèn luyện <strong>thói quen rethink</strong> mỗi ngày</span></li>
+              <li className="flex gap-3"><span className="text-lavender-400">✦</span><span>Kết nối với <strong>những người cùng tư duy</strong> trong cộng đồng ReThink</span></li>
+              <li className="flex gap-3"><span className="text-lavender-400">✦</span><span>Tiếp cận <strong>nguồn lực &amp; mạng lưới</strong> để tạo tác động thật lên xã hội</span></li>
             </ul>
           </div>
 

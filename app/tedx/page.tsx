@@ -52,11 +52,11 @@ export default function TedxPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.45em] text-cream-100/70">
             ReThink proudly presents
           </p>
-          <h1 className="mt-6 font-display text-6xl font-bold leading-none sm:text-7xl">
+          <h1 className="mt-6 font-display text-[clamp(2.4rem,9.5vw,4.5rem)] font-bold leading-none sm:text-7xl">
             <span className="text-chrome-red">TEDx</span>
             <span className="text-cream-100">VinUniversity</span>
           </h1>
-          <p className="mt-4 font-script text-5xl text-chrome-red sm:text-6xl">
+          <p className="mt-4 font-script text-[clamp(2.2rem,9vw,3.75rem)] text-chrome-red sm:text-6xl">
             The Firsts
           </p>
           <p className="mx-auto mt-8 max-w-2xl text-[15px] leading-relaxed text-cream-100/80">

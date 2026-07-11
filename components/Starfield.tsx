@@ -36,7 +36,9 @@ export function Starfield({
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isSmall = window.matchMedia("(max-width: 768px)").matches;
+    // phones ship 3x screens — capping DPR keeps the canvas cheap
+    const dpr = Math.min(window.devicePixelRatio || 1, isSmall ? 1.5 : 2);
     let w = 0;
     let h = 0;
     let stars: Star[] = [];
@@ -51,7 +53,7 @@ export function Starfield({
       canvas.width = Math.max(1, Math.floor(w * dpr));
       canvas.height = Math.max(1, Math.floor(h * dpr));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.round(((w * h) / 7000) * density);
+      const count = Math.round(((w * h) / (isSmall ? 11000 : 7000)) * density);
       stars = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -81,8 +83,8 @@ export function Starfield({
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
-        // soft glow for the brightest few
-        if (s.r > 1.3) {
+        // soft glow for the brightest few (skipped on phones)
+        if (!isSmall && s.r > 1.3) {
           ctx.globalAlpha = tw * 0.28;
           ctx.beginPath();
           ctx.arc(s.x, s.y, s.r * 3.2, 0, Math.PI * 2);

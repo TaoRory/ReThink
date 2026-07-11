@@ -110,8 +110,12 @@ body {
 }
 
 /* ---------- Living aurora background ---------- */
-.aurora-field {
-  animation: aurora-hue 11s linear infinite alternate;
+/* hue cycling re-rasterizes every blurred child each frame, so it only runs
+   on larger screens; phones keep the transform-only drift (GPU-composited) */
+@media (min-width: 769px) {
+  .aurora-field {
+    animation: aurora-hue 11s linear infinite alternate;
+  }
 }
 /* rotating conic color sweep for a visible "moving gradient" feel */
 .aurora-sweep {
@@ -212,6 +216,26 @@ body {
 [data-reveal].revealed {
   opacity: 1;
   transform: none;
+}
+
+/* lighter textures on phones: smaller blobs + softer blur = cheaper
+   one-time rasterization, same motion */
+@media (max-width: 768px) {
+  .aurora-blob {
+    filter: blur(44px);
+  }
+  .ab-1 { width: 26rem; height: 19rem; }
+  .ab-2 { width: 24rem; height: 20rem; }
+  .ab-3 { width: 22rem; height: 16rem; }
+  .ab-4 { display: none; }
+  .aurora-sweep {
+    inset: -30%;
+    filter: blur(52px);
+    opacity: 0.42;
+  }
+  .grain::after {
+    opacity: 0.05;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

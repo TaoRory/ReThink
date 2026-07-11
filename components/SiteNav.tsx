@@ -33,7 +33,7 @@ export function SiteNav() {
     }`;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-plum-950/78 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-plum-950/85 backdrop-blur-md md:bg-plum-950/78 md:backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Logo chrome className="text-lg" />
 

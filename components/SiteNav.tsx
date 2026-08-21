@@ -86,18 +86,11 @@ export function SiteNav() {
             </div>
           </div>
 
-          <Link href="/voices" className={linkCls(pathname.startsWith("/voices"))}>
-            ReThink Voices
-          </Link>
-          <Link href="/join" className={linkCls(pathname.startsWith("/join"))}>
-            Gia nhập
-          </Link>
-
           <Link
-            href="/voices/submit"
+            href="/join"
             className="btn-lux btn-lux-primary !px-5 !py-2 !text-[11px]"
           >
-            Viết điều đáng nghĩ ✦
+            Gia nhập Gen 4.0 ✦
           </Link>
         </nav>
 
@@ -148,25 +141,11 @@ export function SiteNav() {
           )}
 
           <Link
-            href="/voices"
-            onClick={() => setOpen(false)}
-            className="block py-3 text-sm font-medium tracking-[0.14em] uppercase text-cream-100/80"
-          >
-            ReThink Voices
-          </Link>
-          <Link
             href="/join"
-            onClick={() => setOpen(false)}
-            className="block py-3 text-sm font-medium tracking-[0.14em] uppercase text-cream-100/80"
-          >
-            Gia nhập
-          </Link>
-          <Link
-            href="/voices/submit"
             onClick={() => setOpen(false)}
             className="btn-lux btn-lux-primary mt-3 !px-5 !py-2.5 !text-[11px]"
           >
-            Viết điều đáng nghĩ ✦
+            Gia nhập Gen 4.0 ✦
           </Link>
         </nav>
       )}

@@ -108,9 +108,6 @@ export default function HomePage() {
             <Btn href="/join" variant="primary">
               Gia nhập Gen 4.0 <span className="text-lavender-300">✦</span>
             </Btn>
-            <Btn href="/voices" variant="ghost">
-              Khám phá ReThink Voices
-            </Btn>
           </div>
         </div>
 
@@ -335,86 +332,6 @@ export default function HomePage() {
             <Btn href="https://v0-tedxvinuni.vercel.app/" external variant="ghost">
               Limitless Decade · 2026 ↗
             </Btn>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ VOICES BAND ============ */}
-      <section className="voices-light relative overflow-hidden">
-        <div className="mx-auto max-w-6xl px-5 py-24">
-          <div className="grid items-center gap-14 lg:grid-cols-2">
-            <div data-reveal>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-crimson-600">
-                Dự án mới · AY 25–26
-              </p>
-              <h2 className="mt-4 font-display text-5xl leading-tight text-ink-900">
-                <span className="font-script text-[1.5em] align-[-0.1em] mr-1 text-crimson-600">Re</span>
-                Think Voices
-              </h2>
-              <p className="mt-3 font-display text-xl italic text-ink-700">
-                “Một chủ đề mỗi tháng. Từ trang viết, đến sân khấu.”
-              </p>
-              <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-ink-700">
-                Nền tảng viết &amp; chia sẻ của cộng đồng ReThink. Mỗi tháng mở
-                một chủ đề, mọi người gửi bài viết và reflection, bài hay được
-                tuyển chọn xuất bản — và người viết xuất sắc sẽ được mời{" "}
-                <strong className="text-ink-900">bước lên sân khấu</strong>.
-              </p>
-
-              {/* Flywheel */}
-              <div className="mt-8 flex items-center gap-2 text-sm font-semibold">
-                {[
-                  ["Viết", "bg-ink-900 text-ivory-50"],
-                  ["Salon", "bg-crimson-600 text-white"],
-                  ["TEDx", "bg-violet-700 text-white"],
-                ].map(([label, cls], i) => (
-                  <div key={label} className="flex items-center gap-2">
-                    {i > 0 && <span className="text-ink-500">→</span>}
-                    <span className={`rounded-full px-5 py-2 ${cls}`}>{label}</span>
-                  </div>
-                ))}
-                <span className="ml-1 text-ink-500">↺</span>
-              </div>
-
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Btn href="/voices" variant="light">
-                  Đọc các bài viết
-                </Btn>
-                <Btn href="/voices/submit" variant="light-ghost">
-                  Gửi bài tháng này ✍
-                </Btn>
-              </div>
-            </div>
-
-            <div
-              className="relative hidden lg:block"
-              data-reveal
-              style={{ "--reveal-delay": "0.15s" } as React.CSSProperties}
-            >
-              <div className="rotate-1 rounded-2xl border border-hairline bg-white p-8 shadow-xl">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-crimson-600">
-                  Chủ đề tháng này
-                </p>
-                <h3 className="mt-3 font-display text-2xl text-ink-900">
-                  Lần đầu mình dám bước ra khỏi vùng an toàn
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-700">
-                  Có những ranh giới chỉ tồn tại trong đầu chúng ta. Kể về lần
-                  đầu tiên bạn dám bước qua nó — dù run rẩy.
-                </p>
-                <p className="mt-5 inline-block rounded-full bg-ivory-50 px-4 py-1.5 text-xs font-semibold text-crimson-600 border border-hairline">
-                  ✦ Đang mở nhận bài
-                </p>
-              </div>
-              <div className="-mt-6 ml-12 -rotate-2 rounded-2xl border border-hairline bg-ivory-50 p-6 shadow-lg">
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-500">
-                  Bài được ReThink chọn
-                </p>
-                <p className="mt-2 font-display text-lg text-ink-900 italic">
-                  “Mình đã nói gì khi đứng trước 200 người lạ”
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>

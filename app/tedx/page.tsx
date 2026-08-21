@@ -69,8 +69,8 @@ export default function TedxPage() {
             <Btn href="#seasons" variant="red">
               Khám phá hai mùa TEDx ✦
             </Btn>
-            <Btn href="/voices" variant="ghost">
-              Từ trang viết đến sân khấu →
+            <Btn href="/join" variant="ghost">
+              Đồng hành cùng BTC mùa tới →
             </Btn>
           </div>
         </div>
@@ -258,20 +258,20 @@ export default function TedxPage() {
         <Sparkle className="absolute right-[12%] bottom-14 h-10 w-10 text-lavender-400/50" />
         <div className="relative mx-auto max-w-2xl px-5">
           <h2 className="font-display text-4xl leading-tight text-cream-100">
-            Ý tưởng của bạn xứng đáng
+            Sân khấu này được dựng lên
             <br />
             <span className="font-script text-chrome-red text-[1.5em]">
-              một sân khấu
+              bởi những người như bạn
             </span>
           </h2>
           <p className="mt-6 text-[15px] leading-relaxed text-cream-100/70">
-            Hành trình của mỗi diễn giả TEDx đều bắt đầu từ một ý tưởng được
-            viết ra. ReThink Voices là bậc thang đầu tiên — nơi bài viết hay
-            nhất mỗi mùa được mời lên Salon, và những tiếng nói xuất sắc nhất
-            sẽ chạm tới sân khấu TEDx.
+            Đằng sau mỗi đêm TEDx là hơn 60 ReThinker làm việc suốt 5 tháng —
+            từ tuyển chọn diễn giả, xây dựng nội dung, thiết kế trải nghiệm đến
+            vận hành đêm sự kiện. Mùa tới đang cần thêm những người sẵn sàng
+            nhận lấy ownership và làm điều chưa ai làm.
           </p>
-          <Btn href="/voices" variant="red" className="mt-9">
-            Bắt đầu từ trang viết ✦
+          <Btn href="/join" variant="red" className="mt-9">
+            Ứng tuyển Gen 4.0 ✦
           </Btn>
         </div>
       </section>

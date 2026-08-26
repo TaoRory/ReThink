@@ -7,19 +7,19 @@ import { Sparkle } from "@/components/Sparkle";
 import { Starfield } from "@/components/Starfield";
 
 export const metadata: Metadata = {
-  title: "Gia nhập Gen 4.0",
+  title: "Gia nhập Gen 5",
   description:
-    "ReThink Gen 4.0 Recruitment — trở thành ReThinker để cùng tạo ra những dự án tác động, gặp gỡ chuyên gia hàng đầu và để tiếng nói của bạn được lắng nghe.",
+    "ReThink Gen 5 Recruitment — trở thành ReThinker để cùng tạo ra những dự án tác động, gặp gỡ chuyên gia hàng đầu và để tiếng nói của bạn được lắng nghe.",
 };
 
 const positions = [
   {
     name: "Content",
-    desc: "Nghiên cứu chủ đề, phát triển nội dung, speaker outreach.",
+    desc: "Core idea, narrative, nghiên cứu chủ đề và phát triển diễn giả.",
   },
   {
     name: "Event",
-    desc: "Vận hành sự kiện từ ngân sách đến thực thi.",
+    desc: "Vận hành sự kiện và thiết kế hành trình trải nghiệm khán giả.",
   },
   {
     name: "Human Resources",
@@ -27,11 +27,11 @@ const positions = [
   },
   {
     name: "External Engagement",
-    desc: "Quan hệ nhà tài trợ, đối tác và diễn giả.",
+    desc: "Quan hệ nhà tài trợ, đối tác và các bên liên quan.",
   },
   {
     name: "MarCom",
-    desc: "Theme, concept, thông điệp và kênh truyền thông.",
+    desc: "Chiến lược truyền thông, messaging và các chiến dịch.",
   },
   {
     name: "Art",
@@ -49,11 +49,11 @@ export default function JoinPage() {
           <div className="grid items-center gap-14 lg:grid-cols-2">
             <div>
               <p className="inline-block rounded-full border border-cream-200/30 bg-plum-900/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-cream-200">
-                Recruitment 2025 – 2026
+                Recruitment 2026 – 2027
               </p>
               <h1 className="mt-6 font-display leading-tight">
                 <span className="block font-script text-chrome text-7xl sm:text-8xl">
-                  Gen 4.0
+                  Gen 5
                 </span>
                 <span className="mt-2 block text-5xl font-bold text-cream-100 sm:text-6xl">
                   Recruitment

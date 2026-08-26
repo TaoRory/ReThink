@@ -271,7 +271,7 @@ export default function TedxPage() {
             nhận lấy ownership và làm điều chưa ai làm.
           </p>
           <Btn href="/join" variant="red" className="mt-9">
-            Ứng tuyển Gen 4.0 ✦
+            Ứng tuyển Gen 5 ✦
           </Btn>
         </div>
       </section>

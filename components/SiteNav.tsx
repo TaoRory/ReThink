@@ -90,7 +90,7 @@ export function SiteNav() {
             href="/join"
             className="btn-lux btn-lux-primary !px-5 !py-2 !text-[11px]"
           >
-            Gia nhập Gen 4.0 ✦
+            Gia nhập Gen 5 ✦
           </Link>
         </nav>
 
@@ -145,7 +145,7 @@ export function SiteNav() {
             onClick={() => setOpen(false)}
             className="btn-lux btn-lux-primary mt-3 !px-5 !py-2.5 !text-[11px]"
           >
-            Gia nhập Gen 4.0 ✦
+            Gia nhập Gen 5 ✦
           </Link>
         </nav>
       )}

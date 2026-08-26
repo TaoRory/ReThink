@@ -25,7 +25,7 @@ export function SiteFooter() {
             <ul className="mt-4 space-y-2.5 text-sm text-cream-100/70">
               <li><Link className="hover:text-cream-100" href="/about">Về ReThink</Link></li>
               <li><Link className="hover:text-cream-100" href="/tedx">TEDxVinUniversity</Link></li>
-              <li><Link className="hover:text-cream-100" href="/join">Tuyển thành viên Gen 4.0</Link></li>
+              <li><Link className="hover:text-cream-100" href="/join">Tuyển thành viên Gen 5</Link></li>
             </ul>
           </div>
 

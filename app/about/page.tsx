@@ -9,17 +9,17 @@ import { Starfield } from "@/components/Starfield";
 export const metadata: Metadata = {
   title: "Về ReThink",
   description:
-    "ReThink là cộng đồng sinh viên VinUniversity nơi người trẻ Việt rèn thói quen rethink, kết nối những người cùng tư duy và tạo tác động thật lên xã hội.",
+    "ReThink là câu lạc bộ sinh viên VinUniversity, hoạt động từ 2022 và là đơn vị tổ chức TEDxVinUniversity thường niên — làm podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý tưởng.",
 };
 
 const departments = [
   {
     name: "Content",
-    desc: "Nghiên cứu và phát triển nội dung cốt lõi cho các hoạt động, phụ trách speaker outreach và hỗ trợ hoạch định chiến lược cùng các team khác.",
+    desc: "Xây dựng core idea và narrative cho từng hoạt động, nghiên cứu chủ đề, đồng thời phụ trách tuyển chọn và đồng hành phát triển nội dung cùng diễn giả.",
   },
   {
     name: "MarCom",
-    desc: "Sáng tạo theme & concept, chắp bút thông điệp, và là cầu nối đưa ReThink đến với công chúng rộng hơn.",
+    desc: "Hoạch định chiến lược truyền thông và hệ thống messaging, triển khai các chiến dịch đưa ReThink đến với công chúng rộng hơn.",
   },
   {
     name: "Art",
@@ -31,18 +31,18 @@ const departments = [
   },
   {
     name: "External Engagement",
-    desc: "Xây dựng quan hệ đối ngoại với nhà tài trợ, đối tác và diễn giả — đồng hành trước, trong và sau mỗi sự kiện.",
+    desc: "Xây dựng và duy trì quan hệ với nhà tài trợ, đối tác và các bên liên quan bên ngoài — đồng hành trước, trong và sau mỗi sự kiện.",
   },
   {
     name: "Event",
-    desc: "Phụ trách logistics và vận hành, tổ chức sự kiện từ A đến Z — từ ngân sách đến thực thi.",
+    desc: "Phụ trách logistics và vận hành, đồng thời thiết kế hành trình khán giả và luồng trải nghiệm xuyên suốt sự kiện — từ ngân sách đến thực thi.",
   },
 ];
 
 const cultures = [
   {
     title: "Championship Culture",
-    desc: "Nhận full ownership với những gì mình làm — từ tầm nhìn đến bàn giao. Không dừng ở “vừa đủ”, luôn play to win với sự chỉn chu, bền bỉ và tâm huyết với nghề.",
+    desc: "Nhận full ownership với những gì mình làm — từ tầm nhìn đến bàn giao. Không dừng ở “vừa đủ”, luôn play to win với sự chỉn chu, bền bỉ và tâm huyết với việc mình làm.",
   },
   {
     title: "Fellowship Culture",
@@ -50,7 +50,7 @@ const cultures = [
   },
   {
     title: "Breakership Culture",
-    desc: "Từ chối tư duy mặc định. Chúng mình đặt câu hỏi vì sao mọi thứ được làm theo cách đó — và liệu có nên tiếp tục như vậy.",
+    desc: "Chúng mình không xem cách làm quen thuộc là điều hiển nhiên. Trước mỗi việc, ReThinkers cùng đặt câu hỏi vì sao nó được làm theo cách đó — và liệu có cách nào phù hợp hơn.",
   },
 ];
 
@@ -100,8 +100,9 @@ export default function AboutPage() {
             hat is ReThink?
           </h1>
           <p className="mx-auto mt-8 max-w-2xl font-display text-xl italic leading-relaxed text-cream-100/85">
-            Nơi người trẻ Việt chạm vào những thế giới tư duy khác biệt, rèn
-            thói quen rethink, và biến ý tưởng đa chiều thành đổi mới xã hội.
+            Câu lạc bộ sinh viên VinUniversity từ 2022 — nơi một vấn đề quen
+            thuộc được nhìn lại từ nhiều góc, và là đơn vị tổ chức
+            TEDxVinUniversity thường niên.
           </p>
         </div>
       </section>
@@ -111,27 +112,32 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1.1fr_1fr]">
           <div className="space-y-5 text-[15px] leading-relaxed text-cream-100/75">
             <p>
-              Chúng ta đều đang <strong className="text-cream-100">mắc kẹt</strong>{" "}
-              trong những <strong className="text-cream-100">chiếc hộp tư duy</strong>{" "}
-              được định hình bởi chuẩn mực xã hội, những điều ta được dạy, và
-              thiên kiến thuật toán trên mạng xã hội ngày nay. Vì thế, thật khó
-              để đón nhận quan điểm trái chiều, nghĩ vượt những khung quen
-              thuộc, hay kết nối ý tưởng giữa các lĩnh vực khác nhau.
-            </p>
-            <p>
-              Nhưng <strong className="text-cream-100">kỷ nguyên AI</strong> mà
-              chúng ta đang sống đòi hỏi những bộ óc dám phá vỡ giới hạn — những
-              bộ óc hiểu được nhiều góc nhìn, xử lý các dòng suy nghĩ phức tạp
-              và tạo ra ý nghĩa mới từ những tín hiệu rời rạc.{" "}
-              <strong className="text-lavender-300">
-                Tương lai, vì vậy, thuộc về những người làm chủ tư duy.
+              ReThink là{" "}
+              <strong className="text-cream-100">
+                câu lạc bộ sinh viên của VinUniversity
               </strong>
+              , hoạt động từ năm 2022. Chúng mình tạo ra những không gian để
+              người trẻ nhìn lại một vấn đề quen thuộc từ nhiều góc khác nhau,
+              và đưa những góc nhìn ấy tới đúng người cần nghe.
             </p>
             <p>
-              Nhận ra điều đó, ReThink chủ động tìm kiếm ý tưởng và tri thức
-              của những early adopter, những thought leader — và khuếch đại
-              tiếng nói của họ, để những tia sáng ấy chạm tới những người có
-              khả năng hiện thực hoá chúng.
+              Cụ thể, ReThink làm nội dung và sự kiện: podcast Reinventors,
+              cuộc thi viết Rethink Reality, các workshop và toạ đàm. Và trên
+              hết, ReThink là{" "}
+              <strong className="text-cream-100">
+                đơn vị tổ chức TEDxVinUniversity thường niên
+              </strong>{" "}
+              — sự kiện lan toả ý tưởng lớn nhất tại VinUni, do sinh viên vận
+              hành trọn vẹn từ tuyển chọn diễn giả, xây dựng nội dung, thiết kế
+              trải nghiệm đến đêm sự kiện.
+            </p>
+            <p>
+              Điều làm ReThink khác biệt nằm ở cách làm:{" "}
+              <strong className="text-lavender-300">
+                mọi hoạt động đều bắt đầu từ nội dung.
+              </strong>{" "}
+              Một câu hỏi được nghiên cứu kỹ, một narrative được xây rõ ràng —
+              rồi mới tới sân khấu, bài viết hay chiến dịch truyền thông.
             </p>
           </div>
           <div className="relative">
@@ -224,7 +230,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-6xl px-5">
           <SectionHeading
             script="B"
-            rest="enefits of Being a Rethinker"
+            rest="enefits of Being a ReThinker"
             kicker="Bạn nhận được gì"
           />
           <div className="mt-14 space-y-8" data-reveal>

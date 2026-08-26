@@ -48,6 +48,19 @@ const activities = [
   },
 ];
 
+const thisYear = [
+  {
+    kicker: "Định dạng mới",
+    title: "Interactive Cinematic Experience",
+    desc: "Một định dạng ReThink chưa từng thử — nơi khán giả không chỉ ngồi xem, mà tham gia vào chính câu chuyện đang diễn ra trước mắt.",
+  },
+  {
+    kicker: "Flagship Event",
+    title: "TEDxVinUniversity 2027",
+    desc: "Mùa TEDx tiếp theo do ReThink tổ chức. Chủ đề, dàn diễn giả và ngày diễn ra sẽ được hé lộ dần trong năm nay.",
+  },
+];
+
 const future = [
   {
     num: "01",
@@ -56,12 +69,12 @@ const future = [
   },
   {
     num: "02",
-    title: "Rethink Offline Event",
+    title: "ReThink Offline Event",
     desc: "Sự kiện quy tụ chuyên gia đa lĩnh vực cùng mổ xẻ một thách thức của thời đại từ nhiều lăng kính — nơi người trẻ gắn kết và network trực tiếp.",
   },
   {
     num: "03",
-    title: "Rethinkers Community Building",
+    title: "ReThinkers Community Building",
     desc: "Cộng đồng Facebook kết nối người trẻ toàn quốc — nơi mọi thành viên chia sẻ góc nhìn mới, luyện tư duy phản biện về những vấn đề quen thuộc.",
   },
 ];
@@ -106,7 +119,7 @@ export default function HomePage() {
 
           <div className="rise mt-12 flex flex-wrap items-center justify-center gap-4 [animation-delay:0.4s]">
             <Btn href="/join" variant="primary">
-              Gia nhập Gen 4.0 <span className="text-lavender-300">✦</span>
+              Gia nhập Gen 5 <span className="text-lavender-300">✦</span>
             </Btn>
           </div>
         </div>
@@ -141,26 +154,30 @@ export default function HomePage() {
             />
             <div className="mt-7 space-y-5 text-[15px] leading-relaxed text-cream-100/75">
               <p>
-                Chúng ta đều đang mắc kẹt trong những{" "}
-                <strong className="text-cream-100">chiếc hộp tư duy</strong>{" "}
-                được định hình bởi chuẩn mực xã hội, những điều được dạy, và
-                thiên kiến thuật toán trên mạng xã hội. Thật khó để đón nhận
-                quan điểm trái chiều, nghĩ vượt khung quen thuộc, hay kết nối ý
-                tưởng giữa các lĩnh vực.
+                ReThink là{" "}
+                <strong className="text-cream-100">
+                  câu lạc bộ sinh viên của VinUniversity
+                </strong>
+                , hoạt động từ năm 2022. Chúng mình tạo ra những không gian để
+                người trẻ nhìn lại một vấn đề quen thuộc từ nhiều góc khác nhau
+                — qua podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý
+                tưởng.
               </p>
               <p>
-                Nhưng <strong className="text-cream-100">kỷ nguyên AI</strong>{" "}
-                đòi hỏi những bộ óc dám phá vỡ giới hạn — hiểu được nhiều góc
-                nhìn, xử lý những dòng suy nghĩ phức tạp và tạo ra ý nghĩa mới
-                từ các tín hiệu rời rạc.{" "}
+                ReThink cũng là{" "}
+                <strong className="text-cream-100">
+                  đơn vị tổ chức TEDxVinUniversity thường niên
+                </strong>{" "}
+                — sự kiện lan toả ý tưởng lớn nhất tại VinUni, do sinh viên vận
+                hành trọn vẹn từ khâu tuyển chọn diễn giả tới đêm sự kiện.
+              </p>
+              <p>
+                Điều làm ReThink khác biệt nằm ở cách làm:{" "}
                 <em className="text-lavender-300 not-italic font-semibold">
-                  Tương lai thuộc về những người làm chủ tư duy.
-                </em>
-              </p>
-              <p>
-                ReThink chủ động tìm kiếm ý tưởng của những early adopter và
-                thought leader, rồi khuếch đại tiếng nói của họ — để những tia
-                sáng ấy chạm tới người có khả năng hiện thực hoá chúng.
+                  mọi hoạt động đều bắt đầu từ nội dung.
+                </em>{" "}
+                Một câu hỏi được nghiên cứu kỹ, một narrative được xây rõ ràng —
+                rồi mới tới sân khấu, bài viết hay chiến dịch truyền thông.
               </p>
             </div>
 
@@ -336,17 +353,59 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ============ PROJECTS THIS YEAR ============ */}
+      <section className="py-24">
+        <div className="mx-auto max-w-6xl px-5">
+          <SectionHeading
+            script="P"
+            rest="rojects This Year"
+            kicker="Năm học 2026–2027"
+          />
+          <p className="mt-5 max-w-2xl text-[15px] text-cream-100/70">
+            Gia nhập ReThink năm nay, đây là hai dự án bạn sẽ trực tiếp bắt tay
+            vào làm:
+          </p>
+          <div className="mt-12 grid gap-6 md:grid-cols-2" data-reveal>
+            {thisYear.map((p) => (
+              <article
+                key={p.title}
+                className="frame-dashed relative bg-plum-900/50 p-8 backdrop-blur-sm transition hover:bg-plum-800/60"
+              >
+                <div className="flex items-center gap-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-lavender-400">
+                    {p.kicker}
+                  </p>
+                  <span className="rounded-full border border-lavender-400/40 px-3 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-lavender-300">
+                    Coming soon
+                  </span>
+                </div>
+                <h3 className="mt-3 font-display text-2xl font-semibold text-cream-100">
+                  {p.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-cream-100/70">
+                  {p.desc}
+                </p>
+                <Sparkle
+                  animate={false}
+                  className="absolute right-6 top-6 h-4 w-4 text-lavender-400/40"
+                />
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ============ FUTURE ACTIVITIES ============ */}
       <section className="smoke grain relative overflow-hidden py-24">
         <div className="mx-auto max-w-6xl px-5">
           <SectionHeading
-            script="F"
-            rest="uture Key Activities"
-            kicker="Năm học 2025–2026"
+            script="K"
+            rest="ey Activities"
+            kicker="Hoạt động tiếp diễn"
           />
           <p className="mt-5 max-w-2xl text-[15px] text-cream-100/70">
-            Năm học 2025–2026 đánh dấu chương tiếp theo của ReThink với 3 hoạt
-            động trọng điểm:
+            Ba hoạt động ReThink tiếp tục duy trì và phát triển bên cạnh các dự
+            án chính:
           </p>
           <div className="mt-12 grid gap-6 md:grid-cols-3" data-reveal>
             {future.map((f) => (
@@ -381,7 +440,7 @@ export default function HomePage() {
             et&apos;s Rethink.
             <br />
             Let&apos;s be{" "}
-            <span className="text-chrome font-bold">Rethinkers!</span>
+            <span className="text-chrome font-bold">ReThinkers!</span>
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-[15px] leading-relaxed text-cream-100/70">
             Bạn được khuyến khích bước ra khỏi vùng an toàn, phá vỡ giới hạn và
@@ -389,7 +448,7 @@ export default function HomePage() {
             sàng đứng sau lưng bạn.
           </p>
           <Btn href="/join" variant="primary" className="mt-10">
-            Ứng tuyển Gen 4.0 <span className="text-lavender-300">✦</span>
+            Ứng tuyển Gen 5 <span className="text-lavender-300">✦</span>
           </Btn>
         </div>
       </section>

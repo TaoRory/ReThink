@@ -1,6 +1,6 @@
 # ReThink — Website chính thức
 
-Website của CLB **ReThink (VinUniversity)**: giới thiệu CLB, showcase
+Website của **ReThink** — tổ chức sinh viên của VinUni: giới thiệu tổ chức, showcase
 **TEDxVinUniversity**, và tuyển thành viên Gen 4.0.
 
 ## Chạy local

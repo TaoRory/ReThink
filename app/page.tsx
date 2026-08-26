@@ -156,7 +156,7 @@ export default function HomePage() {
               <p>
                 ReThink là{" "}
                 <strong className="text-cream-100">
-                  câu lạc bộ sinh viên của VinUniversity
+                  tổ chức sinh viên của VinUni
                 </strong>
                 , hoạt động từ năm 2022. Chúng mình tạo ra những không gian để
                 người trẻ nhìn lại một vấn đề quen thuộc từ nhiều góc khác nhau

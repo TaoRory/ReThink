@@ -9,7 +9,7 @@ import { Starfield } from "@/components/Starfield";
 export const metadata: Metadata = {
   title: "Về ReThink",
   description:
-    "ReThink là câu lạc bộ sinh viên VinUniversity, hoạt động từ 2022 và là đơn vị tổ chức TEDxVinUniversity thường niên — làm podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý tưởng.",
+    "ReThink là tổ chức sinh viên của VinUni, hoạt động từ 2022 và là đơn vị tổ chức TEDxVinUniversity thường niên — làm podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý tưởng.",
 };
 
 const departments = [
@@ -100,7 +100,7 @@ export default function AboutPage() {
             hat is ReThink?
           </h1>
           <p className="mx-auto mt-8 max-w-2xl font-display text-xl italic leading-relaxed text-cream-100/85">
-            Câu lạc bộ sinh viên VinUniversity từ 2022 — nơi một vấn đề quen
+            Tổ chức sinh viên của VinUni từ 2022 — nơi một vấn đề quen
             thuộc được nhìn lại từ nhiều góc, và là đơn vị tổ chức
             TEDxVinUniversity thường niên.
           </p>
@@ -114,7 +114,7 @@ export default function AboutPage() {
             <p>
               ReThink là{" "}
               <strong className="text-cream-100">
-                câu lạc bộ sinh viên của VinUniversity
+                tổ chức sinh viên của VinUni
               </strong>
               , hoạt động từ năm 2022. Chúng mình tạo ra những không gian để
               người trẻ nhìn lại một vấn đề quen thuộc từ nhiều góc khác nhau,

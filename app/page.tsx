@@ -99,7 +99,7 @@ export default function HomePage() {
           </p>
 
           <h1 className="rise flex flex-wrap items-baseline justify-center gap-x-4 leading-none [animation-delay:0.1s]">
-            <span className="font-display text-neon text-[clamp(2.6rem,10.5vw,7.5rem)] font-extralight tracking-[0.16em]">
+            <span className="neon-breathe font-display text-neon text-[clamp(2.6rem,10.5vw,7.5rem)] font-extralight tracking-[0.16em]">
               RETHINK
             </span>
             <span className="font-display text-neon text-[clamp(1rem,3vw,2rem)] font-extralight tracking-[0.2em]">
@@ -230,11 +230,11 @@ export default function HomePage() {
             kicker="4 giá trị cốt lõi"
             className="text-center [&>p]:justify-center"
           />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2" data-reveal>
+          <div className="stagger mt-14 grid gap-5 sm:grid-cols-2" data-reveal>
             {coreValues.map((v, i) => (
               <div
                 key={v.title}
-                className="frame-hairline group relative bg-ink-900/50 p-7 backdrop-blur-sm transition hover:bg-ink-800/60"
+                className="hang frame-hairline group relative bg-ink-900/50 p-7 backdrop-blur-sm transition hover:bg-ink-800/60"
               >
                 <span className="font-display text-2xl font-light tracking-[0.25em] text-cyan-300/90">
                   {String(i + 1).padStart(2, "0")}
@@ -259,7 +259,7 @@ export default function HomePage() {
       <section className="py-24">
         <div className="mx-auto max-w-6xl px-5">
           <SectionHeading script="W" rest="hat We Do" kicker="Hoạt động nổi bật" />
-          <div className="mt-14 grid gap-6 md:grid-cols-3" data-reveal>
+          <div className="stagger mt-14 grid gap-6 md:grid-cols-3" data-reveal>
             {activities.map((a) => {
               const card = (
                 <article
@@ -367,11 +367,11 @@ export default function HomePage() {
             Gia nhập ReThink năm nay, đây là hai dự án bạn sẽ trực tiếp bắt tay
             vào làm:
           </p>
-          <div className="mt-12 grid gap-6 md:grid-cols-2" data-reveal>
+          <div className="stagger mt-12 grid gap-6 md:grid-cols-2" data-reveal>
             {thisYear.map((p) => (
               <article
                 key={p.title}
-                className="frame-hairline relative bg-ink-900/50 p-8 backdrop-blur-sm transition hover:bg-ink-800/60"
+                className="hang frame-hairline relative bg-ink-900/50 p-8 backdrop-blur-sm transition hover:bg-ink-800/60"
               >
                 <div className="flex items-center gap-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-400">
@@ -409,11 +409,11 @@ export default function HomePage() {
             Ba hoạt động ReThink tiếp tục duy trì và phát triển bên cạnh các dự
             án chính:
           </p>
-          <div className="mt-12 grid gap-6 md:grid-cols-3" data-reveal>
+          <div className="stagger mt-12 grid gap-6 md:grid-cols-3" data-reveal>
             {future.map((f) => (
               <div
                 key={f.num}
-                className="relative rounded-2xl border border-white/10 bg-ink-900/50 p-7 backdrop-blur-sm"
+                className="hang relative rounded-2xl border border-white/10 bg-ink-900/50 p-7 backdrop-blur-sm"
               >
                 <span className="font-display text-5xl font-bold text-violet-500/50">
                   {f.num}

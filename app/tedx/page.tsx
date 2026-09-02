@@ -105,7 +105,7 @@ export default function TedxPage() {
             </h2>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2" data-reveal>
+          <div className="stagger grid gap-6 md:grid-cols-2" data-reveal>
             {/* The Firsts 2025 */}
             <article className="group relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900/60">
               <div className="relative h-52 overflow-hidden">
@@ -227,7 +227,7 @@ export default function TedxPage() {
           </div>
 
           {/* Gallery */}
-          <div className="grid grid-cols-2 gap-4" data-reveal>
+          <div className="stagger grid grid-cols-2 gap-4" data-reveal>
             {gallery.map((g) => (
               <div
                 key={g.src}

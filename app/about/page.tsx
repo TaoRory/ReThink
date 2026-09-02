@@ -166,11 +166,11 @@ export default function AboutPage() {
             rest="rganizational Structure"
             kicker="6 phòng ban chính"
           />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
+          <div className="stagger mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
             {departments.map((d) => (
               <div
                 key={d.name}
-                className="frame-hairline bg-ink-900/50 p-6 backdrop-blur-sm transition hover:bg-ink-800/60"
+                className="hang frame-hairline bg-ink-900/50 p-6 backdrop-blur-sm transition hover:bg-ink-800/60"
               >
                 <h3 className="font-display text-lg font-semibold text-lilac-200">
                   {d.name}{" "}
@@ -199,11 +199,11 @@ export default function AboutPage() {
             Mỗi ReThinker làm việc, hỗ trợ nhau và trưởng thành dựa trên 3 giá
             trị văn hoá:
           </p>
-          <div className="mt-12 grid gap-6 md:grid-cols-3" data-reveal>
+          <div className="stagger mt-12 grid gap-6 md:grid-cols-3" data-reveal>
             {cultures.map((c, i) => (
               <div
                 key={c.title}
-                className="relative rounded-2xl border border-white/10 bg-gradient-to-b from-ink-800/60 to-ink-900/60 p-7"
+                className="hang relative rounded-2xl border border-white/10 bg-gradient-to-b from-ink-800/60 to-ink-900/60 p-7"
               >
                 <Sparkle
                   animate={false}

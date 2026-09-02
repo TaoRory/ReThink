@@ -189,13 +189,30 @@ body {
 }
 
 /* ---------- Newton's cradle (hero signature) ---------- */
-/* Suspended spheres on hairlines. The end weights swing; the inner ones hold
-   their default orbit — Default Orbit / Encounter / Pause read left to right. */
+/*
+ * Physically honest cradle. One full cycle = T:
+ *
+ *   0-25%   left weight falls  (-A -> 0), easeInSine  - gaining speed
+ *   25%     IMPACT, momentum crosses the row
+ *   25-50%  right weight rises ( 0 -> +A), easeOutSine - bleeding speed
+ *   50%     apex: at rest for an instant - the concept's Pause
+ *   50-75%  right weight falls (+A -> 0), easeInSine
+ *   75%     IMPACT back
+ *   75-100% left weight rises  ( 0 -> -A), easeOutSine
+ *
+ * Only ever one weight in motion; the inner weights stay on their line and
+ * merely pass the pulse along. Every sphere's CENTRE hangs at the same depth
+ * (--cradle-drop), so every pendulum has the same length and therefore the
+ * same period - the wire of a fat sphere is shortened by its own radius.
+ */
 .cradle {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  --cradle-drop: clamp(11rem, 27vh, 19rem);
+  --cradle-T: 3.6s;
+  --cradle-amp: 15deg;
 }
 .pendulum {
   position: absolute;
@@ -214,12 +231,13 @@ body {
   );
 }
 .orb {
+  position: relative;
   border-radius: 50%;
   filter: blur(0.4px);
   mix-blend-mode: screen;
   opacity: 0.5;
 }
-/* the struck weight — a lit pearl rather than a glass orb */
+/* the struck weight - a lit pearl rather than a glass orb */
 .orb-pearl {
   mix-blend-mode: normal;
   opacity: 1;
@@ -230,18 +248,63 @@ body {
     0 0 46px rgba(154, 77, 255, 0.55),
     0 0 90px rgba(122, 21, 240, 0.35);
 }
-@keyframes swing-left {
-  0%, 100% { transform: rotate(-13deg); }
-  50% { transform: rotate(1deg); }
-}
-@keyframes swing-right {
-  0%, 100% { transform: rotate(13deg); }
-  50% { transform: rotate(-1deg); }
-}
-.swing-l { animation: swing-left 3.4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
-.swing-r { animation: swing-right 3.4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
 
-/* Radial scrim: pulls the cradle back behind the hero copy */
+/* easeInSine while falling, easeOutSine while climbing: speed peaks at the
+   bottom of the arc and vanishes at the top, as a real pendulum does */
+@keyframes cradle-left {
+  0%   { transform: rotate(calc(-1 * var(--cradle-amp)));
+         animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
+  25%  { transform: rotate(0deg); animation-timing-function: step-end; }
+  75%  { transform: rotate(0deg);
+         animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
+  100% { transform: rotate(calc(-1 * var(--cradle-amp))); }
+}
+@keyframes cradle-right {
+  0%   { transform: rotate(0deg); animation-timing-function: step-end; }
+  25%  { transform: rotate(0deg);
+         animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
+  50%  { transform: rotate(var(--cradle-amp));
+         animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
+  75%  { transform: rotate(0deg); animation-timing-function: step-end; }
+  100% { transform: rotate(0deg); }
+}
+.swing-l { animation: cradle-left var(--cradle-T) infinite; }
+.swing-r { animation: cradle-right var(--cradle-T) infinite; }
+
+/* Compression pulse: the momentum crossing the stationary weights. Each inner
+   orb carries two flash layers so the wave can run both ways independently. */
+.orb-pulse {
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 68%);
+  mix-blend-mode: screen;
+  animation: pulse-through var(--cradle-T) linear infinite;
+}
+@keyframes pulse-through {
+  0%   { opacity: 0.7; transform: scale(1.05); }
+  5%   { opacity: 0; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+/* Contact flare where the weights actually meet */
+.impact {
+  position: absolute;
+  width: clamp(3rem, 6vw, 5.5rem);
+  height: clamp(3rem, 6vw, 5.5rem);
+  margin: calc(clamp(3rem, 6vw, 5.5rem) / -2) 0 0 calc(clamp(3rem, 6vw, 5.5rem) / -2);
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7), rgba(214, 51, 232, 0.25) 45%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: impact-flare var(--cradle-T) linear infinite;
+}
+@keyframes impact-flare {
+  0%   { opacity: 0.9; transform: scale(0.6); }
+  9%   { opacity: 0; transform: scale(1.85); }
+  100% { opacity: 0; transform: scale(0.35); }
+}
 .cradle-scrim {
   position: absolute;
   inset: 0;
@@ -268,7 +331,13 @@ body {
     transparent 100%
   );
   filter: blur(0.3px);
-  opacity: 0.65;
+  opacity: 0.4;
+  animation: beam-flare var(--cradle-T) linear infinite;
+}
+@keyframes beam-flare {
+  0%   { opacity: 1; }
+  14%  { opacity: 0.4; }
+  100% { opacity: 0.4; }
 }
 
 /* ---------- Pointer spotlight (hero) ---------- */
@@ -286,12 +355,15 @@ body {
 }
 
 /* ---------- Scroll reveal ---------- */
+/* content swings into place on an arc — pivot sits far above the block, so
+   the small rotation reads as the end of a pendulum stroke, not a slide */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(26px) rotate(-1.15deg);
+  transform-origin: 50% -260px;
   transition:
-    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.05s cubic-bezier(0.22, 1.12, 0.36, 1);
   transition-delay: var(--reveal-delay, 0s);
 }
 [data-reveal].revealed {
@@ -321,9 +393,12 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .aurora-field, .aurora-blob, .aurora-sweep, .sparkle-anim, .marquee-track,
-  .swing-l, .swing-r {
+  .swing-l, .swing-r, .orb-pulse, .impact, .beam, .neon-breathe {
     animation: none !important;
   }
+  [data-reveal].revealed.stagger > *,
+  [data-reveal].revealed .kicker-rule { animation: none !important; }
+  .hang, .hang:hover { transform: none; transition: none; }
   [data-reveal] {
     opacity: 1;
     transform: none;
@@ -411,6 +486,58 @@ body {
   );
 }
 
+/* Staggered cascade: children of a revealed grid settle one after another.
+   Transform-only — the children never control their own opacity, so if the
+   animation never runs they are simply already in place. */
+[data-reveal].revealed.stagger > * {
+  animation: nudge-in 0.72s cubic-bezier(0.22, 1.1, 0.36, 1) both;
+}
+.stagger > *:nth-child(2) { animation-delay: 0.07s; }
+.stagger > *:nth-child(3) { animation-delay: 0.14s; }
+.stagger > *:nth-child(4) { animation-delay: 0.21s; }
+.stagger > *:nth-child(5) { animation-delay: 0.28s; }
+.stagger > *:nth-child(6) { animation-delay: 0.35s; }
+@keyframes nudge-in {
+  from { transform: translateY(16px) rotate(-1deg); }
+  to   { transform: none; }
+}
+
+/* Real neon tubing never sits perfectly still */
+@keyframes neon-breathe {
+  0%, 100% { opacity: 1; }
+  42% { opacity: 0.93; }
+  47% { opacity: 1; }
+  62% { opacity: 0.96; }
+}
+.neon-breathe { animation: neon-breathe 6.5s ease-in-out infinite; }
+
+/* the kicker's lit rule draws itself in */
+[data-reveal].revealed .kicker-rule,
+.rise .kicker-rule {
+  animation: rule-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.kicker-rule { transform-origin: 0 50%; }
+
+/* Suspended card: hovering nudges it on its wire */
+.hang {
+  transform-origin: 50% -190px;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1.1, 0.36, 1),
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.hang:hover {
+  transform: rotate(0.5deg) translateY(-3px);
+}
+.hang:nth-child(even):hover {
+  transform: rotate(-0.5deg) translateY(-3px);
+}
+
 /* Trajectory guide lines */
 .guides {
   background-image:
@@ -430,8 +557,9 @@ body {
 
 /* square sparkle, replacing the booklet's 4-point star */
 @keyframes shimmer {
-  0%, 100% { opacity: 0.5; transform: scale(0.88); }
-  50% { opacity: 1; transform: scale(1.08); }
+  0%, 100% { opacity: 0.45; transform: translate3d(0, 0, 0) scale(0.86); }
+  35% { opacity: 1; transform: translate3d(3px, -7px, 0) scale(1.08); }
+  70% { opacity: 0.7; transform: translate3d(-2px, -3px, 0) scale(0.96); }
 }
 .sparkle-anim {
   animation: shimmer 3.6s ease-in-out infinite;

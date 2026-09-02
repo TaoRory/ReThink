@@ -18,7 +18,7 @@ export function SectionHeading({
     <div className={className}>
       {kicker && (
         <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-300">
-          <span className="h-px w-8 bg-gradient-to-r from-fuchsia-500 to-cyan-300" />
+          <span className="kicker-rule h-px w-8 bg-gradient-to-r from-fuchsia-500 to-cyan-300" />
           {kicker}
         </p>
       )}

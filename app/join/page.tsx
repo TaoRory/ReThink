@@ -115,11 +115,11 @@ export default function JoinPage() {
       <section className="border-t border-white/8 py-24">
         <div className="mx-auto max-w-6xl px-5">
           <SectionHeading script="O" rest="pen Positions" kicker="6 vị trí đang mở" />
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
+          <div className="stagger mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
             {positions.map((p, i) => (
               <div
                 key={p.name}
-                className="frame-hairline group bg-ink-900/50 p-6 transition hover:bg-ink-800/60"
+                className="hang frame-hairline group bg-ink-900/50 p-6 transition hover:bg-ink-800/60"
               >
                 <div className="flex items-baseline justify-between">
                   <h3 className="font-display text-xl font-semibold text-pearl-100 group-hover:text-lilac-200">

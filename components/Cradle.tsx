@@ -22,7 +22,7 @@ const T = 3.6;
 /** time the compression pulse takes to cross one weight */
 const STEP = 0.05;
 /** weight diameter; also the centre-to-centre spacing, so they sit tangent */
-const D = "clamp(3rem, 6.5vw, 5.5rem)";
+const D = "clamp(3rem, 11.5vw, 11rem)";
 
 const COUNT = 7;
 const MID = (COUNT - 1) / 2;

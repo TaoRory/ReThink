@@ -95,7 +95,7 @@ export default function HomePage() {
         <Sparkle className="absolute right-[10%] top-48 h-16 w-16 text-cyan-400/50" />
         <Sparkle className="absolute bottom-24 left-[16%] h-6 w-6 text-lilac-200/60" />
 
-        <div className="mx-auto flex min-h-[92vh] max-w-6xl flex-col items-center justify-center px-5 py-24 text-center">
+        <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-6xl flex-col items-center justify-center px-5 py-24 text-center">
           <p className="rise mb-6 text-xs font-semibold uppercase tracking-[0.5em] text-cyan-300/80">
             We are…
           </p>

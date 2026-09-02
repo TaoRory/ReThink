@@ -39,7 +39,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
           <p className="text-xs font-semibold uppercase tracking-[0.45em] text-pearl-100/70">
             {t.presents}
           </p>
-          <h1 className="mt-6 font-display text-[clamp(2.4rem,9.5vw,4.5rem)] font-bold leading-none sm:text-7xl">
+          <h1 className="mt-6 font-display text-[clamp(1.6rem,7.4vw,4.5rem)] font-bold leading-none">
             <span className="text-neon-red">TEDx</span>
             <span className="text-pearl-100">VinUniversity</span>
           </h1>

@@ -21,8 +21,9 @@
 const T = 3.6;
 /** time the compression pulse takes to cross one weight */
 const STEP = 0.05;
-/** weight diameter; also the centre-to-centre spacing, so they sit tangent */
-const D = "clamp(3rem, 11.5vw, 11rem)";
+/** weight diameter (also the centre-to-centre spacing, so they sit tangent)
+ *  lives in CSS as --orb-d: a media query shrinks it on phones. */
+const D = "var(--orb-d)";
 
 const COUNT = 7;
 const MID = (COUNT - 1) / 2;
@@ -43,7 +44,7 @@ export function Cradle({ className = "" }: { className?: string }) {
     <div
       className={`cradle ${className}`}
       aria-hidden="true"
-      style={{ "--cradle-T": `${T}s`, "--orb-d": D } as React.CSSProperties}
+      style={{ "--cradle-T": `${T}s` } as React.CSSProperties}
     >
       {FILLS.map((fill, i) => {
         const isFirst = i === 0;

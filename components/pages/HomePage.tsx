@@ -285,7 +285,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-fuchsia-400">
             {t.tedxBandKicker}
           </p>
-          <h2 className="mt-4 font-display text-5xl font-bold leading-tight sm:text-6xl">
+          <h2 className="mt-4 font-display text-[clamp(1.6rem,7.6vw,3.75rem)] font-bold leading-tight">
             <span className="text-neon-red">TEDx</span>
             <span className="text-pearl-100">VinUniversity</span>
           </h2>

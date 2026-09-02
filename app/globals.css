@@ -280,6 +280,7 @@ body {
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  --orb-d: clamp(3rem, 11.5vw, 11rem);
   --cradle-drop: clamp(13rem, 40vh, 26rem);
   --cradle-T: 3.6s;
   --cradle-amp: 22deg;
@@ -472,6 +473,21 @@ body {
   }
   .orb-swirl { display: none; }
   .ring-3 { display: none; }
+  /* phones: shorter wires bring the row into the visible middle of the frame,
+     and smaller weights leave the end ones room to swing without leaving it */
+  .cradle {
+    --orb-d: clamp(1.9rem, 8.4vw, 3rem);
+    --cradle-drop: clamp(5.5rem, 19vh, 9rem);
+    --cradle-amp: 16deg;
+  }
+  .cradle-scrim {
+    background: radial-gradient(
+      26rem 16rem at 50% 52%,
+      rgba(4, 6, 12, 0.6) 0%,
+      rgba(4, 6, 12, 0.34) 50%,
+      transparent 82%
+    );
+  }
   .galaxy-disc { filter: blur(40px); opacity: 0.42; }
 }
 

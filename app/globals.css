@@ -188,6 +188,75 @@ body {
   50% { transform: translate(-26%, 24%) scale(1.45); opacity: 1; }
 }
 
+/* ---------- Galaxy backdrop ---------- */
+.galaxy {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.galaxy-disc {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: min(160vw, 92rem);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  filter: blur(64px);
+  background:
+    radial-gradient(circle, rgba(233, 236, 248, 0.09) 0%, transparent 26%),
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(214, 51, 232, 0.2) 38deg,
+      transparent 92deg,
+      rgba(34, 201, 232, 0.17) 172deg,
+      transparent 224deg,
+      rgba(122, 21, 240, 0.21) 302deg,
+      transparent 348deg
+    );
+  animation: galaxy-spin 120s linear infinite;
+  will-change: transform;
+}
+@keyframes galaxy-spin { to { transform: rotate(360deg); } }
+
+/* tilted orbital paths — Default Orbit, drawn */
+.orbit-ring {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  translate: -50% -50%;
+  border: 1px solid rgba(168, 240, 251, 0.055);
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  filter: blur(0.4px);
+  will-change: transform;
+  /* keep the lit part of each orbit up by the cradle; let it dissolve before
+     it can cut across the copy below */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.4) 42%, transparent 72%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.4) 42%, transparent 72%);
+}
+.ring-1 {
+  width: min(120vw, 74rem); height: min(38vw, 23rem);
+  animation: ring-drift-1 58s linear infinite;
+}
+.ring-2 {
+  width: min(96vw, 58rem); height: min(26vw, 15rem);
+  border-color: rgba(242, 160, 251, 0.05);
+  animation: ring-drift-2 76s linear infinite;
+}
+.ring-3 {
+  width: min(150vw, 96rem); height: min(52vw, 32rem);
+  border-color: rgba(154, 77, 255, 0.038);
+  animation: ring-drift-3 96s linear infinite;
+}
+@keyframes ring-drift-1 { from { transform: rotate(-8deg); } to { transform: rotate(352deg); } }
+@keyframes ring-drift-2 { from { transform: rotate(14deg); } to { transform: rotate(-346deg); } }
+@keyframes ring-drift-3 { from { transform: rotate(-3deg); } to { transform: rotate(357deg); } }
+
 /* ---------- Newton's cradle (hero signature) ---------- */
 /*
  * Physically honest cradle. One full cycle = T:
@@ -210,9 +279,9 @@ body {
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-  --cradle-drop: clamp(11rem, 27vh, 19rem);
+  --cradle-drop: clamp(8rem, 21vh, 14rem);
   --cradle-T: 3.6s;
-  --cradle-amp: 15deg;
+  --cradle-amp: 18deg;
 }
 .pendulum {
   position: absolute;
@@ -222,6 +291,7 @@ body {
 }
 .pendulum-wire {
   width: 1px;
+  height: calc(var(--cradle-drop) - var(--orb-d) / 2);
   margin: 0 auto;
   background: linear-gradient(
     to bottom,
@@ -232,15 +302,44 @@ body {
 }
 .orb {
   position: relative;
+  width: var(--orb-d);
+  height: var(--orb-d);
   border-radius: 50%;
-  filter: blur(0.4px);
+  overflow: hidden;
   mix-blend-mode: screen;
-  opacity: 0.5;
+  opacity: 0.92;
+  background: var(--orb-fill);
+  /* thin lit atmosphere at the limb */
+  box-shadow:
+    inset 0 0 0 1px rgba(233, 236, 248, 0.16),
+    inset -6px -8px 22px rgba(4, 6, 12, 0.55),
+    0 0 26px rgba(122, 21, 240, 0.22);
 }
+/* slow gas-giant banding */
+.orb-swirl {
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  opacity: 0.32;
+  mix-blend-mode: screen;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.4) 34deg,
+    transparent 82deg,
+    rgba(168, 240, 251, 0.32) 168deg,
+    transparent 226deg,
+    rgba(242, 160, 251, 0.34) 300deg,
+    transparent 344deg
+  );
+  animation: orb-spin 26s linear infinite;
+}
+@keyframes orb-spin { to { transform: rotate(360deg); } }
 /* the struck weight - a lit pearl rather than a glass orb */
 .orb-pearl {
   mix-blend-mode: normal;
   opacity: 1;
+  overflow: visible;
   background:
     radial-gradient(circle at 34% 28%, #ffffff 0%, #f6e6ff 16%, #d9a8f5 42%, #a24fd0 74%, #5a1585 100%);
   box-shadow:
@@ -251,19 +350,22 @@ body {
 
 /* easeInSine while falling, easeOutSine while climbing: speed peaks at the
    bottom of the arc and vanishes at the top, as a real pendulum does */
+/* a weight hanging below the pivot swings LEFT under a POSITIVE rotation:
+   x' = -L*sin(theta). Getting this sign backwards drives the end weight into
+   the row instead of away from it. */
 @keyframes cradle-left {
-  0%   { transform: rotate(calc(-1 * var(--cradle-amp)));
+  0%   { transform: rotate(var(--cradle-amp));
          animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
   25%  { transform: rotate(0deg); animation-timing-function: step-end; }
   75%  { transform: rotate(0deg);
          animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
-  100% { transform: rotate(calc(-1 * var(--cradle-amp))); }
+  100% { transform: rotate(var(--cradle-amp)); }
 }
 @keyframes cradle-right {
   0%   { transform: rotate(0deg); animation-timing-function: step-end; }
   25%  { transform: rotate(0deg);
          animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
-  50%  { transform: rotate(var(--cradle-amp));
+  50%  { transform: rotate(calc(-1 * var(--cradle-amp)));
          animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
   75%  { transform: rotate(0deg); animation-timing-function: step-end; }
   100% { transform: rotate(0deg); }
@@ -310,35 +412,13 @@ body {
   inset: 0;
   pointer-events: none;
   background: radial-gradient(
-    46rem 22rem at 50% 46%,
-    rgba(4, 6, 12, 0.82) 0%,
-    rgba(4, 6, 12, 0.55) 45%,
-    transparent 76%
+    48rem 20rem at 50% 62%,
+    rgba(4, 6, 12, 0.9) 0%,
+    rgba(4, 6, 12, 0.6) 46%,
+    transparent 78%
   );
 }
 
-/* Crossing beams — the Encounter moment, two trajectories intersecting */
-.beam {
-  position: absolute;
-  height: 1px;
-  transform-origin: 50% 50%;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(214, 51, 232, 0.55) 42%,
-    rgba(242, 160, 251, 0.95) 50%,
-    rgba(214, 51, 232, 0.55) 58%,
-    transparent 100%
-  );
-  filter: blur(0.3px);
-  opacity: 0.4;
-  animation: beam-flare var(--cradle-T) linear infinite;
-}
-@keyframes beam-flare {
-  0%   { opacity: 1; }
-  14%  { opacity: 0.4; }
-  100% { opacity: 0.4; }
-}
 
 /* ---------- Pointer spotlight (hero) ---------- */
 .pointer-glow {
@@ -389,11 +469,15 @@ body {
   .grain::after {
     opacity: 0.04;
   }
+  .orb-swirl { display: none; }
+  .ring-3 { display: none; }
+  .galaxy-disc { filter: blur(40px); opacity: 0.42; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .aurora-field, .aurora-blob, .aurora-sweep, .sparkle-anim, .marquee-track,
-  .swing-l, .swing-r, .orb-pulse, .impact, .beam, .neon-breathe {
+  .swing-l, .swing-r, .orb-pulse, .impact, .neon-breathe,
+  .galaxy-disc, .orbit-ring, .orb-swirl {
     animation: none !important;
   }
   [data-reveal].revealed.stagger > *,

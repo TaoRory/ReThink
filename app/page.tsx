@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Aurora } from "@/components/Aurora";
 import { Btn } from "@/components/Btn";
 import { Cradle } from "@/components/Cradle";
+import { Galaxy } from "@/components/Galaxy";
 import { PointerGlow } from "@/components/PointerGlow";
 import { Sparkle } from "@/components/Sparkle";
 import { Starfield } from "@/components/Starfield";
@@ -86,7 +87,8 @@ export default function HomePage() {
       {/* ============ HERO ============ */}
       <section className="smoke grain guides relative overflow-hidden pt-16">
         <Aurora sweep />
-        <Starfield />
+        <Galaxy />
+        <Starfield density={1.35} />
         <Cradle />
         <PointerGlow />
         <Sparkle className="absolute left-[8%] top-28 h-10 w-10 text-cyan-300/70" />

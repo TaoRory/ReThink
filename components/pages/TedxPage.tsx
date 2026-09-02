@@ -40,10 +40,10 @@ export function TedxPage({ locale }: { locale: Locale }) {
             {t.presents}
           </p>
           <h1 className="mt-6 font-display text-[clamp(2.4rem,9.5vw,4.5rem)] font-bold leading-none sm:text-7xl">
-            <span className="text-neon-cyan">TEDx</span>
+            <span className="text-neon-red">TEDx</span>
             <span className="text-pearl-100">VinUniversity</span>
           </h1>
-          <p className="mt-4 font-display text-[clamp(1.9rem,7vw,3.1rem)] font-extralight uppercase tracking-[0.3em] text-neon-cyan">
+          <p className="mt-4 font-display text-[clamp(1.9rem,7vw,3.1rem)] font-extralight uppercase tracking-[0.3em] text-neon-red">
             The Firsts
           </p>
           <p className="mx-auto mt-8 max-w-2xl text-[15px] leading-relaxed text-pearl-100/80">
@@ -109,7 +109,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
               </div>
               <div className="p-7">
                 <h3 className="font-display text-3xl font-bold">
-                  <span className="text-neon-cyan">The</span>{" "}
+                  <span className="text-neon-red">The</span>{" "}
                   <span className="text-pearl-100">Firsts</span>
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
@@ -132,7 +132,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
                 <div className="absolute inset-0 bg-[radial-gradient(24rem_14rem_at_50%_120%,rgba(192,26,51,0.4),transparent_65%)] transition duration-700 group-hover:scale-110" />
                 <Sparkle className="absolute left-[12%] top-8 h-6 w-6 text-fuchsia-400/70" />
                 <Sparkle className="absolute right-[14%] bottom-8 h-9 w-9 text-lilac-200/50" />
-                <p className="relative font-display text-4xl font-extralight uppercase tracking-[0.28em] text-neon-cyan">
+                <p className="relative font-display text-4xl font-extralight uppercase tracking-[0.28em] text-neon-red">
                   Limitless
                 </p>
                 <span className="absolute left-5 top-5 rounded-full border border-fuchsia-400/40 bg-ink-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-fuchsia-400 backdrop-blur">
@@ -141,7 +141,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
               </div>
               <div className="flex flex-1 flex-col p-7">
                 <h3 className="font-display text-3xl font-bold">
-                  <span className="text-neon-cyan">Limitless</span>{" "}
+                  <span className="text-neon-red">Limitless</span>{" "}
                   <span className="text-pearl-100">Decade</span>
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
@@ -237,7 +237,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
           <h2 className="font-display text-4xl leading-tight text-pearl-100">
             {t.ctaHeading1}
             <br />
-            <span className="font-display text-neon-cyan text-[1.15em] font-extralight uppercase tracking-[0.2em]">
+            <span className="font-display text-neon-red text-[1.15em] font-extralight uppercase tracking-[0.2em]">
               {t.ctaHeading2}
             </span>
           </h2>

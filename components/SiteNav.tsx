@@ -74,7 +74,7 @@ export function SiteNav() {
                       className="block rounded-lg px-4 py-3 transition hover:bg-white/5"
                     >
                       <p className="font-display text-[15px] font-semibold text-pearl-100">
-                        <span className="text-neon-cyan">TEDx</span> {s.title}
+                        <span className="text-neon-red">TEDx</span> {s.title}
                       </p>
                       <p className="mt-0.5 text-xs text-pearl-100/55">{s.desc}</p>
                     </a>
@@ -85,7 +85,7 @@ export function SiteNav() {
                       className="block rounded-lg px-4 py-3 transition hover:bg-white/5"
                     >
                       <p className="font-display text-[15px] font-semibold text-pearl-100">
-                        <span className="text-neon-cyan">TEDx</span> {s.title}
+                        <span className="text-neon-red">TEDx</span> {s.title}
                       </p>
                       <p className="mt-0.5 text-xs text-pearl-100/55">{s.desc}</p>
                     </Link>

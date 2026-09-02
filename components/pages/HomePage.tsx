@@ -286,7 +286,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             {t.tedxBandKicker}
           </p>
           <h2 className="mt-4 font-display text-5xl font-bold leading-tight sm:text-6xl">
-            <span className="text-neon-cyan">TEDx</span>
+            <span className="text-neon-red">TEDx</span>
             <span className="text-pearl-100">VinUniversity</span>
           </h2>
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-pearl-100/80">

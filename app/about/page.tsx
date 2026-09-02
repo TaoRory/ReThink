@@ -90,16 +90,15 @@ export default function AboutPage() {
         <Aurora sweep />
         <Starfield density={0.8} />
         <div className="relative mx-auto max-w-6xl px-5 py-24 text-center">
-          <Sparkle className="absolute left-[10%] top-32 h-8 w-8 text-lavender-300/60" />
-          <Sparkle className="absolute right-[12%] top-52 h-12 w-12 text-lavender-400/50" />
-          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-lavender-300/80">
+          <Sparkle className="absolute left-[10%] top-32 h-8 w-8 text-cyan-300/60" />
+          <Sparkle className="absolute right-[12%] top-52 h-12 w-12 text-cyan-400/50" />
+          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-cyan-300/80">
             Rethink — Relearn — Reinvent
           </p>
-          <h1 className="mt-6 font-display text-5xl leading-tight text-cream-100 sm:text-6xl">
-            <span className="font-script text-chrome text-[1.6em] align-[-0.12em] mr-2">W</span>
-            hat is ReThink?
+          <h1 className="mt-6 font-display text-5xl leading-tight text-pearl-100 sm:text-6xl">
+            What is ReThink?
           </h1>
-          <p className="mx-auto mt-8 max-w-2xl font-display text-xl italic leading-relaxed text-cream-100/85">
+          <p className="mx-auto mt-8 max-w-2xl font-display text-xl italic leading-relaxed text-pearl-100/85">
             Tổ chức sinh viên của VinUni từ 2022 — nơi một vấn đề quen
             thuộc được nhìn lại từ nhiều góc, và là đơn vị tổ chức
             TEDxVinUniversity thường niên.
@@ -110,10 +109,10 @@ export default function AboutPage() {
       {/* Story */}
       <section className="py-24">
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1.1fr_1fr]">
-          <div className="space-y-5 text-[15px] leading-relaxed text-cream-100/75">
+          <div className="space-y-5 text-[15px] leading-relaxed text-pearl-100/75">
             <p>
               ReThink là{" "}
-              <strong className="text-cream-100">
+              <strong className="text-pearl-100">
                 tổ chức sinh viên của VinUni
               </strong>
               , hoạt động từ năm 2022. Chúng mình tạo ra những không gian để
@@ -124,7 +123,7 @@ export default function AboutPage() {
               Cụ thể, ReThink làm nội dung và sự kiện: podcast Reinventors,
               cuộc thi viết Rethink Reality, các workshop và toạ đàm. Và trên
               hết, ReThink là{" "}
-              <strong className="text-cream-100">
+              <strong className="text-pearl-100">
                 đơn vị tổ chức TEDxVinUniversity thường niên
               </strong>{" "}
               — sự kiện lan toả ý tưởng lớn nhất tại VinUni, do sinh viên vận
@@ -133,7 +132,7 @@ export default function AboutPage() {
             </p>
             <p>
               Điều làm ReThink khác biệt nằm ở cách làm:{" "}
-              <strong className="text-lavender-300">
+              <strong className="text-cyan-300">
                 mọi hoạt động đều bắt đầu từ nội dung.
               </strong>{" "}
               Một câu hỏi được nghiên cứu kỹ, một narrative được xây rõ ràng —
@@ -171,15 +170,15 @@ export default function AboutPage() {
             {departments.map((d) => (
               <div
                 key={d.name}
-                className="frame-dashed bg-plum-900/50 p-6 backdrop-blur-sm transition hover:bg-plum-800/60"
+                className="frame-hairline bg-ink-900/50 p-6 backdrop-blur-sm transition hover:bg-ink-800/60"
               >
-                <h3 className="font-display text-lg font-semibold text-lavender-200">
+                <h3 className="font-display text-lg font-semibold text-lilac-200">
                   {d.name}{" "}
-                  <span className="text-sm font-normal text-cream-100/50">
+                  <span className="text-sm font-normal text-pearl-100/50">
                     Department
                   </span>
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-cream-100/70">
+                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
                   {d.desc}
                 </p>
               </div>
@@ -196,7 +195,7 @@ export default function AboutPage() {
             rest="ulture của ReThinkers"
             kicker="Championship — Fellowship — Breakership"
           />
-          <p className="mt-5 max-w-2xl text-[15px] text-cream-100/70">
+          <p className="mt-5 max-w-2xl text-[15px] text-pearl-100/70">
             Mỗi ReThinker làm việc, hỗ trợ nhau và trưởng thành dựa trên 3 giá
             trị văn hoá:
           </p>
@@ -204,19 +203,19 @@ export default function AboutPage() {
             {cultures.map((c, i) => (
               <div
                 key={c.title}
-                className="relative rounded-2xl border border-white/10 bg-gradient-to-b from-plum-800/60 to-plum-900/60 p-7"
+                className="relative rounded-2xl border border-white/10 bg-gradient-to-b from-ink-800/60 to-ink-900/60 p-7"
               >
                 <Sparkle
                   animate={false}
-                  className="h-6 w-6 text-lavender-300/70"
+                  className="h-6 w-6 text-cyan-300/70"
                 />
-                <h3 className="mt-4 font-display text-xl font-semibold text-cream-100">
+                <h3 className="mt-4 font-display text-xl font-semibold text-pearl-100">
                   {c.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-cream-100/70">
+                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
                   {c.desc}
                 </p>
-                <span className="absolute right-6 top-5 font-script text-3xl text-lavender-400/40">
+                <span className="absolute right-6 top-5 font-display text-2xl font-light tracking-[0.2em] text-cyan-400/40">
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
@@ -237,15 +236,15 @@ export default function AboutPage() {
             {benefits.map((b) => (
               <div
                 key={b.title}
-                className="frame-dashed grid gap-6 bg-plum-900/40 p-8 md:grid-cols-[1fr_1.6fr]"
+                className="frame-hairline grid gap-6 bg-ink-900/40 p-8 md:grid-cols-[1fr_1.6fr]"
               >
-                <h3 className="font-display text-2xl font-semibold text-lavender-200">
+                <h3 className="font-display text-2xl font-semibold text-lilac-200">
                   {b.title}
                 </h3>
-                <ul className="space-y-3 text-sm leading-relaxed text-cream-100/75">
+                <ul className="space-y-3 text-sm leading-relaxed text-pearl-100/75">
                   {b.items.map((it) => (
                     <li key={it} className="flex gap-3">
-                      <span className="mt-0.5 text-lavender-400">✦</span>
+                      <span className="mt-0.5 text-cyan-400">▪</span>
                       {it}
                     </li>
                   ))}
@@ -255,12 +254,12 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-16 text-center">
-            <p className="mx-auto max-w-xl font-display text-xl italic text-cream-100/85">
+            <p className="mx-auto max-w-xl font-display text-xl italic text-pearl-100/85">
               “Belonging isn&apos;t just a feeling — it&apos;s the value ReThink
               puts at the very heart of its community.”
             </p>
             <Btn href="/join" variant="primary" className="mt-8">
-              Trở thành ReThinker <span className="text-lavender-300">✦</span>
+              Trở thành ReThinker <span className="text-cyan-300">▪</span>
             </Btn>
           </div>
         </div>

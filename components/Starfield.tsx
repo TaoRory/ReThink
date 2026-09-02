@@ -14,11 +14,11 @@ type Star = {
 
 type Meteor = { x: number; y: number; vx: number; vy: number; life: number };
 
-const STAR_COLORS = ["#e2ccf9", "#cdaaf3", "#f6d9e6", "#f7f0df", "#b78ae8"];
+const STAR_COLORS = ["#e9ecf8", "#a8f0fb", "#e3ccff", "#70e0f0", "#f2a0fb"];
 
 /**
- * The Void-style living starfield: twinkling tinted stars drifting upward
- * with occasional shooting stars. Canvas-based, GPU-cheap.
+ * Light motes drifting through the dark, with occasional streaks crossing the
+ * frame. Canvas-based, GPU-cheap.
  */
 export function Starfield({
   density = 1,
@@ -115,8 +115,8 @@ export function Starfield({
           m.x, m.y,
           m.x - (m.vx / m.vy) * tail * 0.28, m.y - tail * 0.28
         );
-        grad.addColorStop(0, `rgba(240, 228, 252, ${0.85 * m.life})`);
-        grad.addColorStop(1, "rgba(240, 228, 252, 0)");
+        grad.addColorStop(0, `rgba(168, 240, 251, ${0.85 * m.life})`);
+        grad.addColorStop(1, "rgba(168, 240, 251, 0)");
         ctx.globalAlpha = 1;
         ctx.strokeStyle = grad;
         ctx.lineWidth = 1.4;

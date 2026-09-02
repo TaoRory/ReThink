@@ -1,41 +1,50 @@
 @import "tailwindcss";
 
 @theme {
-  /* Rethink brand — extracted from KV / Booklet AY 25-26 */
-  --color-plum-950: #0e0611;
-  --color-plum-900: #170a1d;
-  --color-plum-800: #231029;
-  --color-plum-700: #33173e;
-  --color-plum-600: #48225a;
+  /* ============================================================
+     ReThink AY 26-27 — "Pendulum" KV
+     Concept: Default Orbit → Encounter → Pause → Choice.
+     Palette sampled from KV/New KV (cover + element PNGs).
+     ============================================================ */
 
-  --color-crimson-700: #7c0d1d;
-  --color-crimson-600: #9e1226;
-  --color-crimson-500: #c01a33;
-  --color-crimson-400: #e0314d;
+  /* backgrounds — near-black with a cool indigo cast */
+  --color-ink-950: #04060c;
+  --color-ink-900: #0a0c16;
+  --color-ink-800: #12152a;
+  --color-ink-700: #1b1f3d;
+  --color-ink-600: #262c55;
 
-  --color-violet-800: #37086b;
-  --color-violet-700: #45109e;
-  --color-violet-600: #5a1fc4;
-  --color-violet-500: #7c3aed;
+  /* the pendulum spectrum: fuchsia → violet → azure → cyan */
+  --color-fuchsia-700: #8a17a3;
+  --color-fuchsia-600: #b224cc;
+  --color-fuchsia-500: #d633e8;
+  --color-fuchsia-400: #e85cf5;
+  --color-fuchsia-300: #f2a0fb;
 
-  --color-lavender-500: #a06ee0;
-  --color-lavender-400: #b78ae8;
-  --color-lavender-300: #cdaaf3;
-  --color-lavender-200: #e2ccf9;
-  --color-lavender-100: #f0e4fc;
+  --color-violet-700: #5a0fd0;
+  --color-violet-600: #7a15f0;
+  --color-violet-500: #9a4dff;
+  --color-violet-400: #b47dff;
 
-  --color-pink-300: #eebbd3;
-  --color-pink-200: #f6d9e6;
-  --color-cream-200: #efe3c3;
-  --color-cream-100: #f7f0df;
-  --color-ivory-50: #faf6ef;
-  --color-ink-900: #201b16;
-  --color-ink-700: #4a4038;
-  --color-ink-500: #938878;
-  --color-hairline: #ddd2c1;
+  --color-azure-600: #2540d0;
+  --color-azure-500: #3a7fd0;
 
-  --font-script: var(--font-script-var), cursive;
-  --font-display: var(--font-display-var), serif;
+  --color-cyan-500: #22c9e8;
+  --color-cyan-400: #4ab8dd;
+  --color-cyan-300: #70e0f0;
+  --color-cyan-200: #a8f0fb;
+
+  /* pearl highlights + neutrals */
+  --color-pearl-50: #f7f9ff;
+  --color-pearl-100: #e9ecf8;
+  --color-pearl-200: #c8cfe6;
+  --color-lilac-200: #e3ccff;
+  --color-lilac-300: #c9a3ff;
+
+  /* deep wine halo that rims the KV cover */
+  --color-wine-800: #5c1830;
+
+  --font-display: var(--font-display-var), system-ui, sans-serif;
   --font-sans: var(--font-body-var), system-ui, sans-serif;
 }
 
@@ -48,65 +57,54 @@ html {
 }
 
 body {
-  background: var(--color-plum-950);
-  color: var(--color-cream-100);
+  background: var(--color-ink-950);
+  color: var(--color-pearl-100);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
 /* ---------- Signature brand treatments ---------- */
 
-/* Chrome-metal text, like the booklet logo.
-   The padding + negative margin keep swashes of the script font inside the
-   paint box: background-clip:text only paints where the element's background
-   box is, so oversized calligraphic strokes get truncated without it. */
-.text-chrome,
-.text-chrome-red {
-  display: inline-block;
-  padding: 0.28em 0.32em;
-  margin: -0.28em -0.32em;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Neon tube lettering, like the KV logotype: white core, fuchsia/violet bloom */
+.text-neon {
+  color: #fff;
+  text-shadow:
+    0 0 1px rgba(255, 255, 255, 0.9),
+    0 0 7px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(214, 51, 232, 0.75),
+    0 0 44px rgba(122, 21, 240, 0.55),
+    0 0 90px rgba(122, 21, 240, 0.32);
 }
 
-.text-chrome {
-  background-image: linear-gradient(
-    175deg,
-    #f4ecff 0%,
-    #cdaaf3 28%,
-    #8e5fd6 45%,
-    #e9dcfb 55%,
-    #6d3fb8 72%,
-    #b98ff0 88%,
-    #f4ecff 100%
-  );
-  filter: drop-shadow(0 2px 18px rgba(150, 90, 230, 0.45));
+/* cool variant — the cyan end of the pendulum spectrum */
+.text-neon-cyan {
+  color: #fff;
+  text-shadow:
+    0 0 1px rgba(255, 255, 255, 0.9),
+    0 0 7px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(34, 201, 232, 0.8),
+    0 0 44px rgba(58, 127, 208, 0.5),
+    0 0 90px rgba(34, 201, 232, 0.28);
 }
 
-.text-chrome-red {
-  background-image: linear-gradient(175deg, #ffe9ec 0%, #e0314d 35%, #7c0d1d 55%, #f4a5b2 75%, #9e1226 100%);
-  filter: drop-shadow(0 2px 16px rgba(192, 26, 51, 0.4));
-}
-
-/* Film-grain noise overlay */
+/* Film-grain overlay — the KV spheres carry a fine noise */
 .grain::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.07;
+  opacity: 0.06;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
 }
 
-/* Smoke / aurora backdrop, like the booklet pages */
+/* Light-bloom backdrop, echoing the cover's halo rim */
 .smoke {
   background:
-    radial-gradient(52rem 30rem at 82% -6%, rgba(90, 31, 196, 0.32), transparent 62%),
-    radial-gradient(44rem 30rem at -8% 32%, rgba(158, 18, 38, 0.30), transparent 60%),
-    radial-gradient(40rem 26rem at 55% 105%, rgba(205, 130, 180, 0.16), transparent 65%),
-    radial-gradient(30rem 22rem at 30% 68%, rgba(69, 16, 158, 0.22), transparent 60%);
+    radial-gradient(52rem 30rem at 82% -6%, rgba(122, 21, 240, 0.30), transparent 62%),
+    radial-gradient(44rem 30rem at -8% 30%, rgba(214, 51, 232, 0.24), transparent 60%),
+    radial-gradient(40rem 26rem at 55% 105%, rgba(34, 201, 232, 0.18), transparent 65%),
+    radial-gradient(34rem 24rem at 26% 70%, rgba(92, 24, 48, 0.34), transparent 62%);
 }
 
 /* ---------- Living aurora background ---------- */
@@ -124,10 +122,10 @@ body {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    rgba(124, 58, 237, 0.5) 70deg,
-    rgba(192, 26, 51, 0.42) 130deg,
+    rgba(122, 21, 240, 0.5) 70deg,
+    rgba(214, 51, 232, 0.42) 130deg,
     transparent 190deg,
-    rgba(205, 130, 200, 0.3) 260deg,
+    rgba(34, 201, 232, 0.34) 260deg,
     transparent 330deg
   );
   filter: blur(90px);
@@ -148,28 +146,28 @@ body {
 }
 .ab-1 {
   width: 46rem; height: 32rem; left: -12%; top: -18%;
-  background: radial-gradient(closest-side, rgba(192, 26, 51, 0.58), transparent 72%);
+  background: radial-gradient(closest-side, rgba(214, 51, 232, 0.55), transparent 72%);
   animation: drift-1 8s ease-in-out infinite;
 }
 .ab-2 {
   width: 42rem; height: 36rem; right: -14%; top: -4%;
-  background: radial-gradient(closest-side, rgba(103, 41, 214, 0.6), transparent 72%);
+  background: radial-gradient(closest-side, rgba(122, 21, 240, 0.6), transparent 72%);
   animation: drift-2 10s ease-in-out infinite;
 }
 .ab-3 {
   width: 38rem; height: 28rem; left: 18%; bottom: -26%;
-  background: radial-gradient(closest-side, rgba(214, 116, 178, 0.42), transparent 72%);
+  background: radial-gradient(closest-side, rgba(34, 201, 232, 0.4), transparent 72%);
   animation: drift-3 12s ease-in-out infinite;
 }
 .ab-4 {
   width: 26rem; height: 22rem; left: 42%; top: 22%;
-  background: radial-gradient(closest-side, rgba(150, 90, 230, 0.38), transparent 72%);
+  background: radial-gradient(closest-side, rgba(37, 64, 208, 0.42), transparent 72%);
   animation: drift-4 7s ease-in-out infinite;
 }
 
 @keyframes aurora-hue {
-  from { filter: hue-rotate(-22deg); }
-  to { filter: hue-rotate(26deg); }
+  from { filter: hue-rotate(-18deg); }
+  to { filter: hue-rotate(22deg); }
 }
 @keyframes drift-1 {
   0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
@@ -190,6 +188,89 @@ body {
   50% { transform: translate(-26%, 24%) scale(1.45); opacity: 1; }
 }
 
+/* ---------- Newton's cradle (hero signature) ---------- */
+/* Suspended spheres on hairlines. The end weights swing; the inner ones hold
+   their default orbit — Default Orbit / Encounter / Pause read left to right. */
+.cradle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.pendulum {
+  position: absolute;
+  top: 0;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+.pendulum-wire {
+  width: 1px;
+  margin: 0 auto;
+  background: linear-gradient(
+    to bottom,
+    rgba(233, 236, 248, 0) 0%,
+    rgba(233, 236, 248, 0.34) 38%,
+    rgba(233, 236, 248, 0.5) 100%
+  );
+}
+.orb {
+  border-radius: 50%;
+  filter: blur(0.4px);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+/* the struck weight — a lit pearl rather than a glass orb */
+.orb-pearl {
+  mix-blend-mode: normal;
+  opacity: 1;
+  background:
+    radial-gradient(circle at 34% 28%, #ffffff 0%, #f6e6ff 16%, #d9a8f5 42%, #a24fd0 74%, #5a1585 100%);
+  box-shadow:
+    0 0 18px rgba(233, 204, 255, 0.75),
+    0 0 46px rgba(154, 77, 255, 0.55),
+    0 0 90px rgba(122, 21, 240, 0.35);
+}
+@keyframes swing-left {
+  0%, 100% { transform: rotate(-13deg); }
+  50% { transform: rotate(1deg); }
+}
+@keyframes swing-right {
+  0%, 100% { transform: rotate(13deg); }
+  50% { transform: rotate(-1deg); }
+}
+.swing-l { animation: swing-left 3.4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+.swing-r { animation: swing-right 3.4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+
+/* Radial scrim: pulls the cradle back behind the hero copy */
+.cradle-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    46rem 22rem at 50% 46%,
+    rgba(4, 6, 12, 0.82) 0%,
+    rgba(4, 6, 12, 0.55) 45%,
+    transparent 76%
+  );
+}
+
+/* Crossing beams — the Encounter moment, two trajectories intersecting */
+.beam {
+  position: absolute;
+  height: 1px;
+  transform-origin: 50% 50%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(214, 51, 232, 0.55) 42%,
+    rgba(242, 160, 251, 0.95) 50%,
+    rgba(214, 51, 232, 0.55) 58%,
+    transparent 100%
+  );
+  filter: blur(0.3px);
+  opacity: 0.65;
+}
+
 /* ---------- Pointer spotlight (hero) ---------- */
 .pointer-glow {
   position: absolute;
@@ -197,8 +278,8 @@ body {
   pointer-events: none;
   background: radial-gradient(
     38rem circle at var(--mx, 50%) var(--my, 40%),
-    rgba(150, 90, 230, 0.16),
-    rgba(192, 26, 51, 0.06) 45%,
+    rgba(154, 77, 255, 0.16),
+    rgba(34, 201, 232, 0.06) 45%,
     transparent 70%
   );
   transition: background 0.12s linear;
@@ -234,12 +315,13 @@ body {
     opacity: 0.42;
   }
   .grain::after {
-    opacity: 0.05;
+    opacity: 0.04;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aurora-field, .aurora-blob, .aurora-sweep, .sparkle-anim, .marquee-track {
+  .aurora-field, .aurora-blob, .aurora-sweep, .sparkle-anim, .marquee-track,
+  .swing-l, .swing-r {
     animation: none !important;
   }
   [data-reveal] {
@@ -249,7 +331,7 @@ body {
   }
 }
 
-/* ---------- Luxury buttons ---------- */
+/* ---------- Buttons ---------- */
 .btn-lux {
   position: relative;
   display: inline-flex;
@@ -257,7 +339,7 @@ body {
   justify-content: center;
   gap: 0.6rem;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 999px;
   padding: 0.95rem 2.2rem;
   font-size: 12px;
   font-weight: 600;
@@ -270,7 +352,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.2) 50%, transparent 58%);
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.22) 50%, transparent 58%);
   transform: translateX(-130%);
   transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -278,56 +360,62 @@ body {
   transform: translateX(130%);
 }
 
-/* hairline gradient border + deep fill */
+/* hairline spectrum border + deep fill */
 .btn-lux-primary {
   border: 1px solid transparent;
   background:
-    linear-gradient(rgba(23, 10, 29, 0.92), rgba(23, 10, 29, 0.92)) padding-box,
-    linear-gradient(115deg, #c01a33, #7c3aed 55%, #cdaaf3) border-box;
-  color: var(--color-cream-100);
+    linear-gradient(rgba(10, 12, 22, 0.92), rgba(10, 12, 22, 0.92)) padding-box,
+    linear-gradient(115deg, #d633e8, #7a15f0 52%, #22c9e8) border-box;
+  color: var(--color-pearl-50);
 }
 .btn-lux-primary:hover {
-  box-shadow: 0 0 34px rgba(124, 58, 237, 0.35), 0 0 12px rgba(192, 26, 51, 0.25);
+  box-shadow: 0 0 34px rgba(122, 21, 240, 0.4), 0 0 14px rgba(214, 51, 232, 0.3);
   color: #fff;
   transform: translateY(-1px);
 }
 
 .btn-lux-ghost {
-  border: 1px solid rgba(247, 240, 223, 0.28);
-  color: rgba(247, 240, 223, 0.88);
+  border: 1px solid rgba(233, 236, 248, 0.26);
+  color: rgba(233, 236, 248, 0.88);
   background: transparent;
 }
 .btn-lux-ghost:hover {
-  border-color: rgba(205, 170, 243, 0.65);
-  color: var(--color-lavender-200);
-  box-shadow: 0 0 26px rgba(150, 90, 230, 0.18);
+  border-color: rgba(112, 224, 240, 0.65);
+  color: var(--color-cyan-200);
+  box-shadow: 0 0 26px rgba(34, 201, 232, 0.2);
   transform: translateY(-1px);
 }
 
 .btn-lux-red {
   border: 1px solid transparent;
   background:
-    linear-gradient(rgba(23, 10, 29, 0.9), rgba(23, 10, 29, 0.9)) padding-box,
-    linear-gradient(115deg, #ffb3bd, #c01a33 45%, #7c0d1d) border-box;
-  color: #ffe9ec;
+    linear-gradient(rgba(10, 12, 22, 0.9), rgba(10, 12, 22, 0.9)) padding-box,
+    linear-gradient(115deg, #f2a0fb, #d633e8 45%, #8a17a3) border-box;
+  color: #fce9ff;
 }
 .btn-lux-red:hover {
-  box-shadow: 0 0 34px rgba(192, 26, 51, 0.4);
+  box-shadow: 0 0 34px rgba(214, 51, 232, 0.45);
   color: #fff;
   transform: translateY(-1px);
 }
 
-/* Dashed frame, like booklet crop-mark boxes */
-.frame-dashed {
-  border: 1.5px dashed rgba(247, 240, 223, 0.45);
-  border-radius: 1.25rem;
+/* Hairline frame — the thin lit box the KV sets its pearl inside */
+.frame-hairline {
+  border: 1px solid rgba(154, 77, 255, 0.3);
+  border-radius: 1rem;
+  background-image: linear-gradient(
+    160deg,
+    rgba(214, 51, 232, 0.06),
+    transparent 45%,
+    rgba(34, 201, 232, 0.05)
+  );
 }
 
-/* Crop-mark guide lines */
+/* Trajectory guide lines */
 .guides {
   background-image:
-    linear-gradient(to right, rgba(247, 240, 223, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(247, 240, 223, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(233, 236, 248, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(233, 236, 248, 0.045) 1px, transparent 1px);
   background-size: 25% 100%, 100% 33.5%;
 }
 
@@ -340,9 +428,10 @@ body {
   animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* square sparkle, replacing the booklet's 4-point star */
 @keyframes shimmer {
-  0%, 100% { opacity: 0.55; transform: scale(0.92) rotate(0deg); }
-  50% { opacity: 1; transform: scale(1.06) rotate(8deg); }
+  0%, 100% { opacity: 0.5; transform: scale(0.88); }
+  50% { opacity: 1; transform: scale(1.08); }
 }
 .sparkle-anim {
   animation: shimmer 3.6s ease-in-out infinite;

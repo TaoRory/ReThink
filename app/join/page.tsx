@@ -48,24 +48,24 @@ export default function JoinPage() {
         <div className="relative mx-auto max-w-6xl px-5 py-24">
           <div className="grid items-center gap-14 lg:grid-cols-2">
             <div>
-              <p className="inline-block rounded-full border border-cream-200/30 bg-plum-900/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-cream-200">
+              <p className="inline-block rounded-full border border-pearl-200/30 bg-ink-900/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-pearl-200">
                 Recruitment 2026 – 2027
               </p>
               <h1 className="mt-6 font-display leading-tight">
-                <span className="block font-script text-chrome text-7xl sm:text-8xl">
+                <span className="block font-display text-neon text-6xl font-extralight tracking-[0.16em] sm:text-7xl">
                   Gen 5
                 </span>
-                <span className="mt-2 block text-5xl font-bold text-cream-100 sm:text-6xl">
+                <span className="mt-2 block text-5xl font-bold text-pearl-100 sm:text-6xl">
                   Recruitment
                 </span>
               </h1>
-              <p className="mt-7 max-w-lg text-[15px] leading-relaxed text-cream-100/75">
+              <p className="mt-7 max-w-lg text-[15px] leading-relaxed text-pearl-100/75">
                 Trở thành ReThinker để cùng{" "}
-                <strong className="text-cream-100">
+                <strong className="text-pearl-100">
                   kiến tạo những dự án tác động
                 </strong>
                 , gặp gỡ các chuyên gia hàng đầu, và để{" "}
-                <strong className="text-cream-100">
+                <strong className="text-pearl-100">
                   tiếng nói của bạn được lắng nghe
                 </strong>
                 .
@@ -76,7 +76,7 @@ export default function JoinPage() {
                   external
                   variant="primary"
                 >
-                  Điền form ứng tuyển <span className="text-lavender-300">✦</span>
+                  Điền form ứng tuyển <span className="text-cyan-300">▪</span>
                 </Btn>
                 <Btn
                   href="https://www.facebook.com/rethink.vinuni"
@@ -86,7 +86,7 @@ export default function JoinPage() {
                   Facebook ReThink
                 </Btn>
               </div>
-              <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-crimson-400">
+              <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-fuchsia-400">
                 Deadline: 22/09
               </p>
             </div>
@@ -106,7 +106,7 @@ export default function JoinPage() {
                 height={454}
                 className="-mt-12 ml-auto w-2/3 rotate-2 rounded-2xl border border-white/10 object-cover shadow-2xl"
               />
-              <Sparkle className="absolute -left-4 -top-5 h-10 w-10 text-lavender-300/80" />
+              <Sparkle className="absolute -left-4 -top-5 h-10 w-10 text-cyan-300/80" />
             </div>
           </div>
         </div>
@@ -119,29 +119,29 @@ export default function JoinPage() {
             {positions.map((p, i) => (
               <div
                 key={p.name}
-                className="frame-dashed group bg-plum-900/50 p-6 transition hover:bg-plum-800/60"
+                className="frame-hairline group bg-ink-900/50 p-6 transition hover:bg-ink-800/60"
               >
                 <div className="flex items-baseline justify-between">
-                  <h3 className="font-display text-xl font-semibold text-cream-100 group-hover:text-lavender-200">
+                  <h3 className="font-display text-xl font-semibold text-pearl-100 group-hover:text-lilac-200">
                     {p.name}
                   </h3>
-                  <span className="font-script text-2xl text-lavender-400/50">
+                  <span className="font-display text-lg font-light tracking-[0.2em] text-cyan-400/50">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <p className="mt-3 text-sm leading-relaxed text-cream-100/70">
+                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
                   {p.desc}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="mt-16 rounded-2xl border border-white/10 bg-gradient-to-r from-plum-900 via-plum-800/80 to-plum-900 p-10 text-center">
-            <p className="font-display text-2xl italic text-cream-100/90">
+          <div className="mt-16 rounded-2xl border border-white/10 bg-gradient-to-r from-ink-900 via-ink-800/80 to-ink-900 p-10 text-center">
+            <p className="font-display text-2xl italic text-pearl-100/90">
               “Join us as a ReThinker to co-create impactful projects, meet top
               professionals, and let your voice be heard.”
             </p>
-            <p className="mt-4 text-xs uppercase tracking-[0.35em] text-lavender-300/70">
+            <p className="mt-4 text-xs uppercase tracking-[0.35em] text-cyan-300/70">
               ReThink · Since 2022 · VinUniversity
             </p>
           </div>

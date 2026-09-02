@@ -1,39 +1,29 @@
 /**
- * Booklet-style heading: oversized script initial + display serif rest.
- * e.g. <SectionHeading script="W" rest="hat is Rethink?" />
+ * AY 26-27 heading: a lit rule + kicker above monoline display caps.
+ * The `script` letter is kept in the API (callers pass the first character)
+ * and is rejoined to the rest — the KV has no calligraphic initial.
  */
 export function SectionHeading({
   script,
   rest,
   kicker,
-  light = false,
   className = "",
 }: {
   script: string;
   rest: string;
   kicker?: string;
-  light?: boolean;
   className?: string;
 }) {
   return (
     <div className={className}>
       {kicker && (
-        <p
-          className={`mb-3 text-xs font-semibold uppercase tracking-[0.35em] ${
-            light ? "text-crimson-600" : "text-lavender-400"
-          }`}
-        >
+        <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-300">
+          <span className="h-px w-8 bg-gradient-to-r from-fuchsia-500 to-cyan-300" />
           {kicker}
         </p>
       )}
-      <h2
-        className={`font-display text-4xl leading-tight sm:text-5xl ${
-          light ? "text-ink-900" : "text-cream-100"
-        }`}
-      >
-        <span className="font-script text-[1.6em] leading-none align-[-0.12em] mr-1">
-          {script}
-        </span>
+      <h2 className="font-display text-3xl font-light leading-tight tracking-[0.02em] text-pearl-50 sm:text-4xl">
+        {script}
         {rest}
       </h2>
     </div>

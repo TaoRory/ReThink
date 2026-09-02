@@ -1,7 +1,7 @@
 # ReThink — Website chính thức
 
 Website của **ReThink** — tổ chức sinh viên của VinUni: giới thiệu tổ chức, showcase
-**TEDxVinUniversity**, và tuyển thành viên Gen 4.0.
+**TEDxVinUniversity**, và tuyển thành viên Gen 5.
 
 ## Chạy local
 
@@ -14,15 +14,15 @@ npm run dev
 
 ## Cấu trúc
 
-- `app/` — trang chủ, `/about`, `/tedx`, `/join` (dark luxe theo brand KV).
-- `components/` — Logo, Sparkle, SectionHeading, Btn + các lớp hiệu ứng nền
-  (Aurora, Starfield, PointerGlow, Reveal).
+- `app/` — trang chủ, `/about`, `/tedx`, `/join`.
+- `components/` — Logo, Sparkle, SectionHeading, Btn, Cradle (con lắc ở hero)
+  + các lớp hiệu ứng nền (Aurora, Starfield, PointerGlow, Reveal).
 - `app/globals.css` — toàn bộ theme Tailwind v4 khai báo trong khối `@theme`
   (không có `tailwind.config`).
 
 ## Brand
 
-Toàn bộ màu sắc, typography, motif (sparkle ✦, khung nét đứt, chrome text,
-smoke gradient) lấy từ **KV/RETHINK BOOKLET AY 25-26**. Fonts:
-Great Vibes (script) + Playfair Display (display serif) + Be Vietnam Pro (body),
-đều hỗ trợ đầy đủ tiếng Việt.
+Toàn bộ màu sắc, typography và motif lấy từ **KV mới `KV/New KV/`** (AY 26-27):
+concept con lắc `Default Orbit → Encounter → Pause → Choice`, logotype neon
+monoline, quả cầu treo trên dây, beam giao cắt, ô vuông sáng ▪, film grain.
+Fonts: Lexend (display) + Be Vietnam Pro (body), đều hỗ trợ đầy đủ tiếng Việt.

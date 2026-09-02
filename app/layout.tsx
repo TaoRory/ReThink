@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
-import { Great_Vibes, Playfair_Display, Be_Vietnam_Pro } from "next/font/google";
+import { Lexend, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { Reveal } from "@/components/Reveal";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 
-const scriptFont = Great_Vibes({
-  weight: "400",
-  subsets: ["latin", "vietnamese"],
-  variable: "--font-script-var",
-  display: "swap",
-});
-
-const displayFont = Playfair_Display({
+/** Geometric monoline sans, matching the AY 26-27 neon logotype. */
+const displayFont = Lexend({
+  weight: ["200", "300", "400", "500", "600"],
   subsets: ["latin", "vietnamese"],
   variable: "--font-display-var",
   display: "swap",
@@ -40,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="vi"
-      className={`${scriptFont.variable} ${displayFont.variable} ${bodyFont.variable}`}
+      className={`${displayFont.variable} ${bodyFont.variable}`}
     >
       <body className="min-h-screen">
         <noscript>

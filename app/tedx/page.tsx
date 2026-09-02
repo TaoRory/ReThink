@@ -44,30 +44,30 @@ export default function TedxPage() {
             sizes="100vw"
             className="object-cover opacity-30"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-plum-950/70 via-plum-950/80 to-plum-950" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/80 to-ink-950" />
           <div className="absolute inset-0 bg-[radial-gradient(50rem_28rem_at_75%_10%,rgba(192,26,51,0.28),transparent_60%)]" />
         </div>
 
         <div className="relative mx-auto max-w-6xl px-5 py-28 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-cream-100/70">
+          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-pearl-100/70">
             ReThink proudly presents
           </p>
           <h1 className="mt-6 font-display text-[clamp(2.4rem,9.5vw,4.5rem)] font-bold leading-none sm:text-7xl">
-            <span className="text-chrome-red">TEDx</span>
-            <span className="text-cream-100">VinUniversity</span>
+            <span className="text-neon-cyan">TEDx</span>
+            <span className="text-pearl-100">VinUniversity</span>
           </h1>
-          <p className="mt-4 font-script text-[clamp(2.2rem,9vw,3.75rem)] text-chrome-red sm:text-6xl">
+          <p className="mt-4 font-display text-[clamp(1.9rem,7vw,3.1rem)] font-extralight uppercase tracking-[0.3em] text-neon-cyan">
             The Firsts
           </p>
-          <p className="mx-auto mt-8 max-w-2xl text-[15px] leading-relaxed text-cream-100/80">
-            Với chủ đề <strong className="text-cream-100">“The Firsts — Người Tiên Phong”</strong>,
+          <p className="mx-auto mt-8 max-w-2xl text-[15px] leading-relaxed text-pearl-100/80">
+            Với chủ đề <strong className="text-pearl-100">“The Firsts — Người Tiên Phong”</strong>,
             ReThink mang đến những câu chuyện truyền cảm hứng từ các chuyên gia
             hàng đầu về những khoảnh khắc tiên phong đã tạo nên giá trị đột phá
             và mở ra chân trời mới bất chấp thử thách.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Btn href="#seasons" variant="red">
-              Khám phá hai mùa TEDx ✦
+              Khám phá hai mùa TEDx ▪
             </Btn>
             <Btn href="/join" variant="ghost">
               Đồng hành cùng BTC mùa tới →
@@ -77,14 +77,14 @@ export default function TedxPage() {
       </section>
 
       {/* Stats */}
-      <section className="border-y border-white/8 bg-plum-900/40">
+      <section className="border-y border-white/8 bg-ink-900/40">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-5 py-16 sm:grid-cols-3 lg:grid-cols-6">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
-              <p className="font-display text-4xl font-bold text-crimson-400">
+              <p className="font-display text-4xl font-bold text-fuchsia-400">
                 {s.n}
               </p>
-              <p className="mx-auto mt-2 max-w-[10rem] text-xs leading-relaxed text-cream-100/60">
+              <p className="mx-auto mt-2 max-w-[10rem] text-xs leading-relaxed text-pearl-100/60">
                 {s.label}
               </p>
             </div>
@@ -97,18 +97,17 @@ export default function TedxPage() {
         <Aurora sweep className="opacity-60" />
         <div className="relative mx-auto max-w-6xl px-5">
           <div className="mb-12 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-crimson-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-fuchsia-400">
               Hai mùa · Một hành trình
             </p>
-            <h2 className="mt-4 font-display text-4xl text-cream-100 sm:text-5xl">
-              <span className="font-script text-chrome-red text-[1.5em] align-[-0.1em] mr-2">C</span>
-              họn mùa TEDx của bạn
+            <h2 className="mt-4 font-display text-4xl text-pearl-100 sm:text-5xl">
+              Chọn mùa TEDx của bạn
             </h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2" data-reveal>
             {/* The Firsts 2025 */}
-            <article className="group relative overflow-hidden rounded-2xl border border-white/10 bg-plum-900/60">
+            <article className="group relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900/60">
               <div className="relative h-52 overflow-hidden">
                 <Image
                   src="/photos/tedx-stage.jpg"
@@ -117,22 +116,22 @@ export default function TedxPage() {
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-cover transition duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-plum-950 via-plum-950/30 to-transparent" />
-                <span className="absolute left-5 top-5 rounded-full border border-white/20 bg-plum-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-cream-100 backdrop-blur">
+                <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/30 to-transparent" />
+                <span className="absolute left-5 top-5 rounded-full border border-white/20 bg-ink-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-pearl-100 backdrop-blur">
                   Mùa 2025 · Đã diễn ra
                 </span>
               </div>
               <div className="p-7">
                 <h3 className="font-display text-3xl font-bold">
-                  <span className="text-chrome-red">The</span>{" "}
-                  <span className="text-cream-100">Firsts</span>
+                  <span className="text-neon-cyan">The</span>{" "}
+                  <span className="text-pearl-100">Firsts</span>
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-cream-100/70">
+                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
                   Người Tiên Phong — 7 diễn giả, 500+ khán giả và những câu
                   chuyện về khoảnh khắc dám làm điều đầu tiên. Bạn đang xem
                   hành trình của mùa này ngay tại trang này.
                 </p>
-                <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-crimson-400">
+                <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-fuchsia-400">
                   Cuộn xuống để khám phá ↓
                 </p>
               </div>
@@ -143,30 +142,30 @@ export default function TedxPage() {
               href={TEDX_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-crimson-500/30 bg-gradient-to-b from-crimson-700/25 via-plum-900/70 to-plum-900/60 transition hover:border-crimson-400/60"
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-fuchsia-500/30 bg-gradient-to-b from-fuchsia-700/25 via-ink-900/70 to-ink-900/60 transition hover:border-fuchsia-400/60"
             >
               <div className="relative flex h-52 items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(24rem_14rem_at_50%_120%,rgba(192,26,51,0.4),transparent_65%)] transition duration-700 group-hover:scale-110" />
-                <Sparkle className="absolute left-[12%] top-8 h-6 w-6 text-crimson-400/70" />
-                <Sparkle className="absolute right-[14%] bottom-8 h-9 w-9 text-pink-200/50" />
-                <p className="relative font-script text-6xl text-chrome-red">
+                <Sparkle className="absolute left-[12%] top-8 h-6 w-6 text-fuchsia-400/70" />
+                <Sparkle className="absolute right-[14%] bottom-8 h-9 w-9 text-lilac-200/50" />
+                <p className="relative font-display text-4xl font-extralight uppercase tracking-[0.28em] text-neon-cyan">
                   Limitless
                 </p>
-                <span className="absolute left-5 top-5 rounded-full border border-crimson-400/40 bg-plum-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-crimson-400 backdrop-blur">
+                <span className="absolute left-5 top-5 rounded-full border border-fuchsia-400/40 bg-ink-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-fuchsia-400 backdrop-blur">
                   Mùa 2026 · Mới
                 </span>
               </div>
               <div className="flex flex-1 flex-col p-7">
                 <h3 className="font-display text-3xl font-bold">
-                  <span className="text-chrome-red">Limitless</span>{" "}
-                  <span className="text-cream-100">Decade</span>
+                  <span className="text-neon-cyan">Limitless</span>{" "}
+                  <span className="text-pearl-100">Decade</span>
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-cream-100/70">
+                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
                   Thập kỷ không giới hạn — mùa TEDxVinUniversity tiếp theo đã
                   khởi động. Khám phá chủ đề, diễn giả và đặt chỗ trên website
                   chính thức của mùa mới.
                 </p>
-                <p className="mt-auto pt-5 text-sm font-semibold uppercase tracking-[0.2em] text-crimson-400 transition group-hover:text-crimson-300">
+                <p className="mt-auto pt-5 text-sm font-semibold uppercase tracking-[0.2em] text-fuchsia-400 transition group-hover:text-fuchsia-300">
                   Mở website chính thức ↗
                 </p>
               </div>
@@ -179,16 +178,15 @@ export default function TedxPage() {
       <section className="py-24">
         <div className="mx-auto grid max-w-6xl items-start gap-14 px-5 lg:grid-cols-[1fr_1.15fr]">
           <div className="lg:sticky lg:top-28">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-crimson-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-fuchsia-400">
               Behind the stage
             </p>
-            <h2 className="mt-4 font-display text-4xl leading-tight text-cream-100 sm:text-5xl">
-              <span className="font-script text-[1.5em] align-[-0.1em] mr-1 text-crimson-400">R</span>
-              eThink đứng sau
+            <h2 className="mt-4 font-display text-4xl leading-tight text-pearl-100 sm:text-5xl">
+              ReThink đứng sau
               <br />
               sân khấu đỏ
             </h2>
-            <div className="mt-7 space-y-5 text-[15px] leading-relaxed text-cream-100/75">
+            <div className="mt-7 space-y-5 text-[15px] leading-relaxed text-pearl-100/75">
               <p>
                 TEDxVinUniversity là sự kiện chia sẻ ý tưởng lớn nhất tại
                 VinUniversity, được tổ chức và vận hành hoàn toàn bởi đội ngũ
@@ -196,24 +194,24 @@ export default function TedxPage() {
                 trải nghiệm, đến vận hành đêm sự kiện.
               </p>
               <p>
-                Hơn <strong className="text-cream-100">60 thành viên</strong>{" "}
+                Hơn <strong className="text-pearl-100">60 thành viên</strong>{" "}
                 làm việc xuyên suốt{" "}
-                <strong className="text-cream-100">5 tháng</strong>, hợp tác
-                cùng <strong className="text-cream-100">9 nhà tài trợ</strong>,{" "}
-                <strong className="text-cream-100">28 đại sứ</strong> và được{" "}
-                <strong className="text-cream-100">VnEconomy</strong> đưa tin.
+                <strong className="text-pearl-100">5 tháng</strong>, hợp tác
+                cùng <strong className="text-pearl-100">9 nhà tài trợ</strong>,{" "}
+                <strong className="text-pearl-100">28 đại sứ</strong> và được{" "}
+                <strong className="text-pearl-100">VnEconomy</strong> đưa tin.
                 TEDxVinUniversity nhận về những phản hồi tích cực và để lại trải
                 nghiệm đáng nhớ cho cả người tổ chức lẫn người tham dự.
               </p>
             </div>
 
             {/* testimonial */}
-            <figure className="frame-dashed mt-8 bg-plum-900/50 p-6">
-              <blockquote className="font-display text-lg italic leading-relaxed text-cream-100/90">
+            <figure className="frame-hairline mt-8 bg-ink-900/50 p-6">
+              <blockquote className="font-display text-lg italic leading-relaxed text-pearl-100/90">
                 “Huge congratulations! Such an amazing and inspiring event!
                 Well done guys!”
               </blockquote>
-              <figcaption className="mt-3 text-xs uppercase tracking-[0.25em] text-cream-100/50">
+              <figcaption className="mt-3 text-xs uppercase tracking-[0.25em] text-pearl-100/50">
                 — Khán giả TEDxVinUniversity 2025
               </figcaption>
             </figure>
@@ -222,7 +220,7 @@ export default function TedxPage() {
               href={TEDX_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-block text-sm font-semibold text-crimson-400 underline-offset-4 hover:underline"
+              className="mt-8 inline-block text-sm font-semibold text-fuchsia-400 underline-offset-4 hover:underline"
             >
               Mùa 2026 — Limitless Decade: website chính thức ↗
             </a>
@@ -244,7 +242,7 @@ export default function TedxPage() {
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover transition duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-plum-950/60 to-transparent opacity-0 transition group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 to-transparent opacity-0 transition group-hover:opacity-100" />
               </div>
             ))}
           </div>
@@ -254,24 +252,24 @@ export default function TedxPage() {
       {/* CTA */}
       <section className="relative overflow-hidden border-t border-white/8 py-24 text-center">
         <div className="absolute inset-0 bg-[radial-gradient(42rem_24rem_at_50%_120%,rgba(192,26,51,0.25),transparent_65%)]" />
-        <Sparkle className="absolute left-[14%] top-14 h-8 w-8 text-crimson-400/50" />
-        <Sparkle className="absolute right-[12%] bottom-14 h-10 w-10 text-lavender-400/50" />
+        <Sparkle className="absolute left-[14%] top-14 h-8 w-8 text-fuchsia-400/50" />
+        <Sparkle className="absolute right-[12%] bottom-14 h-10 w-10 text-cyan-400/50" />
         <div className="relative mx-auto max-w-2xl px-5">
-          <h2 className="font-display text-4xl leading-tight text-cream-100">
+          <h2 className="font-display text-4xl leading-tight text-pearl-100">
             Sân khấu này được dựng lên
             <br />
-            <span className="font-script text-chrome-red text-[1.5em]">
+            <span className="font-display text-neon-cyan text-[1.15em] font-extralight uppercase tracking-[0.2em]">
               bởi những người như bạn
             </span>
           </h2>
-          <p className="mt-6 text-[15px] leading-relaxed text-cream-100/70">
+          <p className="mt-6 text-[15px] leading-relaxed text-pearl-100/70">
             Đằng sau mỗi đêm TEDx là hơn 60 ReThinker làm việc suốt 5 tháng —
             từ tuyển chọn diễn giả, xây dựng nội dung, thiết kế trải nghiệm đến
             vận hành đêm sự kiện. Mùa tới đang cần thêm những người sẵn sàng
             nhận lấy ownership và làm điều chưa ai làm.
           </p>
           <Btn href="/join" variant="red" className="mt-9">
-            Ứng tuyển Gen 5 ✦
+            Ứng tuyển Gen 5 ▪
           </Btn>
         </div>
       </section>

@@ -14,9 +14,14 @@ npm run dev
 
 ## Cấu trúc
 
-- `app/` — trang chủ, `/about`, `/tedx`, `/join`.
-- `components/` — Logo, Sparkle, SectionHeading, Btn, Cradle (con lắc ở hero)
-  + các lớp hiệu ứng nền (Aurora, Starfield, PointerGlow, Reveal).
+- `app/` — route mỏng cho 2 ngôn ngữ: tiếng Việt ở `/`, `/about`, `/tedx`,
+  `/join`; tiếng Anh ở `/en/...`. Mỗi file chỉ set metadata rồi render
+  component tương ứng với `locale`.
+- `components/pages/` — thân 4 trang, nhận prop `locale`.
+- `lib/i18n.ts` — toàn bộ copy hai thứ tiếng + helper đường dẫn theo locale.
+- `components/` — Logo, Sparkle, SectionHeading, Btn, LangToggle (nút VI/EN),
+  Cradle (con lắc ở hero), Galaxy + các lớp nền (Aurora, Starfield,
+  PointerGlow, Reveal).
 - `app/globals.css` — toàn bộ theme Tailwind v4 khai báo trong khối `@theme`
   (không có `tailwind.config`).
 

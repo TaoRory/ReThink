@@ -21,6 +21,8 @@ const bodyFont = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
+  // makes the per-page canonical + hreflang alternates resolve to absolute URLs
+  metadataBase: new URL("https://rethinkorg.com"),
   title: {
     default: "ReThink — VinUniversity | Rethink & Let Rethink",
     template: "%s | ReThink VinUniversity",

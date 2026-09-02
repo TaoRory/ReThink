@@ -3,14 +3,14 @@ import { JoinPage } from "@/components/pages/JoinPage";
 import { dict } from "@/lib/i18n";
 
 export const metadata: Metadata = {
-  title: dict.vi.join.meta.title,
-  description: dict.vi.join.meta.description,
+  title: dict.en.join.meta.title,
+  description: dict.en.join.meta.description,
   alternates: {
-    canonical: "/join",
+    canonical: "/en/join",
     languages: { vi: "/join", en: "/en/join" },
   },
 };
 
 export default function Page() {
-  return <JoinPage locale="vi" />;
+  return <JoinPage locale="en" />;
 }

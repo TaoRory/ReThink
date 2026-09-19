@@ -494,7 +494,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .aurora-field, .aurora-blob, .aurora-sweep, .sparkle-anim, .marquee-track,
   .swing-l, .swing-r, .orb-pulse, .impact, .neon-breathe,
-  .galaxy-disc, .orbit-ring, .orb-swirl {
+  .galaxy-disc, .orbit-ring, .orb-swirl, .wheel-bob {
     animation: none !important;
   }
   [data-reveal].revealed.stagger > *,
@@ -672,6 +672,97 @@ body {
 }
 .marquee-track {
   animation: marquee 36s linear infinite;
+}
+
+/* ---------- Club Fair topic wheel ---------- */
+
+/* the wheel itself: a long, decelerating spin. Duration comes from the
+   component so reduced-motion can drop it to 0 and still land correctly. */
+.wheel-rotor {
+  transform-origin: 50% 50%;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.16, 0.86, 0.22, 1);
+  filter: drop-shadow(0 0 34px rgba(122, 21, 240, 0.35));
+}
+
+/* halo behind the disc, same bloom as the KV cover rim */
+.wheel-halo {
+  position: absolute;
+  inset: -16%;
+  pointer-events: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgba(214, 51, 232, 0.24), transparent 72%),
+    radial-gradient(closest-side, rgba(34, 201, 232, 0.16), transparent 58%);
+  filter: blur(26px);
+}
+
+/* the pointer hangs from a hairline like a pendulum bob */
+.wheel-pointer {
+  position: absolute;
+  left: 50%;
+  top: -2.4rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.wheel-wire {
+  width: 1px;
+  height: 2.1rem;
+  background: linear-gradient(to bottom, transparent, rgba(233, 236, 248, 0.5));
+}
+.wheel-bob {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #fff, #f2a0fb 42%, #7a15f0);
+  box-shadow: 0 0 10px rgba(242, 160, 251, 0.9), 0 0 26px rgba(122, 21, 240, 0.7);
+  transform-origin: 50% -2.1rem;
+}
+/* the bob nudges as the wedges pass under it */
+.wheel-bob.is-spinning {
+  animation: bob-tick 0.16s ease-in-out infinite alternate;
+}
+@keyframes bob-tick {
+  from { transform: rotate(-4.5deg); }
+  to { transform: rotate(4.5deg); }
+}
+
+/* hub doubles as the spin button */
+.wheel-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 15;
+  display: flex;
+  width: 6.4rem;
+  height: 6.4rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(rgba(4, 6, 12, 0.96), rgba(4, 6, 12, 0.96)) padding-box,
+    linear-gradient(135deg, #d633e8, #7a15f0 52%, #22c9e8) border-box;
+  color: var(--color-pearl-50);
+  transform: translate(-50%, -50%);
+  transition: box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.wheel-hub:hover:not(:disabled) {
+  box-shadow: 0 0 40px rgba(122, 21, 240, 0.55), 0 0 16px rgba(214, 51, 232, 0.4);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+.wheel-hub:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+
+@media (max-width: 480px) {
+  .wheel-hub { width: 5.2rem; height: 5.2rem; }
 }
 
 ::selection {

@@ -51,6 +51,7 @@ export const dict = {
       about: "Về ReThink",
       tedx: "TEDx VinUniversity",
       join: "Tuyển thành viên Gen 5",
+      game: "Game — Club Fair",
       fb: "Facebook — ReThink",
       tedxSite: "Website TEDx VinUniversity",
       address: "VinUniversity, Gia Lâm, Hà Nội",
@@ -339,6 +340,40 @@ export const dict = {
         "“Join us as a ReThinker to co-create impactful projects, meet top professionals, and let your voice be heard.”",
       quoteBy: "ReThink · Since 2022 · VinUniversity",
     },
+    game: {
+      meta: {
+        title: "Game — Club Fair",
+        description:
+          "TEDx in 30s — vòng quay chủ đề của ReThink tại Club Fair. Quay một chủ đề, rồi có 30 giây để nói quan điểm của mình.",
+      },
+      badge: "Club Fair · ReThink",
+      headingRest: " in 30s",
+      lead:
+        "Quay vòng để nhận một chủ đề, rồi có đúng 30 giây để bảo vệ quan điểm của mình — một TEDx talk thu nhỏ ngay tại gian hàng ReThink.",
+      spin: "Quay",
+      spinning: "Đang quay",
+      hint: "Nhấn vào tâm vòng quay để bắt đầu",
+      idleTitle: "Sẵn sàng chưa?",
+      idleLead: "Quay vòng và nhận chủ đề đầu tiên của bạn.",
+      topicLabel: "Chủ đề của bạn",
+      again: "Quay lần nữa",
+      markDone: "Đánh dấu đã nói",
+      reset: "Chơi lại từ đầu",
+      timerStart: "Bấm giờ 30 giây",
+      timerReset: "Dừng & đặt lại",
+      timerDone: "Hết giờ!",
+      remaining: "chủ đề còn lại",
+      allDoneTitle: "Hết chủ đề rồi!",
+      allDoneLead:
+        "Cả 11 chủ đề đều đã được nói. Chơi lại từ đầu để tiếp tục.",
+      listKicker: "11 chủ đề",
+      listHeading: "Topics On The Wheel",
+      done: "Đã nói",
+      ctaHeading: "Thích cách chúng mình đặt câu hỏi?",
+      ctaLead:
+        "Đó cũng là cách ReThink làm việc: lấy một điều quen thuộc, lật nó lại, rồi kể thành một câu chuyện đáng nghe. Gen 5 đang mở đơn.",
+      ctaBtn: "Gia nhập Gen 5",
+    },
   },
 
   /* ================================================================= */
@@ -363,6 +398,7 @@ export const dict = {
       about: "About ReThink",
       tedx: "TEDx VinUniversity",
       join: "Join Gen 5",
+      game: "Game — Club Fair",
       fb: "Facebook — ReThink",
       tedxSite: "TEDx VinUniversity site",
       address: "VinUniversity, Gia Lam, Hanoi",
@@ -650,6 +686,39 @@ export const dict = {
       quote:
         "“Join us as a ReThinker to co-create impactful projects, meet top professionals, and let your voice be heard.”",
       quoteBy: "ReThink · Since 2022 · VinUniversity",
+    },
+    game: {
+      meta: {
+        title: "Game — Club Fair",
+        description:
+          "TEDx in 30s — ReThink's topic wheel for Club Fair. Spin a topic, then take 30 seconds to make your case.",
+      },
+      badge: "Club Fair · ReThink",
+      headingRest: " in 30s",
+      lead:
+        "Spin for a topic, then take exactly 30 seconds to make your case — a TEDx talk in miniature, right at the ReThink booth.",
+      spin: "Spin",
+      spinning: "Spinning",
+      hint: "Tap the hub to spin",
+      idleTitle: "Ready?",
+      idleLead: "Give the wheel a spin and take your first topic.",
+      topicLabel: "Your topic",
+      again: "Spin again",
+      markDone: "Mark as spoken",
+      reset: "Start over",
+      timerStart: "Start 30 seconds",
+      timerReset: "Stop & reset",
+      timerDone: "Time!",
+      remaining: "topics left",
+      allDoneTitle: "That's all of them!",
+      allDoneLead: "All 11 topics have been spoken. Start over to keep playing.",
+      listKicker: "11 topics",
+      listHeading: "Topics On The Wheel",
+      done: "Spoken",
+      ctaHeading: "Like the way we ask questions?",
+      ctaLead:
+        "That is how ReThink works every day: take something familiar, turn it over, then tell it as a story worth hearing. Gen 5 applications are open.",
+      ctaBtn: "Join Gen 5",
     },
   },
 } as const;

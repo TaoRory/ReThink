@@ -44,6 +44,11 @@ export function SiteFooter() {
                   {t.join}
                 </Link>
               </li>
+              <li>
+                <Link className="hover:text-pearl-100" href={localePath(locale, "/game")}>
+                  {t.game}
+                </Link>
+              </li>
             </ul>
           </div>
 

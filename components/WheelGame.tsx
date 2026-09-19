@@ -190,97 +190,101 @@ export function WheelGame({ t }: { t: GameCopy }) {
     <>
       <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         {/* ---------------- the wheel ---------------- */}
-        <div className="relative mx-auto w-full max-w-[27rem]">
-          <div className="wheel-halo" aria-hidden="true" />
+        <div className="mx-auto w-full max-w-[27rem]">
+          {/* the disc and everything pinned to its centre live in their own
+              square box — the hint below must not pull `top: 50%` off-centre */}
+          <div className="relative">
+            <div className="wheel-halo" aria-hidden="true" />
 
-          {/* the pointer hangs like a pendulum bob — the KV motif */}
-          <div className="wheel-pointer" aria-hidden="true">
-            <span className="wheel-wire" />
-            <span className={`wheel-bob ${spinning ? "is-spinning" : ""}`} />
+            {/* the pointer hangs like a pendulum bob — the KV motif */}
+            <div className="wheel-pointer" aria-hidden="true">
+              <span className="wheel-wire" />
+              <span className={`wheel-bob ${spinning ? "is-spinning" : ""}`} />
+            </div>
+
+            <div
+              className="wheel-rotor"
+              style={{
+                transform: `rotate(${rotation}deg)`,
+                transitionDuration: `${spinMs}ms`,
+              }}
+            >
+              <svg viewBox="0 0 400 400" className="block h-auto w-full">
+                <defs>
+                  <radialGradient id="wheel-sheen" cx="32%" cy="22%" r="78%">
+                    <stop offset="0%" stopColor="#fff" stopOpacity="0.18" />
+                    <stop offset="55%" stopColor="#fff" stopOpacity="0.03" />
+                    <stop offset="100%" stopColor="#000" stopOpacity="0.35" />
+                  </radialGradient>
+                </defs>
+
+                {TOPICS.map((topic, i) => {
+                  const isDone = done.includes(i);
+                  const isWinner = winner === i;
+                  const centre = (i + 0.5) * SEG;
+                  const [lx, ly] = rim(centre, R * 0.63);
+                  // radial text points outward, which reads upside-down once the
+                  // wedge is past 6 o'clock — flip the left half so every label
+                  // sits upright with the wheel at rest
+                  const flip = centre > 180;
+                  const spin = centre - 90 + (flip ? 180 : 0);
+                  return (
+                    <g key={topic.short} opacity={isDone && !isWinner ? 0.28 : 1}>
+                      <path
+                        d={wedge(i)}
+                        fill={isWinner ? FILL_LIT[i] : FILL[i]}
+                        stroke="rgba(233,236,248,0.16)"
+                        strokeWidth="1"
+                      />
+                      <text
+                        x={lx}
+                        y={ly}
+                        fill={isWinner ? "#fff" : "rgba(233,236,248,0.9)"}
+                        fontSize="14"
+                        fontWeight={isWinner ? 600 : 400}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        transform={`rotate(${spin.toFixed(2)}, ${lx.toFixed(2)}, ${ly.toFixed(2)})`}
+                        style={{
+                          textDecoration: isDone ? "line-through" : "none",
+                          letterSpacing: "0.01em",
+                        }}
+                      >
+                        {topic.short}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                <circle cx={C} cy={C} r={R} fill="url(#wheel-sheen)" />
+                <circle
+                  cx={C}
+                  cy={C}
+                  r={R}
+                  fill="none"
+                  stroke="rgba(214,51,232,0.55)"
+                  strokeWidth="2"
+                />
+              </svg>
+            </div>
+
+            {/* hub = the spin button */}
+            <button
+              type="button"
+              onClick={spin}
+              disabled={spinning || exhausted}
+              className="wheel-hub"
+              aria-label={t.spin}
+            >
+              <span className="font-display text-[11px] font-semibold uppercase tracking-[0.24em]">
+                {spinning ? t.spinning : t.spin}
+              </span>
+              <span className="mt-1 text-[10px] tracking-[0.18em] text-pearl-100/50">
+                {pool.length}/{N}
+              </span>
+            </button>
+
           </div>
-
-          <div
-            className="wheel-rotor"
-            style={{
-              transform: `rotate(${rotation}deg)`,
-              transitionDuration: `${spinMs}ms`,
-            }}
-          >
-            <svg viewBox="0 0 400 400" className="block h-auto w-full">
-              <defs>
-                <radialGradient id="wheel-sheen" cx="32%" cy="22%" r="78%">
-                  <stop offset="0%" stopColor="#fff" stopOpacity="0.18" />
-                  <stop offset="55%" stopColor="#fff" stopOpacity="0.03" />
-                  <stop offset="100%" stopColor="#000" stopOpacity="0.35" />
-                </radialGradient>
-              </defs>
-
-              {TOPICS.map((topic, i) => {
-                const isDone = done.includes(i);
-                const isWinner = winner === i;
-                const centre = (i + 0.5) * SEG;
-                const [lx, ly] = rim(centre, R * 0.63);
-                // radial text points outward, which reads upside-down once the
-                // wedge is past 6 o'clock — flip the left half so every label
-                // sits upright with the wheel at rest
-                const flip = centre > 180;
-                const spin = centre - 90 + (flip ? 180 : 0);
-                return (
-                  <g key={topic.short} opacity={isDone && !isWinner ? 0.28 : 1}>
-                    <path
-                      d={wedge(i)}
-                      fill={isWinner ? FILL_LIT[i] : FILL[i]}
-                      stroke="rgba(233,236,248,0.16)"
-                      strokeWidth="1"
-                    />
-                    <text
-                      x={lx}
-                      y={ly}
-                      fill={isWinner ? "#fff" : "rgba(233,236,248,0.9)"}
-                      fontSize="14"
-                      fontWeight={isWinner ? 600 : 400}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      transform={`rotate(${spin.toFixed(2)}, ${lx.toFixed(2)}, ${ly.toFixed(2)})`}
-                      style={{
-                        textDecoration: isDone ? "line-through" : "none",
-                        letterSpacing: "0.01em",
-                      }}
-                    >
-                      {topic.short}
-                    </text>
-                  </g>
-                );
-              })}
-
-              <circle cx={C} cy={C} r={R} fill="url(#wheel-sheen)" />
-              <circle
-                cx={C}
-                cy={C}
-                r={R}
-                fill="none"
-                stroke="rgba(214,51,232,0.55)"
-                strokeWidth="2"
-              />
-            </svg>
-          </div>
-
-          {/* hub = the spin button */}
-          <button
-            type="button"
-            onClick={spin}
-            disabled={spinning || exhausted}
-            className="wheel-hub"
-            aria-label={t.spin}
-          >
-            <span className="font-display text-[11px] font-semibold uppercase tracking-[0.24em]">
-              {spinning ? t.spinning : t.spin}
-            </span>
-            <span className="mt-1 text-[10px] tracking-[0.18em] text-pearl-100/50">
-              {pool.length}/{N}
-            </span>
-          </button>
-
           <p className="mt-6 text-center text-xs uppercase tracking-[0.28em] text-pearl-100/40">
             {t.hint}
           </p>

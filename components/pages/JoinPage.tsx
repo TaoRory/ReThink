@@ -17,10 +17,9 @@ const POSITIONS = [
 ];
 
 const FB = "https://www.facebook.com/rethink.vinuni";
-/** Gen 5 application form. The club's own bit.ly short link, which is what
- *  sits inside the Facebook share URL this came from — keeping it means the
- *  click counts land in ReThink's bitly, not behind Facebook's redirect. */
-const FORM = "https://bit.ly/FT_ReThinkRecruitment";
+/** Gen 5 application form, linked straight to the form rather than through
+ *  the bit.ly short link that used to front it. */
+const FORM = "https://forms.gle/bgyTUMDkzGFdvGuWA";
 
 export function JoinPage({ locale }: { locale: Locale }) {
   const t = dict[locale].join;

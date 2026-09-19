@@ -17,6 +17,10 @@ const POSITIONS = [
 ];
 
 const FB = "https://www.facebook.com/rethink.vinuni";
+/** Gen 5 application form. The club's own bit.ly short link, which is what
+ *  sits inside the Facebook share URL this came from — keeping it means the
+ *  click counts land in ReThink's bitly, not behind Facebook's redirect. */
+const FORM = "https://bit.ly/FT_ReThinkRecruitment";
 
 export function JoinPage({ locale }: { locale: Locale }) {
   const t = dict[locale].join;
@@ -48,7 +52,7 @@ export function JoinPage({ locale }: { locale: Locale }) {
                 {t.leadE}
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
-                <Btn href={FB} external variant="primary">
+                <Btn href={FORM} external variant="primary">
                   {t.btnForm} <span className="text-cyan-300">▪</span>
                 </Btn>
                 <Btn href={FB} external variant="ghost">

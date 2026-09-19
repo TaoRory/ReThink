@@ -39,6 +39,7 @@ export const dict = {
       menu: "Mở menu",
       seasonFirsts: "Mùa 2025 — hành trình của ReThink",
       seasonLimitless: "Mùa 2026 — website chính thức ↗",
+      seasonArchive: "Nội dung đang được cập nhật",
       langLabel: "Chuyển sang tiếng Anh",
     },
     footer: {
@@ -107,11 +108,11 @@ export const dict = {
       doKicker: "Hoạt động nổi bật",
       doHeading: "What We Do",
       activities: [
+        "Sự kiện lan toả ý tưởng lớn nhất tại VinUni — “The Firsts” 2025 với 7 diễn giả, 500+ khán giả và 19.000 lượt tương tác mạng xã hội.",
         "Mùa 3 tiếp tục hành trình “rethink” những điều quen thuộc qua góc nhìn mới — mỗi tập là một cuộc gặp với những vị khách truyền cảm hứng như Hà Chu, Nguyễn Quốc Hoàng Anh.",
         "Sân chơi viết cho người trẻ cả nước: 100+ thí sinh, ban giám khảo uy tín, tổng giải thưởng 88 triệu đồng cho 4 bài viết xuất sắc.",
-        "Sự kiện lan toả ý tưởng lớn nhất tại VinUni — “The Firsts” 2025 với 7 diễn giả, 500+ khán giả và 19.000 lượt tương tác mạng xã hội.",
       ],
-      activityKickers: ["Podcast", "Online Writing Contest", "Flagship Event"],
+      activityKickers: ["Flagship Event", "Podcast", "Online Writing Contest"],
       exploreTedx: "Khám phá TEDx →",
 
       tedxBandKicker: "ReThink là đơn vị đứng sau",
@@ -350,6 +351,7 @@ export const dict = {
       menu: "Open menu",
       seasonFirsts: "2025 season — ReThink's own story",
       seasonLimitless: "2026 season — official site ↗",
+      seasonArchive: "Details coming soon",
       langLabel: "Switch to Vietnamese",
     },
     footer: {
@@ -418,11 +420,11 @@ export const dict = {
       doKicker: "Featured work",
       doHeading: "What We Do",
       activities: [
+        "The largest idea-sharing event at VinUni — “The Firsts” 2025, with 7 speakers, 500+ in the audience and 19,000 social interactions.",
         "Season 3 continues the habit of rethinking the familiar through a new lens — each episode a conversation with guests like Ha Chu and Nguyen Quoc Hoang Anh.",
         "A national writing contest for young people: 100+ entrants, a respected panel of judges, and 88 million VND in prizes across four winning pieces.",
-        "The largest idea-sharing event at VinUni — “The Firsts” 2025, with 7 speakers, 500+ in the audience and 19,000 social interactions.",
       ],
-      activityKickers: ["Podcast", "Online Writing Contest", "Flagship Event"],
+      activityKickers: ["Flagship Event", "Podcast", "Online Writing Contest"],
       exploreTedx: "Explore TEDx →",
 
       tedxBandKicker: "ReThink is the team behind",

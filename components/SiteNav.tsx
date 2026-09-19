@@ -23,7 +23,16 @@ export function SiteNav() {
       active ? "text-cyan-300" : "text-pearl-100/70 hover:text-pearl-100"
     }`;
 
+  // newest first; the two earliest have no write-up yet, so they point at the
+  // archive strip on /tedx rather than a page of their own
+  const archive = `${localePath(locale, "/tedx")}#seasons`;
   const tedxSeasons = [
+    {
+      href: LIMITLESS_URL,
+      external: true,
+      title: "Limitless Decade",
+      desc: t.seasonLimitless,
+    },
     {
       href: localePath(locale, "/tedx"),
       external: false,
@@ -31,10 +40,16 @@ export function SiteNav() {
       desc: t.seasonFirsts,
     },
     {
-      href: LIMITLESS_URL,
-      external: true,
-      title: "Limitless Decade",
-      desc: t.seasonLimitless,
+      href: archive,
+      external: false,
+      title: "The New Dawn",
+      desc: `2024 — ${t.seasonArchive}`,
+    },
+    {
+      href: archive,
+      external: false,
+      title: "Reinvent the Wheel",
+      desc: `2023 — ${t.seasonArchive}`,
     },
   ];
 
@@ -142,22 +157,29 @@ export function SiteNav() {
           </button>
           {tedxOpen && (
             <div className="mb-2 ml-3 border-l border-white/10 pl-4">
-              <Link
-                href={localePath(locale, "/tedx")}
-                onClick={() => setOpen(false)}
-                className="block py-2.5 text-sm text-pearl-100/75"
-              >
-                The Firsts <span className="text-pearl-100/45">&middot; 2025</span>
-              </Link>
-              <a
-                href={LIMITLESS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block py-2.5 text-sm text-pearl-100/75"
-              >
-                Limitless Decade{" "}
-                <span className="text-pearl-100/45">&middot; 2026 &#8599;</span>
-              </a>
+              {tedxSeasons.map((s) =>
+                s.external ? (
+                  <a
+                    key={s.title}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block py-2.5 text-sm text-pearl-100/75"
+                  >
+                    {s.title}{" "}
+                    <span className="text-pearl-100/45">&#8599;</span>
+                  </a>
+                ) : (
+                  <Link
+                    key={s.title}
+                    href={s.href}
+                    onClick={() => setOpen(false)}
+                    className="block py-2.5 text-sm text-pearl-100/75"
+                  >
+                    {s.title}
+                  </Link>
+                )
+              )}
             </div>
           )}
 

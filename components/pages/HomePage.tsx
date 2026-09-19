@@ -17,11 +17,10 @@ const VALUE_TITLES = [
   "Own & Act Together",
   "Reflect to Evolve",
 ];
-const ACTIVITY_TITLES = ["Reinventors", "Rethink Reality", "TEDx VinUniversity"];
-const ACTIVITY_IMGS = [
-  "/photos/podcast-cover.jpg",
-  "/photos/contest-reality.jpg",
-  "/photos/tedx-stage.jpg",
+const ACTIVITIES: { title: string; img: string; href?: string }[] = [
+  { title: "TEDx VinUniversity", img: "/photos/tedx-stage.jpg", href: "/tedx" },
+  { title: "Reinventors", img: "/photos/podcast-cover.jpg" },
+  { title: "Rethink Reality", img: "/photos/contest-reality.jpg" },
 ];
 const THIS_YEAR_TITLES = [
   "Interactive Cinematic Experience",
@@ -222,8 +221,8 @@ export function HomePage({ locale }: { locale: Locale }) {
             kicker={t.doKicker}
           />
           <div className="stagger mt-14 grid gap-6 md:grid-cols-3" data-reveal>
-            {ACTIVITY_TITLES.map((title, i) => {
-              const isTedx = i === 2;
+            {ACTIVITIES.map((a, i) => {
+              const title = a.title;
               const card = (
                 <article
                   key={title}
@@ -231,7 +230,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                 >
                   <div className="relative h-56 overflow-hidden">
                     <Image
-                      src={ACTIVITY_IMGS[i]}
+                      src={a.img}
                       alt={title}
                       fill
                       sizes="(min-width: 768px) 33vw, 100vw"
@@ -249,7 +248,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                     <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
                       {t.activities[i]}
                     </p>
-                    {isTedx && (
+                    {a.href && (
                       <p className="mt-4 text-sm font-semibold text-cyan-300 group-hover:text-lilac-200">
                         {t.exploreTedx}
                       </p>
@@ -257,8 +256,8 @@ export function HomePage({ locale }: { locale: Locale }) {
                   </div>
                 </article>
               );
-              return isTedx ? (
-                <Link key={title} href={localePath(locale, "/tedx")}>
+              return a.href ? (
+                <Link key={title} href={localePath(locale, a.href)}>
                   {card}
                 </Link>
               ) : (

@@ -55,8 +55,11 @@ export function JoinPage({ locale }: { locale: Locale }) {
                   {t.btnFb}
                 </Btn>
               </div>
-              <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-fuchsia-400">
-                {t.deadline}
+              <p className="mt-6 text-sm font-semibold text-fuchsia-400">
+                {t.period}
+              </p>
+              <p className="mt-2 max-w-lg text-sm italic leading-relaxed text-pearl-100/60">
+                {t.periodNote}
               </p>
             </div>
 

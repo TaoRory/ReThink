@@ -1,7 +1,7 @@
 # ReThink — Website chính thức
 
 Website của **ReThink** — tổ chức sinh viên của VinUni: giới thiệu tổ chức, showcase
-**TEDxVinUniversity**, và tuyển thành viên Gen 5.
+**TEDx VinUniversity**, và tuyển thành viên Gen 5.
 
 ## Chạy local
 

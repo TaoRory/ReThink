@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s | ReThink VinUniversity",
   },
   description:
-    "ReThink — tổ chức sinh viên của VinUni, hoạt động từ 2022 và là đơn vị tổ chức TEDxVinUniversity thường niên.",
+    "ReThink — tổ chức sinh viên của VinUni, hoạt động từ 2022 và là đơn vị tổ chức TEDx VinUniversity thường niên.",
 };
 
 export default function RootLayout({

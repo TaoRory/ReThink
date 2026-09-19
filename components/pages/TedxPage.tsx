@@ -6,6 +6,12 @@ import { dict, localePath, type Locale } from "@/lib/i18n";
 
 const TEDX_URL = "https://v0-tedxvinuni.vercel.app/";
 
+/** earlier seasons — titles only for now, no write-up yet */
+const PAST_SEASONS = [
+  { year: "2023", title: "Reinvent the Wheel" },
+  { year: "2024", title: "The New Dawn" },
+];
+
 const GALLERY = [
   { src: "/photos/tedx-stage.jpg", span: true },
   { src: "/photos/tedx-speakers.jpg" },
@@ -40,7 +46,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
             {t.presents}
           </p>
           <h1 className="mt-6 font-display text-[clamp(1.6rem,7.4vw,4.5rem)] font-bold leading-none">
-            <span className="text-neon-red">TEDx</span>
+            <span className="text-neon-red">TEDx</span>{" "}
             <span className="text-pearl-100">VinUniversity</span>
           </h1>
           <p className="mt-4 font-display text-[clamp(1.9rem,7vw,3.1rem)] font-extralight uppercase tracking-[0.3em] text-neon-red">
@@ -152,6 +158,35 @@ export function TedxPage({ locale }: { locale: Locale }) {
                 </p>
               </div>
             </a>
+          </div>
+
+          {/* earlier seasons: listed for completeness, write-ups to come */}
+          <div className="mt-8">
+            <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-pearl-100/45">
+              <span className="h-px w-8 bg-gradient-to-r from-fuchsia-500/60 to-transparent" />
+              {t.pastKicker}
+            </p>
+            <div className="stagger grid gap-4 sm:grid-cols-2" data-reveal>
+              {PAST_SEASONS.map((s) => (
+                <div
+                  key={s.year}
+                  className="hang frame-hairline flex items-baseline justify-between gap-4 bg-ink-900/40 p-6"
+                >
+                  <h3 className="font-display text-xl font-semibold">
+                    <span className="text-neon-red">TEDx</span>{" "}
+                    <span className="text-pearl-100/85">{s.title}</span>
+                  </h3>
+                  <div className="shrink-0 text-right">
+                    <p className="font-display text-lg font-light tracking-[0.2em] text-pearl-100/60">
+                      {s.year}
+                    </p>
+                    <p className="mt-0.5 text-[11px] italic text-pearl-100/35">
+                      {t.pastNote}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

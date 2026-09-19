@@ -17,7 +17,7 @@ const VALUE_TITLES = [
   "Own & Act Together",
   "Reflect to Evolve",
 ];
-const ACTIVITY_TITLES = ["Reinventors", "Rethink Reality", "TEDxVinUniversity"];
+const ACTIVITY_TITLES = ["Reinventors", "Rethink Reality", "TEDx VinUniversity"];
 const ACTIVITY_IMGS = [
   "/photos/podcast-cover.jpg",
   "/photos/contest-reality.jpg",
@@ -25,7 +25,7 @@ const ACTIVITY_IMGS = [
 ];
 const THIS_YEAR_TITLES = [
   "Interactive Cinematic Experience",
-  "TEDxVinUniversity 2027",
+  "TEDx VinUniversity 2027",
 ];
 const FUTURE_TITLES = [
   "Science Under 15 Minutes",
@@ -286,7 +286,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             {t.tedxBandKicker}
           </p>
           <h2 className="mt-4 font-display text-[clamp(1.6rem,7.6vw,3.75rem)] font-bold leading-tight">
-            <span className="text-neon-red">TEDx</span>
+            <span className="text-neon-red">TEDx</span>{" "}
             <span className="text-pearl-100">VinUniversity</span>
           </h2>
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-pearl-100/80">

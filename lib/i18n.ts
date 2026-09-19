@@ -34,7 +34,7 @@ export const dict = {
   vi: {
     nav: {
       about: "Về ReThink",
-      tedx: "TEDxVinUniversity",
+      tedx: "TEDx VinUniversity",
       join: "Gia nhập Gen 5",
       menu: "Mở menu",
       seasonFirsts: "Mùa 2025 — hành trình của ReThink",
@@ -48,10 +48,10 @@ export const dict = {
       exploreHead: "Khám phá",
       connectHead: "Kết nối",
       about: "Về ReThink",
-      tedx: "TEDxVinUniversity",
+      tedx: "TEDx VinUniversity",
       join: "Tuyển thành viên Gen 5",
       fb: "Facebook — ReThink",
-      tedxSite: "Website TEDxVinUniversity",
+      tedxSite: "Website TEDx VinUniversity",
       address: "VinUniversity, Gia Lâm, Hà Nội",
       rights: "ReThink — VinUniversity. Rethink & Let Rethink.",
     },
@@ -60,7 +60,7 @@ export const dict = {
       meta: {
         title: "ReThink — VinUniversity | Rethink & Let Rethink",
         description:
-          "ReThink — tổ chức sinh viên của VinUni, hoạt động từ 2022 và là đơn vị tổ chức TEDxVinUniversity thường niên.",
+          "ReThink — tổ chức sinh viên của VinUni, hoạt động từ 2022 và là đơn vị tổ chức TEDx VinUniversity thường niên.",
       },
       weAre: "We are…",
       since: "Since 2022 · VinUniversity",
@@ -78,7 +78,7 @@ export const dict = {
       whatP1c:
         ", hoạt động từ năm 2022. Chúng mình tạo ra những không gian để người trẻ nhìn lại một vấn đề quen thuộc từ nhiều góc khác nhau — qua podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý tưởng.",
       whatP2a: "ReThink cũng là ",
-      whatP2b: "đơn vị tổ chức TEDxVinUniversity thường niên",
+      whatP2b: "đơn vị tổ chức TEDx VinUniversity thường niên",
       whatP2c:
         " — sự kiện lan toả ý tưởng lớn nhất tại VinUni, do sinh viên vận hành trọn vẹn từ khâu tuyển chọn diễn giả tới đêm sự kiện.",
       whatP3a: "Điều làm ReThink khác biệt nằm ở cách làm: ",
@@ -163,19 +163,19 @@ export const dict = {
       meta: {
         title: "Về ReThink",
         description:
-          "ReThink là tổ chức sinh viên của VinUni, hoạt động từ 2022 và là đơn vị tổ chức TEDxVinUniversity thường niên — làm podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý tưởng.",
+          "ReThink là tổ chức sinh viên của VinUni, hoạt động từ 2022 và là đơn vị tổ chức TEDx VinUniversity thường niên — làm podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý tưởng.",
       },
       heroKicker: "Rethink — Relearn — Reinvent",
       heroHeading: "What is ReThink?",
       heroLead:
-        "Tổ chức sinh viên của VinUni từ 2022 — nơi một vấn đề quen thuộc được nhìn lại từ nhiều góc, và là đơn vị tổ chức TEDxVinUniversity thường niên.",
+        "Tổ chức sinh viên của VinUni từ 2022 — nơi một vấn đề quen thuộc được nhìn lại từ nhiều góc, và là đơn vị tổ chức TEDx VinUniversity thường niên.",
       storyP1a: "ReThink là ",
       storyP1b: "tổ chức sinh viên của VinUni",
       storyP1c:
         ", hoạt động từ năm 2022. Chúng mình tạo ra những không gian để người trẻ nhìn lại một vấn đề quen thuộc từ nhiều góc khác nhau, và đưa những góc nhìn ấy tới đúng người cần nghe.",
       storyP2a:
         "Cụ thể, ReThink làm nội dung và sự kiện: podcast Reinventors, cuộc thi viết Rethink Reality, các workshop và toạ đàm. Và trên hết, ReThink là ",
-      storyP2b: "đơn vị tổ chức TEDxVinUniversity thường niên",
+      storyP2b: "đơn vị tổ chức TEDx VinUniversity thường niên",
       storyP2c:
         " — sự kiện lan toả ý tưởng lớn nhất tại VinUni, do sinh viên vận hành trọn vẹn từ tuyển chọn diễn giả, xây dựng nội dung, thiết kế trải nghiệm đến đêm sự kiện.",
       storyP3a: "Điều làm ReThink khác biệt nằm ở cách làm: ",
@@ -234,16 +234,16 @@ export const dict = {
 
     tedx: {
       meta: {
-        title: "TEDxVinUniversity — The Firsts",
+        title: "TEDx VinUniversity — The Firsts",
         description:
-          "ReThink là đơn vị đứng sau TEDxVinUniversity — sự kiện lan toả ý tưởng lớn nhất tại VinUni với 7 diễn giả, 500+ khán giả và 19.000 lượt tương tác.",
+          "ReThink là đơn vị đứng sau TEDx VinUniversity — sự kiện lan toả ý tưởng lớn nhất tại VinUni với 7 diễn giả, 500+ khán giả và 19.000 lượt tương tác.",
       },
       presents: "ReThink proudly presents",
       heroLeadA: "Với chủ đề ",
       heroTheme: "“The Firsts — Người Tiên Phong”",
       heroLeadB:
         ", ReThink mang đến những câu chuyện truyền cảm hứng từ các chuyên gia hàng đầu về những khoảnh khắc tiên phong đã tạo nên giá trị đột phá và mở ra chân trời mới bất chấp thử thách.",
-      heroBtn1: "Khám phá hai mùa TEDx",
+      heroBtn1: "Khám phá các mùa TEDx",
       heroBtn2: "Đồng hành cùng BTC mùa tới →",
       stats: [
         ["7", "Diễn giả xuất sắc từ nhiều lĩnh vực"],
@@ -254,7 +254,9 @@ export const dict = {
         ["28", "Đại sứ truyền thông"],
       ] as [string, string][],
 
-      seasonsKicker: "Hai mùa · Một hành trình",
+      seasonsKicker: "Bốn mùa · Một hành trình",
+      pastKicker: "Các mùa trước",
+      pastNote: "Nội dung đang được cập nhật",
       seasonsHeading: "Chọn mùa TEDx của bạn",
       s1Badge: "Mùa 2025 · Đã diễn ra",
       s1Desc:
@@ -262,14 +264,14 @@ export const dict = {
       s1Cue: "Cuộn xuống để khám phá ↓",
       s2Badge: "Mùa 2026 · Mới",
       s2Desc:
-        "Thập kỷ không giới hạn — mùa TEDxVinUniversity tiếp theo đã khởi động. Khám phá chủ đề, diễn giả và đặt chỗ trên website chính thức của mùa mới.",
+        "Thập kỷ không giới hạn — mùa TEDx VinUniversity tiếp theo đã khởi động. Khám phá chủ đề, diễn giả và đặt chỗ trên website chính thức của mùa mới.",
       s2Cue: "Mở website chính thức ↗",
 
       behindKicker: "Behind the stage",
       behindHeading1: "ReThink đứng sau",
       behindHeading2: "sân khấu đỏ",
       behindP1:
-        "TEDxVinUniversity là sự kiện chia sẻ ý tưởng lớn nhất tại VinUniversity, được tổ chức và vận hành hoàn toàn bởi đội ngũ ReThink — từ tuyển chọn diễn giả, xây dựng nội dung, thiết kế trải nghiệm, đến vận hành đêm sự kiện.",
+        "TEDx VinUniversity là sự kiện chia sẻ ý tưởng lớn nhất tại VinUniversity, được tổ chức và vận hành hoàn toàn bởi đội ngũ ReThink — từ tuyển chọn diễn giả, xây dựng nội dung, thiết kế trải nghiệm, đến vận hành đêm sự kiện.",
       behindP2: [
         "Hơn ",
         "60 thành viên",
@@ -281,15 +283,15 @@ export const dict = {
         "28 đại sứ",
         " và được ",
         "VnEconomy",
-        " đưa tin. TEDxVinUniversity nhận về những phản hồi tích cực và để lại trải nghiệm đáng nhớ cho cả người tổ chức lẫn người tham dự.",
+        " đưa tin. TEDx VinUniversity nhận về những phản hồi tích cực và để lại trải nghiệm đáng nhớ cho cả người tổ chức lẫn người tham dự.",
       ],
       testimonial:
         "“Huge congratulations! Such an amazing and inspiring event! Well done guys!”",
-      testimonialBy: "— Khán giả TEDxVinUniversity 2025",
+      testimonialBy: "— Khán giả TEDx VinUniversity 2025",
       seasonLink: "Mùa 2026 — Limitless Decade: website chính thức ↗",
       gallery: [
-        "Toàn cảnh sân khấu TEDxVinUniversity — The Firsts",
-        "Các diễn giả TEDxVinUniversity nhận hoa",
+        "Toàn cảnh sân khấu TEDx VinUniversity — The Firsts",
+        "Các diễn giả TEDx VinUniversity nhận hoa",
         "Khách mời trên thảm đỏ TEDx",
         "Đội ngũ tổ chức trên sân khấu The Firsts",
         "Chuyên gia trao đổi cùng sinh viên",
@@ -317,7 +319,9 @@ export const dict = {
       leadE: ".",
       btnForm: "Điền form ứng tuyển",
       btnFb: "Facebook ReThink",
-      deadline: "Deadline: 22/09",
+      period: "Thời gian tuyển thành viên: 20/09/2026 – 30/09/2026",
+      periodNote:
+        "Lưu ý: Đơn đăng ký có thể đóng sớm khi chúng mình đã tuyển đủ số lượng thành viên.",
       altGen: "ReThink Gen mới",
       altBalcony: "Thành viên ReThink",
       posKicker: "6 vị trí đang mở",
@@ -341,7 +345,7 @@ export const dict = {
   en: {
     nav: {
       about: "About ReThink",
-      tedx: "TEDxVinUniversity",
+      tedx: "TEDx VinUniversity",
       join: "Join Gen 5",
       menu: "Open menu",
       seasonFirsts: "2025 season — ReThink's own story",
@@ -355,10 +359,10 @@ export const dict = {
       exploreHead: "Explore",
       connectHead: "Connect",
       about: "About ReThink",
-      tedx: "TEDxVinUniversity",
+      tedx: "TEDx VinUniversity",
       join: "Join Gen 5",
       fb: "Facebook — ReThink",
-      tedxSite: "TEDxVinUniversity site",
+      tedxSite: "TEDx VinUniversity site",
       address: "VinUniversity, Gia Lam, Hanoi",
       rights: "ReThink — VinUniversity. Rethink & Let Rethink.",
     },
@@ -367,7 +371,7 @@ export const dict = {
       meta: {
         title: "ReThink — VinUniversity | Rethink & Let Rethink",
         description:
-          "ReThink — a student organisation at VinUni, running since 2022 and the team behind TEDxVinUniversity every year.",
+          "ReThink — a student organisation at VinUni, running since 2022 and the team behind TEDx VinUniversity every year.",
       },
       weAre: "We are…",
       since: "Since 2022 · VinUniversity",
@@ -385,7 +389,7 @@ export const dict = {
       whatP1c:
         ", running since 2022. We build spaces where young people can look at a familiar problem from several angles at once — through podcasts, writing contests, workshops and events built around sharing ideas.",
       whatP2a: "ReThink is also ",
-      whatP2b: "the team behind TEDxVinUniversity every year",
+      whatP2b: "the team behind TEDx VinUniversity every year",
       whatP2c:
         " — the largest idea-sharing event at VinUni, run end to end by students, from choosing the speakers to running the night itself.",
       whatP3a: "What sets ReThink apart is how we work: ",
@@ -470,19 +474,19 @@ export const dict = {
       meta: {
         title: "About ReThink",
         description:
-          "ReThink is a student organisation at VinUni, running since 2022 and the team behind TEDxVinUniversity every year — podcasts, writing contests, workshops and idea-sharing events.",
+          "ReThink is a student organisation at VinUni, running since 2022 and the team behind TEDx VinUniversity every year — podcasts, writing contests, workshops and idea-sharing events.",
       },
       heroKicker: "Rethink — Relearn — Reinvent",
       heroHeading: "What is ReThink?",
       heroLead:
-        "A student organisation at VinUni since 2022 — where a familiar problem gets looked at from several angles, and the team behind TEDxVinUniversity every year.",
+        "A student organisation at VinUni since 2022 — where a familiar problem gets looked at from several angles, and the team behind TEDx VinUniversity every year.",
       storyP1a: "ReThink is ",
       storyP1b: "a student organisation at VinUni",
       storyP1c:
         ", running since 2022. We build spaces where young people can look at a familiar problem from several angles, and carry those perspectives to the people who need to hear them.",
       storyP2a:
         "Concretely, ReThink makes content and events: the Reinventors podcast, the Rethink Reality writing contest, workshops and panels. Above all, ReThink is ",
-      storyP2b: "the team behind TEDxVinUniversity every year",
+      storyP2b: "the team behind TEDx VinUniversity every year",
       storyP2c:
         " — the largest idea-sharing event at VinUni, run end to end by students, from choosing speakers and building content to designing the experience and running the night.",
       storyP3a: "What sets ReThink apart is how we work: ",
@@ -541,16 +545,16 @@ export const dict = {
 
     tedx: {
       meta: {
-        title: "TEDxVinUniversity — The Firsts",
+        title: "TEDx VinUniversity — The Firsts",
         description:
-          "ReThink is the team behind TEDxVinUniversity — the largest idea-sharing event at VinUni, with 7 speakers, 500+ attendees and 19,000 social interactions.",
+          "ReThink is the team behind TEDx VinUniversity — the largest idea-sharing event at VinUni, with 7 speakers, 500+ attendees and 19,000 social interactions.",
       },
       presents: "ReThink proudly presents",
       heroLeadA: "Under the theme ",
       heroTheme: "“The Firsts”",
       heroLeadB:
         ", ReThink brought together stories from leading experts about the pioneering moments that created breakthrough value and opened new ground in spite of the odds.",
-      heroBtn1: "Explore both TEDx seasons",
+      heroBtn1: "Explore the TEDx seasons",
       heroBtn2: "Join the next organising team →",
       stats: [
         ["7", "Speakers across several fields"],
@@ -561,7 +565,9 @@ export const dict = {
         ["28", "Media ambassadors"],
       ] as [string, string][],
 
-      seasonsKicker: "Two seasons · One journey",
+      seasonsKicker: "Four seasons · One journey",
+      pastKicker: "Earlier seasons",
+      pastNote: "Details coming soon",
       seasonsHeading: "Pick your TEDx season",
       s1Badge: "2025 season · Past",
       s1Desc:
@@ -569,14 +575,14 @@ export const dict = {
       s1Cue: "Scroll to explore ↓",
       s2Badge: "2026 season · New",
       s2Desc:
-        "A decade without limits — the next TEDxVinUniversity season is under way. Explore the theme, the speakers and book a seat on the season's official site.",
+        "A decade without limits — the next TEDx VinUniversity season is under way. Explore the theme, the speakers and book a seat on the season's official site.",
       s2Cue: "Open the official site ↗",
 
       behindKicker: "Behind the stage",
       behindHeading1: "ReThink behind",
       behindHeading2: "the red stage",
       behindP1:
-        "TEDxVinUniversity is the largest idea-sharing event at VinUniversity, organised and run entirely by the ReThink team — from choosing speakers and building content to designing the experience and running the night.",
+        "TEDx VinUniversity is the largest idea-sharing event at VinUniversity, organised and run entirely by the ReThink team — from choosing speakers and building content to designing the experience and running the night.",
       behindP2: [
         "More than ",
         "60 members",
@@ -588,15 +594,15 @@ export const dict = {
         "28 ambassadors",
         ", and the event was covered by ",
         "VnEconomy",
-        ". TEDxVinUniversity drew warm feedback and left a memorable experience for organisers and attendees alike.",
+        ". TEDx VinUniversity drew warm feedback and left a memorable experience for organisers and attendees alike.",
       ],
       testimonial:
         "“Huge congratulations! Such an amazing and inspiring event! Well done guys!”",
-      testimonialBy: "— A TEDxVinUniversity 2025 attendee",
+      testimonialBy: "— A TEDx VinUniversity 2025 attendee",
       seasonLink: "2026 — Limitless Decade: official site ↗",
       gallery: [
-        "The TEDxVinUniversity stage — The Firsts",
-        "TEDxVinUniversity speakers receiving flowers",
+        "The TEDx VinUniversity stage — The Firsts",
+        "TEDx VinUniversity speakers receiving flowers",
         "Guests on the TEDx red carpet",
         "The organising team on The Firsts stage",
         "An expert talking with students",
@@ -624,7 +630,9 @@ export const dict = {
       leadE: ".",
       btnForm: "Fill in the application",
       btnFb: "ReThink on Facebook",
-      deadline: "Deadline: 22/09",
+      period: "Recruitment period: September 20–30, 2026",
+      periodNote:
+        "Note: Applications may close early once all available positions have been filled.",
       altGen: "The new ReThink generation",
       altBalcony: "A ReThink member",
       posKicker: "Six positions open",

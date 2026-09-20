@@ -19,7 +19,7 @@ const POSITIONS = [
 const FB = "https://www.facebook.com/rethink.vinuni";
 /** Gen 5 application form, linked straight to the form rather than through
  *  the bit.ly short link that used to front it. */
-const FORM = "https://forms.gle/bgyTUMDkzGFdvGuWA";
+const FORM = "https://forms.gle/U6h51p5iVZwYFhoX6";
 
 export function JoinPage({ locale }: { locale: Locale }) {
   const t = dict[locale].join;

@@ -76,22 +76,35 @@ export const dict = {
       whatKicker: "Về chúng mình",
       whatHeading: "What is ReThink?",
       whatP1a: "ReThink là ",
-      whatP1b: "tổ chức sinh viên của VinUni",
+      whatP1b: "tổ chức do sinh viên VinUni thành lập",
       whatP1c:
-        ", hoạt động từ năm 2022. Chúng mình tạo ra những không gian để người trẻ nhìn lại một vấn đề quen thuộc từ nhiều góc khác nhau — qua podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý tưởng.",
+        ", bước vào hoạt động từ năm 2022. Chúng mình tạo ra không gian để những người trẻ nhìn lại một vấn đề quen thuộc từ nhiều lăng kính khác nhau — qua podcast, cuộc thi viết, workshop và các sự kiện chia sẻ ý tưởng.",
       whatP2a: "ReThink cũng là ",
-      whatP2b: "đơn vị tổ chức TEDx VinUniversity thường niên",
+      whatP2b: "đơn vị độc quyền tổ chức TEDx VinUniversity",
       whatP2c:
-        " — sự kiện lan toả ý tưởng lớn nhất tại VinUni, do sinh viên vận hành trọn vẹn từ khâu tuyển chọn diễn giả tới đêm sự kiện.",
-      whatP3a: "Điều làm ReThink khác biệt nằm ở cách làm: ",
-      whatP3b: "mọi hoạt động đều bắt đầu từ nội dung.",
+        " — sự kiện thường niên lan toả ý tưởng lớn (ideas worth spreading) tại VinUni, do sinh viên vận hành trọn vẹn từ khâu tuyển chọn diễn giả tới đêm sự kiện.",
+      whatP3a:
+        "Nhìn lại 4 năm hoạt động, niềm tự hào lớn nhất của ReThink không chỉ nằm ở những con số nổi bật, mà chính ở ",
+      whatP3b: "yếu tố con người, một cộng đồng tài giỏi và đáng tin cậy",
       whatP3c:
-        " Một câu hỏi được nghiên cứu kỹ, một narrative được xây rõ ràng — rồi mới tới sân khấu, bài viết hay chiến dịch truyền thông.",
+        ". Tụi mình luôn tin rằng một tổ chức chỉ thực sự phát triển bền vững khi từng cá nhân được trao cơ hội cống hiến và tìm thấy một chốn thuộc về. Bước sang năm thứ 5 hoạt động, ReThink tiếp tục bồi đắp và lan toả những giá trị văn hoá cốt lõi sau:",
+      /* the three culture names are brand phrases — verbatim in both locales */
       bullets: [
-        ["Chạm vào những ", "thế giới tư duy khác biệt", ""],
-        ["Rèn luyện ", "thói quen rethink", " mỗi ngày"],
-        ["Kết nối với ", "những người cùng tư duy", " trong cộng đồng ReThink"],
-        ["Tiếp cận ", "nguồn lực & mạng lưới", " để tạo tác động thật lên xã hội"],
+        [
+          "",
+          "Championship Culture",
+          ": tinh thần chịu trách nhiệm trọn vẹn với công việc, từ đầu đến cuối.",
+        ],
+        [
+          "",
+          "Fellowship Culture",
+          ": chúng mình cùng nhau làm việc, cùng nhau phát triển, sẵn sàng giúp đỡ và hỗ trợ lẫn nhau.",
+        ],
+        [
+          "",
+          "Breakership Culture",
+          ": chúng mình không mặc định đi theo lối mòn — chúng mình đặt câu hỏi, nhìn nhận lại và không ngừng cải tiến.",
+        ],
       ] as [string, string, string][],
       altCommunity: "Cộng đồng ReThink trên sân khấu",
       altTeam: "ReThinkers làm việc cùng nhau",
@@ -422,23 +435,35 @@ export const dict = {
 
       whatKicker: "About us",
       whatHeading: "What is ReThink?",
-      whatP1a: "ReThink is ",
-      whatP1b: "a student organisation at VinUni",
+      whatP1a: "ReThink is an ",
+      whatP1b: "organisation founded by VinUni students",
       whatP1c:
-        ", running since 2022. We build spaces where young people can look at a familiar problem from several angles at once — through podcasts, writing contests, workshops and events built around sharing ideas.",
-      whatP2a: "ReThink is also ",
-      whatP2b: "the team behind TEDx VinUniversity every year",
+        ", running since 2022. We create spaces where young people can look again at a familiar problem through different lenses — through podcasts, writing contests, workshops and events built around sharing ideas.",
+      whatP2a: "ReThink is also the ",
+      whatP2b: "sole organiser of TEDx VinUniversity",
       whatP2c:
-        " — the largest idea-sharing event at VinUni, run end to end by students, from choosing the speakers to running the night itself.",
-      whatP3a: "What sets ReThink apart is how we work: ",
-      whatP3b: "everything starts with the content.",
+        " — the annual event for ideas worth spreading at VinUni, run end to end by students, from choosing the speakers to the night itself.",
+      whatP3a:
+        "Looking back on four years, what ReThink is proudest of is not the headline numbers but ",
+      whatP3b: "its people — a community that is both capable and dependable",
       whatP3c:
-        " A question researched properly, a narrative built clearly — and only then the stage, the article or the campaign.",
+        ". We believe an organisation only grows sustainably when each person is given the chance to contribute and finds a place to belong. Entering its fifth year, ReThink keeps building and spreading these core cultural values:",
       bullets: [
-        ["Meet ", "genuinely different ways of thinking", ""],
-        ["Build the ", "habit of rethinking", " day to day"],
-        ["Find ", "people who think the way you do", " in the ReThink community"],
-        ["Reach the ", "resources and networks", " to make real social impact"],
+        [
+          "",
+          "Championship Culture",
+          ": owning the work completely, from the first step to the last.",
+        ],
+        [
+          "",
+          "Fellowship Culture",
+          ": we work together and grow together, ready to help and support one another.",
+        ],
+        [
+          "",
+          "Breakership Culture",
+          ": we don't default to the beaten path — we ask questions, look again and keep improving.",
+        ],
       ] as [string, string, string][],
       altCommunity: "The ReThink community on stage",
       altTeam: "ReThinkers working together",

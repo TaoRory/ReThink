@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* the Halloween event page brings its own world; all of it scoped to `.hlw` */
+@import "./halloween.css";
+
 @theme {
   /* ============================================================
      ReThink AY 26-27 — "Pendulum" KV

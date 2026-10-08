@@ -4,14 +4,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { Sparkle } from "./Sparkle";
-import { dict, localeFromPathname, localePath } from "@/lib/i18n";
+import { dict, localeFromPathname, localePath, stripLocale } from "@/lib/i18n";
 
 export function SiteFooter() {
-  const locale = localeFromPathname(usePathname());
+  const pathname = usePathname();
+  const locale = localeFromPathname(pathname);
   const t = dict[locale].footer;
+  const hlw = stripLocale(pathname).startsWith("/halloween");
 
   return (
-    <footer className="relative border-t border-white/8 bg-ink-950">
+    <footer
+      className={`relative border-t border-white/8 bg-ink-950 ${
+        hlw ? "hlw hlw-chrome" : ""
+      }`}
+    >
       <div className="mx-auto max-w-6xl px-5 py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
@@ -32,6 +38,11 @@ export function SiteFooter() {
               <li>
                 <Link className="hover:text-pearl-100" href={localePath(locale, "/about")}>
                   {t.about}
+                </Link>
+              </li>
+              <li>
+                <Link className="hover:text-pearl-100" href={localePath(locale, "/halloween")}>
+                  {t.halloween}
                 </Link>
               </li>
               <li>

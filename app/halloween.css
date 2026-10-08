@@ -1,0 +1,373 @@
+/* ============================================================
+   Halloween event theme — scoped entirely under `.hlw`.
+
+   This is a DIFFERENT world from the ReThink KV: no fuchsia/violet
+   spectrum, no neon tubing, no Newton's cradle. Pale blue moonlight and
+   pale pink haze over a deep night-water ground, vintage paper frames,
+   and a slow point-and-click stillness.
+
+   Nothing here leaks: every selector is prefixed `.hlw`, and the tokens are
+   declared on `.hlw` rather than in Tailwind's `@theme`, so the rest of the
+   site keeps its own palette untouched.
+
+   PERFORMANCE RULE for this file: looping animations may only touch
+   `transform` and `opacity`. No animated `filter`, `box-shadow`,
+   `text-shadow` or `background-position` — those re-rasterize every frame
+   and are what makes a page feel heavy.
+   ============================================================ */
+
+.hlw {
+  /* night water */
+  --hlw-ink: #080f16;
+  --hlw-ink-2: #0e1a24;
+  --hlw-ink-3: #162b38;
+  --hlw-ink-4: #1f3d4a;
+
+  /* pale blue — moonlight */
+  --hlw-blue: #9fd0e3;
+  --hlw-blue-soft: #cfe8f2;
+  --hlw-blue-deep: #4a7f99;
+
+  /* pale pink — the haze over the lake */
+  --hlw-pink: #f0b6cc;
+  --hlw-pink-soft: #fadbe6;
+  --hlw-pink-deep: #b8738f;
+
+  /* vintage paper, for frames and plaques */
+  --hlw-paper: #e6ddcd;
+  --hlw-paper-2: #cfc3ae;
+  --hlw-plum: #37243f;
+
+  font-family: var(--font-body-var), system-ui, sans-serif;
+}
+
+/* `.hlw` alone only carries the tokens, so the nav and footer can wear the
+   palette without inheriting the page's full-height ground. The ground itself
+   lives here, on the page wrapper only. */
+.hlw-page {
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(70rem 40rem at 50% -10%, rgba(159, 208, 227, 0.22), transparent 62%),
+    radial-gradient(60rem 36rem at 15% 40%, rgba(240, 182, 204, 0.14), transparent 60%),
+    radial-gradient(54rem 34rem at 88% 72%, rgba(159, 208, 227, 0.12), transparent 62%),
+    linear-gradient(to bottom, var(--hlw-ink) 0%, var(--hlw-ink-2) 45%, var(--hlw-ink) 100%);
+  color: var(--hlw-blue-soft);
+}
+
+/* vintage emulsion grain — static, painted once */
+.hlw-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.hlw-display {
+  font-family: var(--font-hlw), Georgia, "Times New Roman", serif;
+  font-weight: 300;
+}
+
+/* ---------- type ---------- */
+
+.hlw-title {
+  font-family: var(--font-hlw), Georgia, serif;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  color: var(--hlw-paper);
+  text-transform: uppercase;
+}
+
+.hlw-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--hlw-pink);
+}
+
+.hlw-rule {
+  display: inline-block;
+  height: 1px;
+  width: 2.5rem;
+  vertical-align: middle;
+  background: linear-gradient(to right, var(--hlw-pink), transparent);
+}
+
+/* ---------- vintage frame (the portrait wall) ---------- */
+
+.hlw-frame {
+  position: relative;
+  border: 1px solid rgba(230, 221, 205, 0.28);
+  border-radius: 2px;
+  background:
+    linear-gradient(160deg, rgba(159, 208, 227, 0.07), transparent 52%, rgba(240, 182, 204, 0.06)),
+    rgba(14, 26, 36, 0.72);
+  box-shadow:
+    inset 0 0 0 4px rgba(8, 15, 22, 0.75),
+    inset 0 0 0 5px rgba(230, 221, 205, 0.14),
+    0 18px 40px rgba(0, 0, 0, 0.45);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* the whole wall of portraits hangs very slightly off-true, like the game's */
+.hlw-frame:nth-child(odd) { transform: rotate(-0.5deg); }
+.hlw-frame:nth-child(even) { transform: rotate(0.45deg); }
+.hlw-frame:hover { transform: rotate(0deg) translateY(-4px); }
+
+/* brass plaque under a portrait */
+.hlw-plaque {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid rgba(230, 221, 205, 0.3);
+  background: rgba(230, 221, 205, 0.08);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--hlw-paper-2);
+}
+
+/* ---------- buttons ---------- */
+
+.hlw-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  border: 1px solid rgba(240, 182, 204, 0.5);
+  border-radius: 2px;
+  padding: 0.9rem 2.1rem;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--hlw-pink-soft);
+  background: rgba(240, 182, 204, 0.07);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hlw-btn:hover {
+  background: rgba(240, 182, 204, 0.16);
+  border-color: var(--hlw-pink);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.hlw-btn-ghost {
+  border-color: rgba(159, 208, 227, 0.4);
+  color: var(--hlw-blue-soft);
+  background: rgba(159, 208, 227, 0.05);
+}
+.hlw-btn-ghost:hover {
+  background: rgba(159, 208, 227, 0.14);
+  border-color: var(--hlw-blue);
+}
+
+/* ============================================================
+   The moving parts. Transform/opacity only — see the rule up top.
+   ============================================================ */
+
+/* --- bats crossing the night --- */
+.hlw-bat {
+  position: absolute;
+  /* silhouettes read as LIGHTER than this sky, not darker */
+  color: rgba(159, 208, 227, 0.4);
+  animation: hlw-bat-path 19s linear infinite;
+  will-change: transform;
+}
+.hlw-bat-2 { animation-duration: 25s; animation-delay: -7s; }
+.hlw-bat-3 { animation-duration: 15s; animation-delay: -12s; }
+
+@keyframes hlw-bat-path {
+  0%   { transform: translate(-12vw, 0) scale(0.7); }
+  25%  { transform: translate(18vw, -5vh) scale(0.95); }
+  50%  { transform: translate(48vw, 3vh) scale(0.75); }
+  75%  { transform: translate(80vw, -7vh) scale(1); }
+  100% { transform: translate(112vw, 0) scale(0.7); }
+}
+
+/* wings beat about five times a second */
+.hlw-wing {
+  transform-origin: 50% 50%;
+  animation: hlw-flap 0.22s ease-in-out infinite alternate;
+}
+@keyframes hlw-flap {
+  from { transform: scaleY(0.55) translateY(2px); }
+  to   { transform: scaleY(1.1) translateY(-1px); }
+}
+
+/* --- a ghost that never quite settles --- */
+.hlw-ghost {
+  animation: hlw-drift 7.5s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes hlw-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1.5deg); }
+  50%      { transform: translate3d(10px, -16px, 0) rotate(1.5deg); }
+}
+.hlw-ghost-tail { animation: hlw-tail 3.2s ease-in-out infinite; transform-origin: 50% 0; }
+@keyframes hlw-tail {
+  0%, 100% { transform: skewX(0deg); }
+  50%      { transform: skewX(6deg); }
+}
+
+/* --- candle flame --- */
+.hlw-flame {
+  transform-origin: 50% 100%;
+  animation: hlw-flicker 1.7s ease-in-out infinite;
+}
+@keyframes hlw-flicker {
+  0%, 100% { transform: scale(1) rotate(-1deg); opacity: 0.95; }
+  30%      { transform: scale(0.9, 1.12) rotate(2deg); opacity: 0.75; }
+  55%      { transform: scale(1.06, 0.94) rotate(-2deg); opacity: 1; }
+  80%      { transform: scale(0.95, 1.05) rotate(1deg); opacity: 0.85; }
+}
+
+/* --- fog banks: pre-blurred gradients that only slide --- */
+.hlw-fog {
+  position: absolute;
+  left: -50%;
+  width: 200%;
+  height: 16rem;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgba(207, 232, 242, 0.14),
+    rgba(240, 182, 204, 0.06) 55%,
+    transparent 78%
+  );
+  animation: hlw-fog-drift 38s linear infinite;
+  will-change: transform;
+}
+.hlw-fog-2 {
+  animation-duration: 58s;
+  animation-direction: reverse;
+  opacity: 0.7;
+}
+@keyframes hlw-fog-drift {
+  from { transform: translateX(-8%); }
+  to   { transform: translateX(8%); }
+}
+
+/* --- the lake surface --- */
+.hlw-ripple { animation: hlw-ripple-slide 11s ease-in-out infinite alternate; }
+.hlw-ripple-2 { animation-duration: 17s; animation-delay: -4s; }
+@keyframes hlw-ripple-slide {
+  from { transform: translateX(-14px); }
+  to   { transform: translateX(14px); }
+}
+
+/* --- a hanging lantern on its hook --- */
+.hlw-sway {
+  transform-origin: 50% 0;
+  animation: hlw-sway-arc 5.4s ease-in-out infinite;
+}
+@keyframes hlw-sway-arc {
+  0%, 100% { transform: rotate(-2.6deg); }
+  50%      { transform: rotate(2.6deg); }
+}
+
+/* --- a spider that drops in when you look at its card --- */
+.hlw-spider {
+  position: absolute;
+  top: 0;
+  right: 1.75rem;
+  transform: translateY(-110%);
+  transition: transform 0.75s cubic-bezier(0.34, 1.26, 0.64, 1);
+  pointer-events: none;
+}
+.hlw-card:hover .hlw-spider { transform: translateY(-6%); }
+.hlw-spider-body { animation: hlw-spider-bob 1.9s ease-in-out infinite; }
+@keyframes hlw-spider-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+
+/* --- eyes blinking in the dark --- */
+.hlw-eyes { animation: hlw-blink 6.5s steps(1, end) infinite; }
+@keyframes hlw-blink {
+  0%, 92%, 96%, 100% { opacity: 0.85; }
+  94% { opacity: 0; }
+}
+
+/* --- the moon, and its reflection --- */
+.hlw-moon-glow {
+  animation: hlw-breathe 9s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes hlw-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50%      { transform: scale(1.06); opacity: 0.75; }
+}
+
+/* --- cards lift on hover --- */
+.hlw-card {
+  position: relative;
+  /* clips the spider out of sight until it drops in on hover */
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.45s ease;
+}
+.hlw-card:hover { transform: translateY(-5px); }
+
+/* ---------- the site chrome, wearing the event's colours ---------- */
+
+.hlw-chrome {
+  border-color: rgba(159, 208, 227, 0.16) !important;
+  background: rgba(8, 15, 22, 0.88) !important;
+}
+.hlw-chrome a,
+.hlw-chrome button,
+.hlw-chrome span,
+.hlw-chrome p,
+.hlw-chrome h3,
+.hlw-chrome li {
+  color: var(--hlw-blue-soft);
+}
+.hlw-chrome .text-neon {
+  color: #fff;
+  text-shadow:
+    0 0 1px rgba(255, 255, 255, 0.9),
+    0 0 8px rgba(207, 232, 242, 0.55),
+    0 0 22px rgba(240, 182, 204, 0.45);
+}
+.hlw-chrome .text-cyan-300,
+.hlw-chrome .text-cyan-400,
+.hlw-chrome .text-cyan-400\/70,
+.hlw-chrome .text-cyan-300\/70 {
+  color: var(--hlw-pink) !important;
+}
+
+@media (max-width: 768px) {
+  .hlw-bat-3 { display: none; }
+  .hlw-fog { height: 11rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hlw-bat,
+  .hlw-wing,
+  .hlw-ghost,
+  .hlw-ghost-tail,
+  .hlw-flame,
+  .hlw-fog,
+  .hlw-ripple,
+  .hlw-sway,
+  .hlw-spider-body,
+  .hlw-eyes,
+  .hlw-moon-glow {
+    animation: none !important;
+  }
+  .hlw-frame,
+  .hlw-frame:hover,
+  .hlw-card,
+  .hlw-card:hover,
+  .hlw-spider {
+    transform: none !important;
+    transition: none !important;
+  }
+}

@@ -18,6 +18,10 @@ export function SiteNav() {
   const [open, setOpen] = useState(false);
   const [tedxOpen, setTedxOpen] = useState(false);
 
+  // the event page has its own palette; the chrome follows it rather than
+  // floating above it in ReThink's fuchsia
+  const hlw = bare.startsWith("/halloween");
+
   const linkCls = (active: boolean) =>
     `text-[13px] font-medium tracking-[0.14em] uppercase transition-colors ${
       active ? "text-cyan-300" : "text-pearl-100/70 hover:text-pearl-100"
@@ -54,7 +58,11 @@ export function SiteNav() {
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-ink-950/85 backdrop-blur-md md:bg-ink-950/78 md:backdrop-blur-xl">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-ink-950/85 backdrop-blur-md md:bg-ink-950/78 md:backdrop-blur-xl ${
+        hlw ? "hlw hlw-chrome" : ""
+      }`}
+    >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Logo chrome className="text-lg" />
 
@@ -64,6 +72,13 @@ export function SiteNav() {
             className={linkCls(bare.startsWith("/about"))}
           >
             {t.about}
+          </Link>
+
+          <Link
+            href={localePath(locale, "/halloween")}
+            className={linkCls(bare.startsWith("/halloween"))}
+          >
+            {t.halloween}
           </Link>
 
           {/* TEDx dropdown */}
@@ -142,6 +157,14 @@ export function SiteNav() {
             className="block py-3 text-sm font-medium tracking-[0.14em] uppercase text-pearl-100/80"
           >
             {t.about}
+          </Link>
+
+          <Link
+            href={localePath(locale, "/halloween")}
+            onClick={() => setOpen(false)}
+            className="block py-3 text-sm font-medium tracking-[0.14em] uppercase text-pearl-100/80"
+          >
+            {t.halloween}
           </Link>
 
           <button

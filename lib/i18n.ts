@@ -34,6 +34,7 @@ export const dict = {
   vi: {
     nav: {
       about: "Về ReThink",
+      halloween: "Halloween 2026",
       tedx: "TEDx VinUniversity",
       join: "Gia nhập Gen 5",
       menu: "Mở menu",
@@ -51,6 +52,7 @@ export const dict = {
       about: "Về ReThink",
       tedx: "TEDx VinUniversity",
       join: "Tuyển thành viên Gen 5",
+      halloween: "Halloween 2026 — Pale Lake",
       game: "Game — Club Fair",
       fb: "Facebook — ReThink",
       tedxSite: "Website TEDx VinUniversity",
@@ -387,6 +389,88 @@ export const dict = {
         "Đó cũng là cách ReThink làm việc: lấy một điều quen thuộc, lật nó lại, rồi kể thành một câu chuyện đáng nghe. Gen 5 đang mở đơn.",
       ctaBtn: "Gia nhập Gen 5",
     },
+    /* ----------------------------------------------------------------
+       Halloween event. PLACEHOLDER COPY — every string below is a stand-in
+       written to show the layout working; it gets replaced from the real
+       event brief. The event name "Pale Lake" is invented too.
+       ---------------------------------------------------------------- */
+    halloween: {
+      meta: {
+        title: "Halloween 2026 — Pale Lake",
+        description:
+          "Pale Lake — đêm Halloween 2026 của ReThink tại VinUniversity. Bốn căn phòng, một căn nhà bên hồ, và một câu chuyện chưa ai kể hết.",
+      },
+      draftNote: "Nội dung mẫu — đang chờ bản chính thức",
+      kicker: "Halloween 2026 · VinUniversity",
+      eventName: "Pale Lake",
+      tagline:
+        "Một đêm bên hồ. Mọi cánh cửa trong căn nhà đều mở — trừ một cánh.",
+      whenLabel: "Thời gian",
+      when: "Thứ Sáu, 30/10/2026 · 18:00 – 22:00",
+      whereLabel: "Địa điểm",
+      where: "Sảnh chính — VinUniversity, Gia Lâm, Hà Nội",
+      ctaJoin: "Đăng ký tham gia",
+      ctaRooms: "Xem các căn phòng",
+
+      storyKicker: "Câu chuyện",
+      storyHeading: "The House by the Lake",
+      storyP1:
+        "Cứ cuối tháng Mười, căn nhà bên hồ lại sáng đèn. Không ai nhớ ai là người thắp ngọn đầu tiên — chỉ biết đèn sẽ tắt đúng lúc người khách cuối cùng bước ra khỏi cửa.",
+      storyP2:
+        "Đêm nay căn nhà mở cho tất cả. Mỗi căn phòng giữ một mẩu ký ức của chủ nhà; ghép đủ bốn mẩu, bạn sẽ biết chuyện gì đã xảy ra ở đây.",
+
+      roomsKicker: "Bốn căn phòng",
+      roomsHeading: "The Rooms",
+      roomsLead:
+        "Mỗi phòng là một trạm trò chơi riêng, có người dẫn và có vật chứng để mang đi. Hoàn thành cả bốn để mở được căn phòng thứ năm.",
+      roomNames: [
+        "Phòng Soi Gương",
+        "Căn Bếp Cũ",
+        "Hành Lang Chân Dung",
+        "Bến Thuyền",
+      ],
+      roomDescs: [
+        "Tấm gương trong phòng không phản chiếu đúng thứ đứng trước nó. Hãy tìm ra điểm sai trước khi nó tìm ra bạn.",
+        "Công thức để trên bàn còn thiếu một nguyên liệu. Thứ còn thiếu ấy không nằm trong bếp.",
+        "Mười hai bức chân dung, mười hai gương mặt không ai nhận ra. Một trong số đó vừa chớp mắt.",
+        "Chiếc thuyền vẫn buộc ở đó từ mùa trước. Người chèo nó đi thì chưa quay lại.",
+      ],
+      roomTags: ["Puzzle", "Workshop", "Photo", "Live game"],
+
+      scheduleKicker: "Trình tự đêm diễn",
+      scheduleHeading: "The Night",
+      scheduleTitles: [
+        "Mở cửa & nhận vật chứng",
+        "Bốn căn phòng mở cùng lúc",
+        "Căn phòng thứ năm",
+        "Đóng cửa",
+      ],
+      scheduleDescs: [
+        "Nhận thẻ khách và tấm bản đồ căn nhà. Trang phục hoá trang được khuyến khích, không bắt buộc.",
+        "Tự do di chuyển giữa các phòng, không cần theo thứ tự. Mỗi phòng khoảng 20 phút.",
+        "Chỉ mở cho những ai đã có đủ bốn vật chứng. Lời giải được công bố tại đây.",
+        "Chụp ảnh tập thể bên hồ, trao giải cho ba bộ hoá trang được bình chọn nhiều nhất.",
+      ],
+
+      rulesKicker: "Trước khi vào",
+      rulesHeading: "House Rules",
+      ruleQs: [
+        "Có cần đăng ký trước không?",
+        "Có bắt buộc hoá trang không?",
+        "Sự kiện có đáng sợ không?",
+      ],
+      ruleAs: [
+        "Có. Số lượng khách mỗi khung giờ có hạn để các phòng không bị quá tải. Đăng ký miễn phí qua đường dẫn ở cuối trang.",
+        "Không bắt buộc, nhưng đêm này sinh ra là để hoá trang. Ba bộ được bình chọn nhiều nhất sẽ có giải.",
+        "Không có jumpscare, không có diễn viên đuổi theo bạn. Đây là một đêm kỳ lạ và chậm rãi, hợp với người thích giải đố hơn người thích bị doạ.",
+      ],
+
+      ctaHeading: "Cửa mở lúc 18:00",
+      ctaLead:
+        "Số chỗ mỗi khung giờ có hạn. Đăng ký trước để chắc chắn có một chỗ trong căn nhà.",
+      ctaBtn: "Đăng ký tham gia",
+      ctaNote: "Đường dẫn đăng ký sẽ được cập nhật.",
+    },
   },
 
   /* ================================================================= */
@@ -394,6 +478,7 @@ export const dict = {
   en: {
     nav: {
       about: "About ReThink",
+      halloween: "Halloween 2026",
       tedx: "TEDx VinUniversity",
       join: "Join Gen 5",
       menu: "Open menu",
@@ -411,6 +496,7 @@ export const dict = {
       about: "About ReThink",
       tedx: "TEDx VinUniversity",
       join: "Join Gen 5",
+      halloween: "Halloween 2026 — Pale Lake",
       game: "Game — Club Fair",
       fb: "Facebook — ReThink",
       tedxSite: "TEDx VinUniversity site",
@@ -744,6 +830,84 @@ export const dict = {
       ctaLead:
         "That is how ReThink works every day: take something familiar, turn it over, then tell it as a story worth hearing. Gen 5 applications are open.",
       ctaBtn: "Join Gen 5",
+    },
+    /* Halloween event — PLACEHOLDER COPY, see the Vietnamese block above. */
+    halloween: {
+      meta: {
+        title: "Halloween 2026 — Pale Lake",
+        description:
+          "Pale Lake — ReThink's Halloween 2026 night at VinUniversity. Four rooms, a house by the lake, and a story nobody has finished telling.",
+      },
+      draftNote: "Placeholder copy — final text to come",
+      kicker: "Halloween 2026 · VinUniversity",
+      eventName: "Pale Lake",
+      tagline:
+        "One night by the lake. Every door in the house is open — except one.",
+      whenLabel: "When",
+      when: "Friday 30 October 2026 · 18:00 – 22:00",
+      whereLabel: "Where",
+      where: "Main hall — VinUniversity, Gia Lam, Hanoi",
+      ctaJoin: "Reserve a place",
+      ctaRooms: "See the rooms",
+
+      storyKicker: "The story",
+      storyHeading: "The House by the Lake",
+      storyP1:
+        "Every year at the end of October, the house by the lake lights up. Nobody remembers who lit the first lamp — only that they go out the moment the last guest steps outside.",
+      storyP2:
+        "Tonight the house is open to everyone. Each room keeps a fragment of the owner's memory; collect all four and you will know what happened here.",
+
+      roomsKicker: "Four rooms",
+      roomsHeading: "The Rooms",
+      roomsLead:
+        "Each room is its own station, with a host and a piece of evidence to carry away. Finish all four and the fifth room opens.",
+      roomNames: [
+        "The Mirror Room",
+        "The Old Kitchen",
+        "The Portrait Hall",
+        "The Boathouse",
+      ],
+      roomDescs: [
+        "The mirror does not reflect quite what stands in front of it. Find what is wrong before it finds you.",
+        "The recipe on the table is missing one ingredient. What's missing is not in the kitchen.",
+        "Twelve portraits, twelve faces nobody recognises. One of them just blinked.",
+        "The boat has been tied there since last season. Whoever rowed it out has not come back.",
+      ],
+      roomTags: ["Puzzle", "Workshop", "Photo", "Live game"],
+
+      scheduleKicker: "Running order",
+      scheduleHeading: "The Night",
+      scheduleTitles: [
+        "Doors open & evidence issued",
+        "All four rooms open at once",
+        "The fifth room",
+        "Closing",
+      ],
+      scheduleDescs: [
+        "Pick up your guest card and a map of the house. Costumes encouraged, never required.",
+        "Move between rooms in any order, no queue. About 20 minutes each.",
+        "Opens only for guests holding all four pieces of evidence. The answer is given here.",
+        "Group photograph by the lake, and prizes for the three most-voted costumes.",
+      ],
+
+      rulesKicker: "Before you come",
+      rulesHeading: "House Rules",
+      ruleQs: [
+        "Do I need to register?",
+        "Are costumes compulsory?",
+        "Is it actually scary?",
+      ],
+      ruleAs: [
+        "Yes. Each time slot takes a limited number of guests so the rooms don't crowd. Registration is free, through the link at the bottom of this page.",
+        "Not compulsory — but this is the night for it. The three most-voted costumes win prizes.",
+        "No jumpscares, no actors chasing anyone. It is a strange, slow evening, better suited to people who like puzzles than to people who like being startled.",
+      ],
+
+      ctaHeading: "Doors open at 18:00",
+      ctaLead:
+        "Places per time slot are limited. Reserve ahead to be sure of a spot inside the house.",
+      ctaBtn: "Reserve a place",
+      ctaNote: "Registration link to follow.",
     },
   },
 } as const;

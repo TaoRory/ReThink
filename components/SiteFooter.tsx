@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
+import { HalloweenFooterDecor } from "./halloween/Chrome";
 import { Sparkle } from "./Sparkle";
 import { dict, localeFromPathname, localePath, stripLocale } from "@/lib/i18n";
 
@@ -18,7 +19,9 @@ export function SiteFooter() {
         hlw ? "hlw hlw-chrome" : ""
       }`}
     >
-      <div className="mx-auto max-w-6xl px-5 py-14">
+      {hlw && <HalloweenFooterDecor />}
+
+      <div className="relative z-10 mx-auto max-w-6xl px-5 py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Logo chrome season className="text-xl" />

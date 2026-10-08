@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "./Logo";
+import { HalloweenNavDecor } from "./halloween/Chrome";
 import { LangToggle } from "./LangToggle";
 import { dict, localeFromPathname, localePath, stripLocale } from "@/lib/i18n";
 
@@ -63,7 +64,9 @@ export function SiteNav() {
         hlw ? "hlw hlw-chrome" : ""
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+      {hlw && <HalloweenNavDecor />}
+
+      <div className="relative z-10 mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Logo chrome className="text-lg" />
 
         <nav className="hidden items-center gap-7 md:flex">

@@ -1,19 +1,19 @@
 /* ============================================================
-   Halloween event theme — scoped entirely under `.hlw`.
+   Halloween event theme — everything scoped under `.hlw`.
 
-   This is a DIFFERENT world from the ReThink KV: no fuchsia/violet
-   spectrum, no neon tubing, no Newton's cradle. Pale blue moonlight and
-   pale pink haze over a deep night-water ground, vintage paper frames,
-   and a slow point-and-click stillness.
+   A different world from the ReThink KV: pale pink and pale blue over night
+   water, vintage paper, a house you walk through rather than a stack of
+   cards. No fuchsia/violet spectrum, no neon tubing, no cradle.
 
-   Nothing here leaks: every selector is prefixed `.hlw`, and the tokens are
-   declared on `.hlw` rather than in Tailwind's `@theme`, so the rest of the
-   site keeps its own palette untouched.
+   Nothing leaks: every selector is prefixed `.hlw`, and the tokens live on
+   `.hlw` rather than Tailwind's `@theme`, so the rest of the site is
+   untouched. `.hlw` alone = palette (safe for the nav/footer);
+   `.hlw-page` = the full-height ground.
 
-   PERFORMANCE RULE for this file: looping animations may only touch
-   `transform` and `opacity`. No animated `filter`, `box-shadow`,
-   `text-shadow` or `background-position` — those re-rasterize every frame
-   and are what makes a page feel heavy.
+   PERFORMANCE RULE: looping animations may only touch `transform` and
+   `opacity`. No animated `filter`, `box-shadow`, `text-shadow` or
+   `background-position` — those re-rasterize every frame and are exactly
+   what made the old hero feel heavy. Static blur is fine; animated is not.
    ============================================================ */
 
 .hlw {
@@ -28,30 +28,30 @@
   --hlw-blue-soft: #cfe8f2;
   --hlw-blue-deep: #4a7f99;
 
-  /* pale pink — the haze over the lake */
-  --hlw-pink: #f0b6cc;
-  --hlw-pink-soft: #fadbe6;
+  /* pale pink — the haze, the lit windows, the signage */
+  --hlw-pink: #f3bcd2;
+  --hlw-pink-soft: #fbe0ea;
+  --hlw-pink-mid: #e493b4;
   --hlw-pink-deep: #b8738f;
 
-  /* vintage paper, for frames and plaques */
-  --hlw-paper: #e6ddcd;
-  --hlw-paper-2: #cfc3ae;
-  --hlw-plum: #37243f;
+  /* vintage paper */
+  --hlw-paper: #efe7d8;
+  --hlw-paper-2: #d2c6b1;
+  --hlw-plum: #3a2342;
 
   font-family: var(--font-body-var), system-ui, sans-serif;
 }
 
-/* `.hlw` alone only carries the tokens, so the nav and footer can wear the
-   palette without inheriting the page's full-height ground. The ground itself
-   lives here, on the page wrapper only. */
 .hlw-page {
   position: relative;
   min-height: 100vh;
+  overflow-x: clip;
   background:
-    radial-gradient(70rem 40rem at 50% -10%, rgba(159, 208, 227, 0.22), transparent 62%),
-    radial-gradient(60rem 36rem at 15% 40%, rgba(240, 182, 204, 0.14), transparent 60%),
-    radial-gradient(54rem 34rem at 88% 72%, rgba(159, 208, 227, 0.12), transparent 62%),
-    linear-gradient(to bottom, var(--hlw-ink) 0%, var(--hlw-ink-2) 45%, var(--hlw-ink) 100%);
+    radial-gradient(80rem 44rem at 72% -8%, rgba(243, 188, 210, 0.2), transparent 60%),
+    radial-gradient(64rem 40rem at 10% 22%, rgba(159, 208, 227, 0.16), transparent 62%),
+    radial-gradient(70rem 42rem at 88% 58%, rgba(243, 188, 210, 0.13), transparent 62%),
+    radial-gradient(60rem 38rem at 20% 86%, rgba(184, 115, 143, 0.14), transparent 64%),
+    linear-gradient(to bottom, #0a1420 0%, var(--hlw-ink-2) 38%, #11202c 68%, var(--hlw-ink) 100%);
   color: var(--hlw-blue-soft);
 }
 
@@ -62,30 +62,42 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.08;
+  opacity: 0.09;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
 }
+
+/* ---------- type ---------- */
 
 .hlw-display {
   font-family: var(--font-hlw), Georgia, "Times New Roman", serif;
   font-weight: 300;
 }
 
-/* ---------- type ---------- */
-
 .hlw-title {
   font-family: var(--font-hlw), Georgia, serif;
   font-weight: 300;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   color: var(--hlw-paper);
   text-transform: uppercase;
+}
+
+/* the big one: pink bleeds up through the letters from below */
+.hlw-hero-title {
+  font-family: var(--font-hlw), Georgia, serif;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: linear-gradient(177deg, var(--hlw-paper) 24%, var(--hlw-pink) 72%, var(--hlw-pink-mid) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .hlw-kicker {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.42em;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--hlw-pink);
 }
@@ -98,36 +110,82 @@
   background: linear-gradient(to right, var(--hlw-pink), transparent);
 }
 
-/* ---------- vintage frame (the portrait wall) ---------- */
+/* a rail of rotated caps running up the side of the hero */
+.hlw-vrail {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.5em;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--hlw-pink-deep);
+}
 
+/* ---------- surfaces ---------- */
+
+/* pale-pink damask wall — the portrait room's wallpaper */
+.hlw-wallpaper {
+  background-color: #14202b;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(243, 188, 210, 0.09) 0 2px, transparent 3px),
+    radial-gradient(circle at 0 0, rgba(243, 188, 210, 0.07) 0 2px, transparent 3px),
+    repeating-linear-gradient(45deg, rgba(243, 188, 210, 0.045) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(-45deg, rgba(159, 208, 227, 0.04) 0 1px, transparent 1px 22px),
+    linear-gradient(to bottom, rgba(184, 115, 143, 0.12), transparent 40%);
+  background-size: 44px 44px, 44px 44px, auto, auto, auto;
+}
+
+/* aged paper, for the letter and the plaques */
+.hlw-paper-card {
+  background:
+    radial-gradient(28rem 18rem at 18% 0%, rgba(255, 255, 255, 0.5), transparent 62%),
+    linear-gradient(160deg, var(--hlw-paper) 0%, #e2d7c3 58%, #cdbfa6 100%);
+  color: #2b2118;
+  box-shadow:
+    0 26px 50px rgba(0, 0, 0, 0.5),
+    inset 0 0 44px rgba(120, 90, 70, 0.18);
+}
+
+/* picture frame */
 .hlw-frame {
   position: relative;
-  border: 1px solid rgba(230, 221, 205, 0.28);
+  border: 1px solid rgba(239, 231, 216, 0.3);
   border-radius: 2px;
   background:
-    linear-gradient(160deg, rgba(159, 208, 227, 0.07), transparent 52%, rgba(240, 182, 204, 0.06)),
-    rgba(14, 26, 36, 0.72);
+    linear-gradient(160deg, rgba(243, 188, 210, 0.1), transparent 50%, rgba(159, 208, 227, 0.07)),
+    rgba(12, 24, 33, 0.82);
   box-shadow:
-    inset 0 0 0 4px rgba(8, 15, 22, 0.75),
-    inset 0 0 0 5px rgba(230, 221, 205, 0.14),
-    0 18px 40px rgba(0, 0, 0, 0.45);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    inset 0 0 0 4px rgba(8, 15, 22, 0.8),
+    inset 0 0 0 5px rgba(243, 188, 210, 0.18),
+    0 20px 44px rgba(0, 0, 0, 0.5);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease;
 }
-/* the whole wall of portraits hangs very slightly off-true, like the game's */
-.hlw-frame:nth-child(odd) { transform: rotate(-0.5deg); }
-.hlw-frame:nth-child(even) { transform: rotate(0.45deg); }
-.hlw-frame:hover { transform: rotate(0deg) translateY(-4px); }
+/* hovering straightens the picture, as if you nudged it */
+.hlw-frame:hover {
+  transform: rotate(0deg) translateY(-5px) !important;
+  box-shadow:
+    inset 0 0 0 4px rgba(8, 15, 22, 0.8),
+    inset 0 0 0 5px rgba(243, 188, 210, 0.42),
+    0 26px 54px rgba(0, 0, 0, 0.58);
+}
 
-/* brass plaque under a portrait */
+/* the wire each frame hangs from */
+.hlw-wire {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(243, 188, 210, 0.45));
+}
+
 .hlw-plaque {
   display: inline-block;
-  padding: 0.2rem 0.75rem;
-  border: 1px solid rgba(230, 221, 205, 0.3);
-  background: rgba(230, 221, 205, 0.08);
+  padding: 0.22rem 0.8rem;
+  border: 1px solid rgba(243, 188, 210, 0.42);
+  background: rgba(243, 188, 210, 0.1);
   font-size: 10px;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--hlw-paper-2);
+  color: var(--hlw-pink-soft);
 }
 
 /* ---------- buttons ---------- */
@@ -138,15 +196,15 @@
   align-items: center;
   justify-content: center;
   gap: 0.7rem;
-  border: 1px solid rgba(240, 182, 204, 0.5);
+  border: 1px solid rgba(243, 188, 210, 0.55);
   border-radius: 2px;
-  padding: 0.9rem 2.1rem;
+  padding: 0.95rem 2.2rem;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--hlw-pink-soft);
-  background: rgba(240, 182, 204, 0.07);
+  background: rgba(243, 188, 210, 0.1);
   transition:
     background-color 0.35s ease,
     color 0.35s ease,
@@ -154,45 +212,67 @@
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .hlw-btn:hover {
-  background: rgba(240, 182, 204, 0.16);
+  background: rgba(243, 188, 210, 0.22);
   border-color: var(--hlw-pink);
   color: #fff;
   transform: translateY(-2px);
 }
 .hlw-btn-ghost {
-  border-color: rgba(159, 208, 227, 0.4);
+  border-color: rgba(159, 208, 227, 0.45);
   color: var(--hlw-blue-soft);
-  background: rgba(159, 208, 227, 0.05);
+  background: rgba(159, 208, 227, 0.06);
 }
 .hlw-btn-ghost:hover {
-  background: rgba(159, 208, 227, 0.14);
+  background: rgba(159, 208, 227, 0.16);
   border-color: var(--hlw-blue);
 }
 
+/* ---------- dripping / slanted edges, instead of straight borders ---------- */
+
+.hlw-drip::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 16px;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at 12px -5px,
+    var(--hlw-drip-color, rgba(243, 188, 210, 0.45)) 11px,
+    transparent 12px
+  );
+  background-size: 34px 16px;
+  background-repeat: repeat-x;
+}
+
+.hlw-slant {
+  transform: rotate(-1.6deg) scaleX(1.06);
+}
+
 /* ============================================================
-   The moving parts. Transform/opacity only — see the rule up top.
+   Moving parts — transform/opacity only
    ============================================================ */
 
-/* --- bats crossing the night --- */
+/* --- bats --- */
 .hlw-bat {
   position: absolute;
-  /* silhouettes read as LIGHTER than this sky, not darker */
-  color: rgba(159, 208, 227, 0.4);
+  color: rgba(207, 232, 242, 0.42);
   animation: hlw-bat-path 19s linear infinite;
   will-change: transform;
 }
-.hlw-bat-2 { animation-duration: 25s; animation-delay: -7s; }
+.hlw-bat-2 { animation-duration: 26s; animation-delay: -7s; color: rgba(243, 188, 210, 0.42); }
 .hlw-bat-3 { animation-duration: 15s; animation-delay: -12s; }
+.hlw-bat-4 { animation-duration: 31s; animation-delay: -20s; color: rgba(243, 188, 210, 0.3); }
 
 @keyframes hlw-bat-path {
-  0%   { transform: translate(-12vw, 0) scale(0.7); }
-  25%  { transform: translate(18vw, -5vh) scale(0.95); }
-  50%  { transform: translate(48vw, 3vh) scale(0.75); }
-  75%  { transform: translate(80vw, -7vh) scale(1); }
-  100% { transform: translate(112vw, 0) scale(0.7); }
+  0%   { transform: translate(-14vw, 0) scale(0.7); }
+  25%  { transform: translate(18vw, -6vh) scale(0.95); }
+  50%  { transform: translate(48vw, 4vh) scale(0.75); }
+  75%  { transform: translate(80vw, -8vh) scale(1); }
+  100% { transform: translate(116vw, 0) scale(0.7); }
 }
 
-/* wings beat about five times a second */
 .hlw-wing {
   transform-origin: 50% 50%;
   animation: hlw-flap 0.22s ease-in-out infinite alternate;
@@ -202,14 +282,15 @@
   to   { transform: scaleY(1.1) translateY(-1px); }
 }
 
-/* --- a ghost that never quite settles --- */
+/* --- ghosts --- */
 .hlw-ghost {
   animation: hlw-drift 7.5s ease-in-out infinite;
   will-change: transform;
 }
+.hlw-ghost-slow { animation-duration: 11s; animation-delay: -3s; }
 @keyframes hlw-drift {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(-1.5deg); }
-  50%      { transform: translate3d(10px, -16px, 0) rotate(1.5deg); }
+  50%      { transform: translate3d(10px, -18px, 0) rotate(1.5deg); }
 }
 .hlw-ghost-tail { animation: hlw-tail 3.2s ease-in-out infinite; transform-origin: 50% 0; }
 @keyframes hlw-tail {
@@ -217,109 +298,207 @@
   50%      { transform: skewX(6deg); }
 }
 
-/* --- candle flame --- */
+/* --- flames --- */
 .hlw-flame {
   transform-origin: 50% 100%;
   animation: hlw-flicker 1.7s ease-in-out infinite;
 }
+.hlw-flame-b { animation-duration: 2.3s; animation-delay: -0.7s; }
+.hlw-flame-c { animation-duration: 1.35s; animation-delay: -1.1s; }
 @keyframes hlw-flicker {
   0%, 100% { transform: scale(1) rotate(-1deg); opacity: 0.95; }
-  30%      { transform: scale(0.9, 1.12) rotate(2deg); opacity: 0.75; }
-  55%      { transform: scale(1.06, 0.94) rotate(-2deg); opacity: 1; }
-  80%      { transform: scale(0.95, 1.05) rotate(1deg); opacity: 0.85; }
+  30%      { transform: scale(0.88, 1.14) rotate(2deg); opacity: 0.72; }
+  55%      { transform: scale(1.07, 0.93) rotate(-2deg); opacity: 1; }
+  80%      { transform: scale(0.95, 1.06) rotate(1deg); opacity: 0.85; }
 }
 
-/* --- fog banks: pre-blurred gradients that only slide --- */
+/* --- fog: pre-blurred gradients that only slide --- */
 .hlw-fog {
   position: absolute;
-  left: -50%;
-  width: 200%;
-  height: 16rem;
+  left: -55%;
+  width: 210%;
+  height: 18rem;
   pointer-events: none;
   background: radial-gradient(
     closest-side,
-    rgba(207, 232, 242, 0.14),
-    rgba(240, 182, 204, 0.06) 55%,
-    transparent 78%
+    rgba(243, 188, 210, 0.2),
+    rgba(207, 232, 242, 0.1) 52%,
+    transparent 76%
   );
-  animation: hlw-fog-drift 38s linear infinite;
+  animation: hlw-fog-drift 38s linear infinite alternate;
   will-change: transform;
 }
-.hlw-fog-2 {
-  animation-duration: 58s;
-  animation-direction: reverse;
-  opacity: 0.7;
+.hlw-fog-blue {
+  background: radial-gradient(
+    closest-side,
+    rgba(159, 208, 227, 0.18),
+    rgba(243, 188, 210, 0.07) 55%,
+    transparent 78%
+  );
+  animation-duration: 56s;
+  animation-direction: alternate-reverse;
 }
+.hlw-fog-low { height: 11rem; animation-duration: 46s; opacity: 0.8; }
 @keyframes hlw-fog-drift {
-  from { transform: translateX(-8%); }
-  to   { transform: translateX(8%); }
+  from { transform: translateX(-9%); }
+  to   { transform: translateX(9%); }
 }
 
-/* --- the lake surface --- */
+/* --- aurora over the lake, pink into blue --- */
+.hlw-aurora {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  height: 26rem;
+  pointer-events: none;
+  background:
+    radial-gradient(44rem 12rem at 30% 60%, rgba(243, 188, 210, 0.22), transparent 70%),
+    radial-gradient(38rem 10rem at 68% 40%, rgba(159, 208, 227, 0.18), transparent 72%);
+  animation: hlw-aurora-sway 24s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes hlw-aurora-sway {
+  from { transform: translateX(-4%) skewX(-4deg); }
+  to   { transform: translateX(4%) skewX(4deg); }
+}
+
+/* --- water --- */
 .hlw-ripple { animation: hlw-ripple-slide 11s ease-in-out infinite alternate; }
 .hlw-ripple-2 { animation-duration: 17s; animation-delay: -4s; }
 @keyframes hlw-ripple-slide {
-  from { transform: translateX(-14px); }
-  to   { transform: translateX(14px); }
+  from { transform: translateX(-16px); }
+  to   { transform: translateX(16px); }
 }
 
-/* --- a hanging lantern on its hook --- */
+/* the reflection of the far shore, wobbling on the surface */
+.hlw-reflection {
+  opacity: 0.2;
+  transform-origin: 50% 0;
+  animation: hlw-reflect 9s ease-in-out infinite alternate;
+}
+@keyframes hlw-reflect {
+  from { transform: scaleY(-1) skewX(-2.5deg); }
+  to   { transform: scaleY(-1) skewX(2.5deg); }
+}
+
+/* --- hanging things --- */
 .hlw-sway {
   transform-origin: 50% 0;
   animation: hlw-sway-arc 5.4s ease-in-out infinite;
 }
+.hlw-sway-slow { animation-duration: 8.2s; animation-delay: -2s; }
 @keyframes hlw-sway-arc {
   0%, 100% { transform: rotate(-2.6deg); }
   50%      { transform: rotate(2.6deg); }
 }
 
-/* --- a spider that drops in when you look at its card --- */
+/* --- spider drops into a card on hover --- */
 .hlw-spider {
   position: absolute;
   top: 0;
-  right: 1.75rem;
+  right: 1.6rem;
   transform: translateY(-110%);
   transition: transform 0.75s cubic-bezier(0.34, 1.26, 0.64, 1);
   pointer-events: none;
+  z-index: 5;
 }
-.hlw-card:hover .hlw-spider { transform: translateY(-6%); }
+.hlw-card:hover .hlw-spider,
+.hlw-frame:hover .hlw-spider { transform: translateY(-4%); }
 .hlw-spider-body { animation: hlw-spider-bob 1.9s ease-in-out infinite; }
 @keyframes hlw-spider-bob {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(3px); }
 }
 
-/* --- eyes blinking in the dark --- */
+/* --- eyes --- */
 .hlw-eyes { animation: hlw-blink 6.5s steps(1, end) infinite; }
+.hlw-eyes-b { animation-duration: 4.4s; animation-delay: -2s; }
 @keyframes hlw-blink {
-  0%, 92%, 96%, 100% { opacity: 0.85; }
+  0%, 92%, 96%, 100% { opacity: 0.9; }
   94% { opacity: 0; }
 }
 
-/* --- the moon, and its reflection --- */
+/* --- lit windows breathing --- */
+.hlw-window { animation: hlw-lamp 4.6s ease-in-out infinite; }
+.hlw-window-b { animation-duration: 6.9s; animation-delay: -1.4s; }
+.hlw-window-c { animation-duration: 3.7s; animation-delay: -2.6s; }
+@keyframes hlw-lamp {
+  0%, 100% { opacity: 0.75; }
+  45%      { opacity: 1; }
+  70%      { opacity: 0.58; }
+}
+
+/* --- the moon --- */
 .hlw-moon-glow {
   animation: hlw-breathe 9s ease-in-out infinite;
   will-change: transform;
 }
 @keyframes hlw-breathe {
-  0%, 100% { transform: scale(1); opacity: 0.55; }
-  50%      { transform: scale(1.06); opacity: 0.75; }
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.07); opacity: 0.82; }
 }
 
-/* --- cards lift on hover --- */
+/* --- cards --- */
 .hlw-card {
   position: relative;
-  /* clips the spider out of sight until it drops in on hover */
   overflow: hidden;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.45s ease;
 }
 .hlw-card:hover { transform: translateY(-5px); }
 
-/* ---------- the site chrome, wearing the event's colours ---------- */
+/* --- the marquee strip between acts --- */
+.hlw-ticker {
+  animation: hlw-ticker-run 34s linear infinite;
+  will-change: transform;
+}
+@keyframes hlw-ticker-run {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* --- doors that swing open on the FAQ --- */
+.hlw-door {
+  position: relative;
+  cursor: pointer;
+  list-style: none;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: 0% 50%;
+}
+.hlw-door::-webkit-details-marker { display: none; }
+.hlw-door:hover { transform: perspective(900px) rotateY(-9deg); }
+details[open] > .hlw-door { transform: perspective(900px) rotateY(-26deg); }
+.hlw-door-answer { animation: hlw-door-reveal 0.55s ease both; }
+@keyframes hlw-door-reveal {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- a drop falling off the dripping edge --- */
+.hlw-drop {
+  position: absolute;
+  width: 5px;
+  height: 7px;
+  border-radius: 0 0 50% 50%;
+  background: var(--hlw-pink);
+  opacity: 0;
+  animation: hlw-fall 6s ease-in infinite;
+}
+.hlw-drop-2 { animation-duration: 8.5s; animation-delay: -3s; }
+.hlw-drop-3 { animation-duration: 7.2s; animation-delay: -5s; }
+@keyframes hlw-fall {
+  0%, 62%  { transform: translateY(0) scaleY(0.6); opacity: 0; }
+  70%      { opacity: 0.9; }
+  100%     { transform: translateY(42px) scaleY(1.5); opacity: 0; }
+}
+
+/* ============================================================
+   The site chrome, while you are inside the event
+   ============================================================ */
 
 .hlw-chrome {
-  border-color: rgba(159, 208, 227, 0.16) !important;
-  background: rgba(8, 15, 22, 0.88) !important;
+  position: relative;
+  border-color: rgba(243, 188, 210, 0.22) !important;
+  background: linear-gradient(to bottom, rgba(10, 20, 32, 0.94), rgba(8, 15, 22, 0.88)) !important;
 }
 .hlw-chrome a,
 .hlw-chrome button,
@@ -333,8 +512,8 @@
   color: #fff;
   text-shadow:
     0 0 1px rgba(255, 255, 255, 0.9),
-    0 0 8px rgba(207, 232, 242, 0.55),
-    0 0 22px rgba(240, 182, 204, 0.45);
+    0 0 9px rgba(243, 188, 210, 0.6),
+    0 0 24px rgba(243, 188, 210, 0.45);
 }
 .hlw-chrome .text-cyan-300,
 .hlw-chrome .text-cyan-400,
@@ -342,32 +521,76 @@
 .hlw-chrome .text-cyan-300\/70 {
   color: var(--hlw-pink) !important;
 }
+/* the join pill borrows the event's border rather than the KV gradient */
+.hlw-chrome .btn-lux-primary {
+  background: rgba(243, 188, 210, 0.12) !important;
+  border: 1px solid rgba(243, 188, 210, 0.55) !important;
+  color: var(--hlw-pink-soft) !important;
+}
+
+/* cobwebs in the corners */
+.hlw-web {
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  color: rgba(243, 188, 210, 0.3);
+  z-index: 1;
+}
+.hlw-web-l { left: 0; }
+.hlw-web-r { right: 0; transform: scaleX(-1); }
+
+/* the header's dripping underside */
+.hlw-chrome-drip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 18px;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at 14px -6px,
+    rgba(243, 188, 210, 0.4) 12px,
+    transparent 13px
+  );
+  background-size: 38px 18px;
+  background-repeat: repeat-x;
+}
+
+/* a bat crossing the nav bar now and then */
+.hlw-nav-bat {
+  position: absolute;
+  top: 0.55rem;
+  left: 0;
+  color: rgba(243, 188, 210, 0.5);
+  animation: hlw-nav-bat-run 17s linear infinite;
+  will-change: transform;
+}
+@keyframes hlw-nav-bat-run {
+  0%   { transform: translateX(-8vw) translateY(0); }
+  18%  { transform: translateX(26vw) translateY(7px); }
+  38%  { transform: translateX(54vw) translateY(-5px); }
+  60%  { transform: translateX(84vw) translateY(6px); }
+  78%, 100% { transform: translateX(112vw) translateY(0); }
+}
 
 @media (max-width: 768px) {
-  .hlw-bat-3 { display: none; }
-  .hlw-fog { height: 11rem; }
+  .hlw-bat-3, .hlw-bat-4, .hlw-nav-bat { display: none; }
+  .hlw-fog { height: 12rem; }
+  .hlw-slant { transform: rotate(-1deg) scaleX(1.12); }
+  .hlw-door:hover, details[open] > .hlw-door { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hlw-bat,
-  .hlw-wing,
-  .hlw-ghost,
-  .hlw-ghost-tail,
-  .hlw-flame,
-  .hlw-fog,
-  .hlw-ripple,
-  .hlw-sway,
-  .hlw-spider-body,
-  .hlw-eyes,
-  .hlw-moon-glow {
+  .hlw-bat, .hlw-wing, .hlw-ghost, .hlw-ghost-tail, .hlw-flame, .hlw-fog,
+  .hlw-aurora, .hlw-ripple, .hlw-reflection, .hlw-sway, .hlw-spider-body,
+  .hlw-eyes, .hlw-window, .hlw-moon-glow, .hlw-ticker, .hlw-drop,
+  .hlw-nav-bat, .hlw-door-answer {
     animation: none !important;
   }
-  .hlw-frame,
-  .hlw-frame:hover,
-  .hlw-card,
-  .hlw-card:hover,
-  .hlw-spider {
+  .hlw-frame, .hlw-frame:hover, .hlw-card, .hlw-card:hover,
+  .hlw-spider, .hlw-door, .hlw-door:hover, details[open] > .hlw-door {
     transform: none !important;
     transition: none !important;
   }
+  .hlw-reflection { transform: scaleY(-1) !important; }
 }

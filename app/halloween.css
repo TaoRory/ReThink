@@ -1,43 +1,42 @@
 /* ============================================================
-   Halloween event theme — everything scoped under `.hlw`.
+   Halloween ReThink — event theme, scoped entirely under `.hlw`.
 
-   A different world from the ReThink KV: pale pink and pale blue over night
-   water, vintage paper, a house you walk through rather than a stack of
-   cards. No fuchsia/violet spectrum, no neon tubing, no cradle.
+   Source: ../KV/kv halloween - ReThink (designer KV, 15/10/2026).
+   An acid-green grass tunnel, moss cylinders, pixel-art masks, eyeballs,
+   blood, a compass, fireflies. Palette below is SAMPLED from the KV
+   pixels (scripts/optimize-kv.mjs --palette), not guessed.
 
-   Nothing leaks: every selector is prefixed `.hlw`, and the tokens live on
-   `.hlw` rather than Tailwind's `@theme`, so the rest of the site is
-   untouched. `.hlw` alone = palette (safe for the nav/footer);
-   `.hlw-page` = the full-height ground.
+   `.hlw`       = tokens only — the nav and footer borrow these.
+   `.hlw-page`  = the full-height ground. Never put layout on `.hlw`.
 
-   PERFORMANCE RULE: looping animations may only touch `transform` and
-   `opacity`. No animated `filter`, `box-shadow`, `text-shadow` or
-   `background-position` — those re-rasterize every frame and are exactly
-   what made the old hero feel heavy. Static blur is fine; animated is not.
+   PERFORMANCE RULE (enforced by `npm run check:hlw`): looping
+   animations may only touch `transform` and `opacity`.
    ============================================================ */
 
 .hlw {
-  /* night water */
-  --hlw-ink: #080f16;
-  --hlw-ink-2: #0e1a24;
-  --hlw-ink-3: #162b38;
-  --hlw-ink-4: #1f3d4a;
+  /* ground */
+  --hlw-ink: #0a0f04;          /* moss black — page ground */
+  --hlw-ink-2: #121a07;
+  --hlw-shadow: #140d05;       /* warm floor shadow (sampled) */
 
-  /* pale blue — moonlight */
-  --hlw-blue: #9fd0e3;
-  --hlw-blue-soft: #cfe8f2;
-  --hlw-blue-deep: #4a7f99;
+  /* grass & branches (sampled) */
+  --hlw-grass: #446402;
+  --hlw-grass-2: #3d5b03;
+  --hlw-arch: #2b3800;
+  --hlw-branch: #303b1e;
+  --hlw-branch-hi: #4a5a2a;
 
-  /* pale pink — the haze, the lit windows, the signage */
-  --hlw-pink: #f3bcd2;
-  --hlw-pink-soft: #fbe0ea;
-  --hlw-pink-mid: #e493b4;
-  --hlw-pink-deep: #b8738f;
+  /* light */
+  --hlw-script: #d1c91e;       /* the RETHINK script (sampled) */
+  --hlw-lime: #e6ec7a;
+  --hlw-firefly: #ffeacc;      /* firefly core (sampled) */
+  --hlw-compass: #d2913f;      /* the one warm light (sampled) */
 
-  /* vintage paper */
-  --hlw-paper: #efe7d8;
-  --hlw-paper-2: #d2c6b1;
-  --hlw-plum: #3a2342;
+  /* blood & bone */
+  --hlw-blood: #802e36;        /* sampled from Máu_ */
+  --hlw-blood-deep: #631c1a;   /* sampled from Trail Máu */
+  --hlw-bone: #ded9c4;
+  --hlw-bone-dim: #959981;     /* sampled, cat mask */
 
   font-family: var(--font-body-var), system-ui, sans-serif;
 }
@@ -46,409 +45,308 @@
   position: relative;
   min-height: 100vh;
   overflow-x: clip;
+  color: var(--hlw-bone);
   background:
-    radial-gradient(80rem 44rem at 72% -8%, rgba(243, 188, 210, 0.2), transparent 60%),
-    radial-gradient(64rem 40rem at 10% 22%, rgba(159, 208, 227, 0.16), transparent 62%),
-    radial-gradient(70rem 42rem at 88% 58%, rgba(243, 188, 210, 0.13), transparent 62%),
-    radial-gradient(60rem 38rem at 20% 86%, rgba(184, 115, 143, 0.14), transparent 64%),
-    linear-gradient(to bottom, #0a1420 0%, var(--hlw-ink-2) 38%, #11202c 68%, var(--hlw-ink) 100%);
-  color: var(--hlw-blue-soft);
+    radial-gradient(70rem 40rem at 50% 0%, rgba(68, 100, 2, 0.28), transparent 65%),
+    radial-gradient(60rem 40rem at 50% 100%, rgba(99, 28, 26, 0.18), transparent 65%),
+    linear-gradient(to bottom, var(--hlw-ink-2), var(--hlw-ink) 30%, var(--hlw-ink) 70%, var(--hlw-ink-2));
 }
 
-/* vintage emulsion grain — static, painted once */
-.hlw-page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.09;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
+/* grass texture behind a section, darkened so text stays readable */
+.hlw-grass {
+  position: relative;
+  background:
+    linear-gradient(to bottom, rgba(10, 15, 4, 0.82), rgba(10, 15, 4, 0.55) 40%, rgba(10, 15, 4, 0.86)),
+    url("/halloween/bg-co.webp") center / cover;
 }
 
 /* ---------- type ---------- */
 
-.hlw-display {
-  font-family: var(--font-hlw), Georgia, "Times New Roman", serif;
-  font-weight: 300;
+/* the hand-drawn script — temporary Google font until the designer's
+   transparent wordmark arrives. ASCII text only (no Vietnamese glyphs). */
+.hlw-script {
+  font-family: var(--font-hlw-script), "Comic Sans MS", cursive;
+  color: var(--hlw-script);
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 18px rgba(209, 201, 30, 0.35), 0 2px 0 rgba(0, 0, 0, 0.6);
 }
 
 .hlw-title {
-  font-family: var(--font-hlw), Georgia, serif;
-  font-weight: 300;
-  letter-spacing: 0.1em;
-  color: var(--hlw-paper);
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-/* the big one: pink bleeds up through the letters from below */
-.hlw-hero-title {
-  font-family: var(--font-hlw), Georgia, serif;
-  font-weight: 300;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: linear-gradient(177deg, var(--hlw-paper) 24%, var(--hlw-pink) 72%, var(--hlw-pink-mid) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--hlw-bone);
 }
 
 .hlw-kicker {
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.4em;
+  font-weight: 700;
+  letter-spacing: 0.38em;
   text-transform: uppercase;
-  color: var(--hlw-pink);
+  color: var(--hlw-script);
 }
 
 .hlw-rule {
   display: inline-block;
-  height: 1px;
+  height: 2px;
   width: 2.5rem;
   vertical-align: middle;
-  background: linear-gradient(to right, var(--hlw-pink), transparent);
+  background: linear-gradient(to right, var(--hlw-blood), transparent);
 }
 
-/* a rail of rotated caps running up the side of the hero */
-.hlw-vrail {
-  writing-mode: vertical-rl;
-  letter-spacing: 0.5em;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--hlw-pink-deep);
+/* pixel art must keep its hard edges */
+.hlw-pixel { image-rendering: pixelated; }
+
+/* ---------- KV cylinders: the branches, drawn in CSS ---------- */
+.hlw-branch {
+  position: absolute;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    #121a08 0%,
+    var(--hlw-branch-hi) 38%,
+    var(--hlw-branch) 58%,
+    #0d1306 100%
+  );
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
 }
 
 /* ---------- surfaces ---------- */
 
-/* pale-pink damask wall — the portrait room's wallpaper */
-.hlw-wallpaper {
-  background-color: #14202b;
-  background-image:
-    radial-gradient(circle at 50% 50%, rgba(243, 188, 210, 0.09) 0 2px, transparent 3px),
-    radial-gradient(circle at 0 0, rgba(243, 188, 210, 0.07) 0 2px, transparent 3px),
-    repeating-linear-gradient(45deg, rgba(243, 188, 210, 0.045) 0 1px, transparent 1px 22px),
-    repeating-linear-gradient(-45deg, rgba(159, 208, 227, 0.04) 0 1px, transparent 1px 22px),
-    linear-gradient(to bottom, rgba(184, 115, 143, 0.12), transparent 40%);
-  background-size: 44px 44px, 44px 44px, auto, auto, auto;
-}
-
-/* aged paper, for the letter and the plaques */
-.hlw-paper-card {
-  background:
-    radial-gradient(28rem 18rem at 18% 0%, rgba(255, 255, 255, 0.5), transparent 62%),
-    linear-gradient(160deg, var(--hlw-paper) 0%, #e2d7c3 58%, #cdbfa6 100%);
-  color: #2b2118;
-  box-shadow:
-    0 26px 50px rgba(0, 0, 0, 0.5),
-    inset 0 0 44px rgba(120, 90, 70, 0.18);
-}
-
-/* picture frame */
-.hlw-frame {
+.hlw-card {
   position: relative;
-  border: 1px solid rgba(239, 231, 216, 0.3);
-  border-radius: 2px;
-  background:
-    linear-gradient(160deg, rgba(243, 188, 210, 0.1), transparent 50%, rgba(159, 208, 227, 0.07)),
-    rgba(12, 24, 33, 0.82);
-  box-shadow:
-    inset 0 0 0 4px rgba(8, 15, 22, 0.8),
-    inset 0 0 0 5px rgba(243, 188, 210, 0.18),
-    0 20px 44px rgba(0, 0, 0, 0.5);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease;
+  border: 1px solid rgba(209, 201, 30, 0.22);
+  border-radius: 6px;
+  background: linear-gradient(160deg, rgba(68, 100, 2, 0.16), rgba(10, 15, 4, 0.85) 55%);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.45s ease;
 }
-/* hovering straightens the picture, as if you nudged it */
-.hlw-frame:hover {
-  transform: rotate(0deg) translateY(-5px) !important;
-  box-shadow:
-    inset 0 0 0 4px rgba(8, 15, 22, 0.8),
-    inset 0 0 0 5px rgba(243, 188, 210, 0.42),
-    0 26px 54px rgba(0, 0, 0, 0.58);
-}
-
-/* the wire each frame hangs from */
-.hlw-wire {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, rgba(243, 188, 210, 0.45));
-}
+.hlw-card:hover { transform: translateY(-5px); border-color: rgba(209, 201, 30, 0.5); }
 
 .hlw-plaque {
   display: inline-block;
-  padding: 0.22rem 0.8rem;
-  border: 1px solid rgba(243, 188, 210, 0.42);
-  background: rgba(243, 188, 210, 0.1);
+  padding: 0.22rem 0.75rem;
+  border: 1px solid rgba(128, 46, 54, 0.7);
+  background: rgba(128, 46, 54, 0.25);
   font-size: 10px;
+  font-weight: 700;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--hlw-pink-soft);
+  color: var(--hlw-bone);
 }
 
 /* ---------- buttons ---------- */
 
 .hlw-btn {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.7rem;
-  border: 1px solid rgba(243, 188, 210, 0.55);
-  border-radius: 2px;
+  border: 1px solid var(--hlw-script);
+  border-radius: 999px;
   padding: 0.95rem 2.2rem;
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.26em;
+  font-weight: 700;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--hlw-pink-soft);
-  background: rgba(243, 188, 210, 0.1);
-  transition:
-    background-color 0.35s ease,
-    color 0.35s ease,
-    border-color 0.35s ease,
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  color: #141405;
+  background: var(--hlw-script);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease;
 }
-.hlw-btn:hover {
-  background: rgba(243, 188, 210, 0.22);
-  border-color: var(--hlw-pink);
-  color: #fff;
-  transform: translateY(-2px);
-}
+.hlw-btn:hover { background: var(--hlw-lime); transform: translateY(-2px); }
 .hlw-btn-ghost {
-  border-color: rgba(159, 208, 227, 0.45);
-  color: var(--hlw-blue-soft);
-  background: rgba(159, 208, 227, 0.06);
+  color: var(--hlw-bone);
+  background: rgba(10, 15, 4, 0.55);
+  border-color: rgba(222, 217, 196, 0.45);
 }
-.hlw-btn-ghost:hover {
-  background: rgba(159, 208, 227, 0.16);
-  border-color: var(--hlw-blue);
+.hlw-btn-ghost:hover { background: rgba(68, 100, 2, 0.4); border-color: var(--hlw-bone); }
+
+/* ============================================================
+   HERO — the grass tunnel you scroll into
+   ============================================================ */
+
+/* the scroll track; the stage inside stays pinned while you scroll it */
+.hlw-tunnel {
+  --p: 0;
+  position: relative;
+  height: 260vh;
+}
+.hlw-tunnel-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 62%, rgba(68, 100, 2, 0.55), transparent 62%),
+    var(--hlw-ink);
 }
 
-/* ---------- dripping / slanted edges, instead of straight borders ---------- */
-
-.hlw-drip::after {
-  content: "";
+/* every arch: centred, standing on the floor, scaling toward the viewer.
+   --s = resting scale, --k = how fast this layer rushes past */
+.hlw-arch {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 16px;
-  pointer-events: none;
-  background-image: radial-gradient(
-    circle at 12px -5px,
-    var(--hlw-drip-color, rgba(243, 188, 210, 0.45)) 11px,
-    transparent 12px
-  );
-  background-size: 34px 16px;
-  background-repeat: repeat-x;
+  left: 50%;
+  bottom: -3%;
+  width: min(118vh, 128vw);
+  transform-origin: 50% 72%;
+  transform: translate3d(-50%, 0, 0) scale(calc(var(--s) * (1 + var(--p) * var(--k))));
+  will-change: transform;
+}
+/* the outer arches fade once they have flown past your shoulders */
+.hlw-arch-fade { opacity: calc(1 - clamp(0, (var(--p) - var(--f)) * 3.2, 1)); }
+
+/* the blood carpet on the floor: its narrow far edge ends at the girl's feet */
+.hlw-floor {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 15vh;
+  transform-origin: 50% 100%;
+  transform: translate3d(-50%, 0, 0) scale(calc(1 + var(--p) * 1.15));
+  opacity: 0.9;
+  will-change: transform;
 }
 
-.hlw-slant {
-  transform: rotate(-1.6deg) scaleX(1.06);
+/* the girl, deep in the tunnel, getting closer */
+.hlw-girl {
+  position: absolute;
+  left: 50%;
+  bottom: 13%;
+  height: 27vh;
+  transform-origin: 50% 100%;
+  transform: translate3d(-50%, 0, 0) scale(calc(1 + var(--p) * 1.15));
+  will-change: transform;
+}
+.hlw-girl img { height: 100%; width: auto; }
+/* her eyes light up the deeper you go. Two small points placed on the eyes
+   in the artwork (measured: left eye at 46.6% / 9.3% of nhan-vat.webp,
+   right eye ~53.9%) — a single band read as a glowing mask over her mouth. */
+.hlw-girl-eyes {
+  position: absolute;
+  inset: 0;
+  opacity: calc(0.3 + var(--p) * 1.1);
+}
+/* each eye is its own square, so the glow fades to nothing inside it
+   (one shared short box clipped the gradients into a hard-edged visor) */
+.hlw-girl-eyes i {
+  position: absolute;
+  top: 9.3%;
+  width: 9%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 246, 170, 0.95), rgba(209, 201, 30, 0.42) 45%, transparent);
+}
+.hlw-girl-eyes i:first-child { left: 46.6%; }
+.hlw-girl-eyes i:last-child { left: 53.9%; }
+
+/* the compass glowing on the floor */
+.hlw-floor-glow {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  width: 46vh;
+  height: 18vh;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(210, 145, 63, 0.55), rgba(128, 46, 54, 0.25) 55%, transparent);
+}
+
+/* the branch carrying the wordmark: the nearest thing to you, so it rushes
+   past first and is gone before the girl gets close */
+.hlw-wordbranch {
+  transform-origin: 32% 50%;
+  transform: rotate(-16deg) scale(calc(1 + var(--p) * 1.7));
+  opacity: calc(1 - clamp(0, (var(--p) - 0.12) * 2.6, 1));
+  will-change: transform;
+}
+
+/* copy over the tunnel; it steps aside as you walk in */
+.hlw-hero-copy {
+  opacity: calc(1 - var(--p) * 2.6);
+  transform: translate3d(0, calc(var(--p) * -80px), 0);
+}
+.hlw-hint {
+  opacity: calc(1 - var(--p) * 6);
 }
 
 /* ============================================================
    Moving parts — transform/opacity only
    ============================================================ */
 
-/* --- bats --- */
-.hlw-bat {
+/* fireflies: square pixel motes that drift and blink */
+.hlw-mote {
   position: absolute;
-  color: rgba(207, 232, 242, 0.42);
-  animation: hlw-bat-path 19s linear infinite;
-  will-change: transform;
-}
-.hlw-bat-2 { animation-duration: 26s; animation-delay: -7s; color: rgba(243, 188, 210, 0.42); }
-.hlw-bat-3 { animation-duration: 15s; animation-delay: -12s; }
-.hlw-bat-4 { animation-duration: 31s; animation-delay: -20s; color: rgba(243, 188, 210, 0.3); }
-
-@keyframes hlw-bat-path {
-  0%   { transform: translate(-14vw, 0) scale(0.7); }
-  25%  { transform: translate(18vw, -6vh) scale(0.95); }
-  50%  { transform: translate(48vw, 4vh) scale(0.75); }
-  75%  { transform: translate(80vw, -8vh) scale(1); }
-  100% { transform: translate(116vw, 0) scale(0.7); }
-}
-
-.hlw-wing {
-  transform-origin: 50% 50%;
-  animation: hlw-flap 0.22s ease-in-out infinite alternate;
-}
-@keyframes hlw-flap {
-  from { transform: scaleY(0.55) translateY(2px); }
-  to   { transform: scaleY(1.1) translateY(-1px); }
-}
-
-/* --- ghosts --- */
-.hlw-ghost {
-  animation: hlw-drift 7.5s ease-in-out infinite;
-  will-change: transform;
-}
-.hlw-ghost-slow { animation-duration: 11s; animation-delay: -3s; }
-@keyframes hlw-drift {
-  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1.5deg); }
-  50%      { transform: translate3d(10px, -18px, 0) rotate(1.5deg); }
-}
-.hlw-ghost-tail { animation: hlw-tail 3.2s ease-in-out infinite; transform-origin: 50% 0; }
-@keyframes hlw-tail {
-  0%, 100% { transform: skewX(0deg); }
-  50%      { transform: skewX(6deg); }
-}
-
-/* --- flames --- */
-.hlw-flame {
-  transform-origin: 50% 100%;
-  animation: hlw-flicker 1.7s ease-in-out infinite;
-}
-.hlw-flame-b { animation-duration: 2.3s; animation-delay: -0.7s; }
-.hlw-flame-c { animation-duration: 1.35s; animation-delay: -1.1s; }
-@keyframes hlw-flicker {
-  0%, 100% { transform: scale(1) rotate(-1deg); opacity: 0.95; }
-  30%      { transform: scale(0.88, 1.14) rotate(2deg); opacity: 0.72; }
-  55%      { transform: scale(1.07, 0.93) rotate(-2deg); opacity: 1; }
-  80%      { transform: scale(0.95, 1.06) rotate(1deg); opacity: 0.85; }
-}
-
-/* --- fog: pre-blurred gradients that only slide --- */
-.hlw-fog {
-  position: absolute;
-  left: -55%;
-  width: 210%;
-  height: 18rem;
+  width: 14px;
+  height: 14px;
   pointer-events: none;
-  background: radial-gradient(
-    closest-side,
-    rgba(243, 188, 210, 0.2),
-    rgba(207, 232, 242, 0.1) 52%,
-    transparent 76%
-  );
-  animation: hlw-fog-drift 38s linear infinite alternate;
-  will-change: transform;
+  animation:
+    hlw-mote-drift var(--d, 9s) ease-in-out infinite alternate,
+    hlw-mote-blink var(--b, 2.6s) steps(2, end) infinite;
+  animation-delay: var(--dl, 0s), var(--dl, 0s);
+  will-change: transform, opacity;
 }
-.hlw-fog-blue {
-  background: radial-gradient(
-    closest-side,
-    rgba(159, 208, 227, 0.18),
-    rgba(243, 188, 210, 0.07) 55%,
-    transparent 78%
-  );
-  animation-duration: 56s;
-  animation-direction: alternate-reverse;
+@keyframes hlw-mote-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(var(--dx, 18px), var(--dy, -26px), 0); }
 }
-.hlw-fog-low { height: 11rem; animation-duration: 46s; opacity: 0.8; }
-@keyframes hlw-fog-drift {
-  from { transform: translateX(-9%); }
-  to   { transform: translateX(9%); }
+@keyframes hlw-mote-blink {
+  0%, 100% { opacity: 0.95; }
+  50%      { opacity: 0.25; }
 }
 
-/* --- aurora over the lake, pink into blue --- */
-.hlw-aurora {
-  position: absolute;
-  left: -20%;
-  right: -20%;
-  height: 26rem;
-  pointer-events: none;
-  background:
-    radial-gradient(44rem 12rem at 30% 60%, rgba(243, 188, 210, 0.22), transparent 70%),
-    radial-gradient(38rem 10rem at 68% 40%, rgba(159, 208, 227, 0.18), transparent 72%);
-  animation: hlw-aurora-sway 24s ease-in-out infinite alternate;
-  will-change: transform;
-}
-@keyframes hlw-aurora-sway {
-  from { transform: translateX(-4%) skewX(-4deg); }
-  to   { transform: translateX(4%) skewX(4deg); }
-}
-
-/* --- water --- */
-.hlw-ripple { animation: hlw-ripple-slide 11s ease-in-out infinite alternate; }
-.hlw-ripple-2 { animation-duration: 17s; animation-delay: -4s; }
-@keyframes hlw-ripple-slide {
-  from { transform: translateX(-16px); }
-  to   { transform: translateX(16px); }
-}
-
-/* the reflection of the far shore, wobbling on the surface */
-.hlw-reflection {
-  opacity: 0.2;
-  transform-origin: 50% 0;
-  animation: hlw-reflect 9s ease-in-out infinite alternate;
-}
-@keyframes hlw-reflect {
-  from { transform: scaleY(-1) skewX(-2.5deg); }
-  to   { transform: scaleY(-1) skewX(2.5deg); }
-}
-
-/* --- hanging things --- */
+/* things hanging from branches */
 .hlw-sway {
   transform-origin: 50% 0;
-  animation: hlw-sway-arc 5.4s ease-in-out infinite;
+  animation: hlw-sway-arc 5.6s ease-in-out infinite;
 }
-.hlw-sway-slow { animation-duration: 8.2s; animation-delay: -2s; }
+.hlw-sway-b { animation-duration: 7.4s; animation-delay: -2.2s; }
+.hlw-sway-c { animation-duration: 6.3s; animation-delay: -4s; }
 @keyframes hlw-sway-arc {
-  0%, 100% { transform: rotate(-2.6deg); }
-  50%      { transform: rotate(2.6deg); }
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
 }
 
-/* --- spider drops into a card on hover --- */
-.hlw-spider {
-  position: absolute;
-  top: 0;
-  right: 1.6rem;
-  transform: translateY(-110%);
-  transition: transform 0.75s cubic-bezier(0.34, 1.26, 0.64, 1);
-  pointer-events: none;
-  z-index: 5;
-}
-.hlw-card:hover .hlw-spider,
-.hlw-frame:hover .hlw-spider { transform: translateY(-4%); }
-.hlw-spider-body { animation: hlw-spider-bob 1.9s ease-in-out infinite; }
-@keyframes hlw-spider-bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(3px); }
+/* a mask shudders when you look at it */
+.hlw-mask { transition: transform 0.3s ease; }
+.hlw-card:hover .hlw-mask { animation: hlw-shudder 0.45s steps(4, end) 2; }
+@keyframes hlw-shudder {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  25%      { transform: translate3d(-3px, 1px, 0) rotate(-2deg); }
+  50%      { transform: translate3d(3px, -1px, 0) rotate(2deg); }
+  75%      { transform: translate3d(-2px, 0, 0) rotate(-1deg); }
 }
 
-/* --- eyes --- */
-.hlw-eyes { animation: hlw-blink 6.5s steps(1, end) infinite; }
-.hlw-eyes-b { animation-duration: 4.4s; animation-delay: -2s; }
-@keyframes hlw-blink {
-  0%, 92%, 96%, 100% { opacity: 0.9; }
-  94% { opacity: 0; }
-}
-
-/* --- lit windows breathing --- */
-.hlw-window { animation: hlw-lamp 4.6s ease-in-out infinite; }
-.hlw-window-b { animation-duration: 6.9s; animation-delay: -1.4s; }
-.hlw-window-c { animation-duration: 3.7s; animation-delay: -2.6s; }
-@keyframes hlw-lamp {
-  0%, 100% { opacity: 0.75; }
-  45%      { opacity: 1; }
-  70%      { opacity: 0.58; }
-}
-
-/* --- the moon --- */
-.hlw-moon-glow {
-  animation: hlw-breathe 9s ease-in-out infinite;
+/* branches drift a degree either way */
+.hlw-drift {
+  animation: hlw-drift-arc 9s ease-in-out infinite alternate;
   will-change: transform;
 }
-@keyframes hlw-breathe {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50%      { transform: scale(1.07); opacity: 0.82; }
+@keyframes hlw-drift-arc {
+  from { transform: rotate(-0.8deg); }
+  to   { transform: rotate(0.8deg); }
 }
 
-/* --- cards --- */
-.hlw-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.45s ease;
-}
-.hlw-card:hover { transform: translateY(-5px); }
+/* the compass rose turns, very slowly */
+.hlw-spin { animation: hlw-spin 40s linear infinite; }
+@keyframes hlw-spin { to { transform: rotate(360deg); } }
 
-/* --- the marquee strip between acts --- */
+/* scroll hint bob */
+.hlw-bob { animation: hlw-bob-y 1.8s ease-in-out infinite; }
+@keyframes hlw-bob-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+/* eyeballs: JS writes --a (deg) — see EyeTracker */
+.hlw-eye {
+  transform: rotate(calc(var(--a, 0) * 1deg));
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+/* ticker */
 .hlw-ticker {
-  animation: hlw-ticker-run 34s linear infinite;
+  animation: hlw-ticker-run 36s linear infinite;
   will-change: transform;
 }
 @keyframes hlw-ticker-run {
@@ -456,49 +354,70 @@
   to   { transform: translateX(-50%); }
 }
 
-/* --- doors that swing open on the FAQ --- */
-.hlw-door {
-  position: relative;
-  cursor: pointer;
-  list-style: none;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-origin: 0% 50%;
+/* ---------- one-shot effects, keyed off the site's [data-reveal] ---------- */
+
+/* a pixel blood stain that spreads out once when its section arrives */
+.hlw-splat {
+  transform: scale(0.55);
+  opacity: 0;
+  transition: transform 1.1s cubic-bezier(0.2, 1.4, 0.4, 1), opacity 0.5s ease;
 }
-.hlw-door::-webkit-details-marker { display: none; }
-.hlw-door:hover { transform: perspective(900px) rotateY(-9deg); }
-details[open] > .hlw-door { transform: perspective(900px) rotateY(-26deg); }
-.hlw-door-answer { animation: hlw-door-reveal 0.55s ease both; }
-@keyframes hlw-door-reveal {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+[data-reveal].revealed .hlw-splat { transform: scale(1); opacity: 0.85; }
+
+/* the line of blood the timeline hangs on */
+.hlw-bloodline {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--hlw-blood-deep), var(--hlw-blood) 50%, var(--hlw-blood-deep));
+}
+/* a pixel drop of blood at each stop */
+.hlw-blood-drop {
+  /* no `display` here: this file is unlayered, so it would beat Tailwind's
+     responsive utilities (`hidden lg:block`) — set display in the markup */
+  width: 12px;
+  height: 12px;
+  background: var(--hlw-blood);
+  box-shadow: 4px 4px 0 var(--hlw-blood-deep), -4px 8px 0 rgba(128, 46, 54, 0.6);
 }
 
-/* --- a drop falling off the dripping edge --- */
-.hlw-drop {
-  position: absolute;
-  width: 5px;
-  height: 7px;
-  border-radius: 0 0 50% 50%;
-  background: var(--hlw-pink);
+/* the blood trail runs out to each timeline stop */
+.hlw-trail {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 2.2s cubic-bezier(0.45, 0.05, 0.2, 1) 0.2s;
+}
+[data-reveal].revealed .hlw-trail { transform: scaleX(1); }
+.hlw-stop {
   opacity: 0;
-  animation: hlw-fall 6s ease-in infinite;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.hlw-drop-2 { animation-duration: 8.5s; animation-delay: -3s; }
-.hlw-drop-3 { animation-duration: 7.2s; animation-delay: -5s; }
-@keyframes hlw-fall {
-  0%, 62%  { transform: translateY(0) scaleY(0.6); opacity: 0; }
-  70%      { opacity: 0.9; }
-  100%     { transform: translateY(42px) scaleY(1.5); opacity: 0; }
+[data-reveal].revealed .hlw-stop { opacity: 1; transform: none; }
+[data-reveal].revealed .hlw-stop:nth-child(2) { transition-delay: 0.55s; }
+[data-reveal].revealed .hlw-stop:nth-child(3) { transition-delay: 1.1s; }
+[data-reveal].revealed .hlw-stop:nth-child(4) { transition-delay: 1.65s; }
+[data-reveal].revealed .hlw-stop:nth-child(5) { transition-delay: 2.2s; }
+
+/* FAQ: hands behind wet glass press closer when a question is open */
+.hlw-hands {
+  transform: scale(1);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s ease;
+  opacity: 0.55;
 }
+.hlw-faq:has(details[open]) .hlw-hands { transform: scale(1.07); opacity: 0.8; }
+.hlw-q { cursor: pointer; list-style: none; }
+.hlw-q::-webkit-details-marker { display: none; }
+.hlw-q-mark { transition: transform 0.35s ease; }
+details[open] .hlw-q-mark { transform: rotate(45deg); }
 
 /* ============================================================
-   The site chrome, while you are inside the event
+   The site chrome, while inside the event
    ============================================================ */
 
 .hlw-chrome {
   position: relative;
-  border-color: rgba(243, 188, 210, 0.22) !important;
-  background: linear-gradient(to bottom, rgba(10, 20, 32, 0.94), rgba(8, 15, 22, 0.88)) !important;
+  border-color: rgba(209, 201, 30, 0.25) !important;
+  background: linear-gradient(to bottom, rgba(10, 15, 4, 0.95), rgba(10, 15, 4, 0.88)) !important;
 }
 .hlw-chrome a,
 .hlw-chrome button,
@@ -506,91 +425,61 @@ details[open] > .hlw-door { transform: perspective(900px) rotateY(-26deg); }
 .hlw-chrome p,
 .hlw-chrome h3,
 .hlw-chrome li {
-  color: var(--hlw-blue-soft);
+  color: var(--hlw-bone);
 }
 .hlw-chrome .text-neon {
-  color: #fff;
+  color: #fffbe0;
   text-shadow:
     0 0 1px rgba(255, 255, 255, 0.9),
-    0 0 9px rgba(243, 188, 210, 0.6),
-    0 0 24px rgba(243, 188, 210, 0.45);
+    0 0 9px rgba(209, 201, 30, 0.75),
+    0 0 24px rgba(68, 100, 2, 0.8);
 }
 .hlw-chrome .text-cyan-300,
 .hlw-chrome .text-cyan-400,
 .hlw-chrome .text-cyan-400\/70,
 .hlw-chrome .text-cyan-300\/70 {
-  color: var(--hlw-pink) !important;
+  color: var(--hlw-script) !important;
 }
-/* the join pill borrows the event's border rather than the KV gradient */
 .hlw-chrome .btn-lux-primary {
-  background: rgba(243, 188, 210, 0.12) !important;
-  border: 1px solid rgba(243, 188, 210, 0.55) !important;
-  color: var(--hlw-pink-soft) !important;
+  background: var(--hlw-script) !important;
+  border: 1px solid var(--hlw-script) !important;
+  color: #141405 !important;
 }
+.hlw-chrome .btn-lux-primary * { color: #141405 !important; }
 
-/* cobwebs in the corners */
-.hlw-web {
-  position: absolute;
-  top: 0;
-  pointer-events: none;
-  color: rgba(243, 188, 210, 0.3);
-  z-index: 1;
-}
-.hlw-web-l { left: 0; }
-.hlw-web-r { right: 0; transform: scaleX(-1); }
-
-/* the header's dripping underside */
-.hlw-chrome-drip {
+/* a ragged grass edge under the header */
+.hlw-grass-edge {
   position: absolute;
   left: 0;
   right: 0;
   top: 100%;
-  height: 18px;
+  height: 10px;
   pointer-events: none;
-  background-image: radial-gradient(
-    circle at 14px -6px,
-    rgba(243, 188, 210, 0.4) 12px,
-    transparent 13px
-  );
-  background-size: 38px 18px;
-  background-repeat: repeat-x;
-}
-
-/* a bat crossing the nav bar now and then */
-.hlw-nav-bat {
-  position: absolute;
-  top: 0.55rem;
-  left: 0;
-  color: rgba(243, 188, 210, 0.5);
-  animation: hlw-nav-bat-run 17s linear infinite;
-  will-change: transform;
-}
-@keyframes hlw-nav-bat-run {
-  0%   { transform: translateX(-8vw) translateY(0); }
-  18%  { transform: translateX(26vw) translateY(7px); }
-  38%  { transform: translateX(54vw) translateY(-5px); }
-  60%  { transform: translateX(84vw) translateY(6px); }
-  78%, 100% { transform: translateX(112vw) translateY(0); }
+  background:
+    repeating-linear-gradient(100deg, transparent 0 5px, rgba(68, 100, 2, 0.9) 5px 7px, transparent 7px 11px),
+    linear-gradient(to bottom, rgba(68, 100, 2, 0.75), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent);
 }
 
 @media (max-width: 768px) {
-  .hlw-bat-3, .hlw-bat-4, .hlw-nav-bat { display: none; }
-  .hlw-fog { height: 12rem; }
-  .hlw-slant { transform: rotate(-1deg) scaleX(1.12); }
-  .hlw-door:hover, details[open] > .hlw-door { transform: none; }
+  .hlw-tunnel { height: 200vh; }
+  .hlw-arch { width: 150vw; }
+  .hlw-arch-desktop { display: none; }
+  /* the deepest arch's opening on a 390x844 screen is ~194px tall with its
+     floor near y=745 — she has to fit inside it, or the arch cuts her in half */
+  .hlw-girl { height: 17vh; bottom: 11%; }
 }
 
+/* no motion: a still frame of the tunnel, all copy visible */
 @media (prefers-reduced-motion: reduce) {
-  .hlw-bat, .hlw-wing, .hlw-ghost, .hlw-ghost-tail, .hlw-flame, .hlw-fog,
-  .hlw-aurora, .hlw-ripple, .hlw-reflection, .hlw-sway, .hlw-spider-body,
-  .hlw-eyes, .hlw-window, .hlw-moon-glow, .hlw-ticker, .hlw-drop,
-  .hlw-nav-bat, .hlw-door-answer {
+  .hlw-tunnel { height: auto; }
+  .hlw-tunnel-stage { position: relative; }
+  .hlw-tunnel, .hlw-tunnel * { --p: 0 !important; }
+  .hlw-mote, .hlw-sway, .hlw-drift, .hlw-spin, .hlw-bob, .hlw-ticker,
+  .hlw-card:hover .hlw-mask {
     animation: none !important;
   }
-  .hlw-frame, .hlw-frame:hover, .hlw-card, .hlw-card:hover,
-  .hlw-spider, .hlw-door, .hlw-door:hover, details[open] > .hlw-door {
-    transform: none !important;
-    transition: none !important;
-  }
-  .hlw-reflection { transform: scaleY(-1) !important; }
+  .hlw-eye, .hlw-card, .hlw-hands, .hlw-q-mark { transition: none !important; }
+  .hlw-splat, .hlw-trail, .hlw-stop { transform: none !important; opacity: 1 !important; transition: none !important; }
 }

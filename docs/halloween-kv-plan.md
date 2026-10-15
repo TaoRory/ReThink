@@ -64,25 +64,25 @@ Song song, user muốn tổ chức project theo sơ đồ: **CLAUDE.md/AGENTS.md
 
 ## Phase 1 — Pipeline tài nguyên
 
-- [ ] Script `web/scripts/optimize-kv.mjs` dùng **sharp 0.34.5 (đã có sẵn trong node_modules)**: đọc KV gốc → `web/public/halloween/*.webp` (alpha giữ nguyên), resize theo kích thước hiển thị tối đa ×2. Tên file ASCII (`vom-co.webp`, `mask-meo.webp`…) để tránh lỗi đường dẫn tiếng Việt.
-- [ ] Pixel-art (mặt nạ, la bàn, đom đóm, nhãn cầu): **resize bằng nearest-neighbor** và CSS `image-rendering: pixelated` để giữ hạt pixel sắc.
-- [ ] Sample bảng màu thật từ PNG → token `--hlw-*` mới.
-- [ ] OG image 1200×630 từ cover FB.
+- [x] Script `web/scripts/optimize-kv.mjs` dùng **sharp 0.34.5 (đã có sẵn trong node_modules)**: đọc KV gốc → `web/public/halloween/*.webp` (alpha giữ nguyên), resize theo kích thước hiển thị tối đa ×2. Tên file ASCII (`vom-co.webp`, `mask-meo.webp`…) để tránh lỗi đường dẫn tiếng Việt.
+- [x] Pixel-art (mặt nạ, la bàn, đom đóm, nhãn cầu): **resize bằng nearest-neighbor** và CSS `image-rendering: pixelated` để giữ hạt pixel sắc.
+- [x] Sample bảng màu thật từ PNG → token `--hlw-*` mới.
+- [x] OG image 1200×630 từ cover FB.
 - **Ngân sách:** tổng ảnh trang < 1.8MB desktop, < 900KB mobile; ảnh LCP hero < 250KB. Hiển thị qua `next/image` (Vercel tự phục vụ AVIF/WebP theo `sizes`).
 - Giao cho subagent `asset-optimizer`; agent chính chỉ đọc bảng kết quả.
 
 ## Phase 2 — Theme + chrome
 
-- [ ] Viết lại token trong `web/app/halloween.css` theo màu KV (giữ cấu trúc `.hlw` / `.hlw-page` và luật tiền tố).
-- [ ] Font: script vàng-chanh tạm thời bằng font Google gần giống (chọn ở bước này, ví dụ dòng handwriting/script) cho wordmark; body giữ Be Vietnam Pro (dấu tiếng Việt). Wordmark để trong 1 component `<HalloweenWordmark>` để thay bằng PNG/SVG designer chỉ ở 1 chỗ.
-- [ ] Chrome nav/footer (`components/halloween/Chrome.tsx`): bỏ mạng nhện/sáp hồng; thay bằng mép cỏ, đom đóm, 1 nhãn cầu ở góc nhìn theo chuột, quầng vàng-chanh cho chữ RETHINK.
+- [x] Viết lại token trong `web/app/halloween.css` theo màu KV (giữ cấu trúc `.hlw` / `.hlw-page` và luật tiền tố).
+- [x] Font: script vàng-chanh tạm thời bằng font Google gần giống (chọn ở bước này, ví dụ dòng handwriting/script) cho wordmark; body giữ Be Vietnam Pro (dấu tiếng Việt). Wordmark để trong 1 component `<HalloweenWordmark>` để thay bằng PNG/SVG designer chỉ ở 1 chỗ.
+- [x] Chrome nav/footer (`components/halloween/Chrome.tsx`): bỏ mạng nhện/sáp hồng; thay bằng mép cỏ, đom đóm, 1 nhãn cầu ở góc nhìn theo chuột, quầng vàng-chanh cho chữ RETHINK.
 
 ## Phase 3 — Hero: đường hầm vòm cỏ
 
-- [ ] 5 lớp `vom-co.webp` ở scale giảm dần về điểm tụ; cô gái ở cuối hầm; cành cây đan chéo phía trước, một cành mang wordmark nghiêng như avatar; la bàn sáng dưới sàn; vệt máu.
-- [ ] **Cuộn để bước vào:** section `position: sticky` cao ~250vh; một listener cuộn (rAF, passive) ghi tiến độ `--p` (0→1); mỗi lớp vòm `transform: scale()` theo `--p` với hệ số khác nhau → cảm giác đi vào hầm. Mắt cô gái sáng dần (opacity). Hết hầm thì nhả sticky sang phần nội dung.
-- [ ] Đom đóm trôi + nhấp nháy (transform/opacity), cành đung đưa rất nhẹ (rotate).
-- [ ] Mobile: giảm còn 3 lớp vòm, tắt sticky dài nếu máy yếu; `prefers-reduced-motion` → hiện khung tĩnh như avatar.
+- [x] 5 lớp `vom-co.webp` ở scale giảm dần về điểm tụ; cô gái ở cuối hầm; cành cây đan chéo phía trước, một cành mang wordmark nghiêng như avatar; la bàn sáng dưới sàn; vệt máu.
+- [x] **Cuộn để bước vào:** section `position: sticky` cao ~250vh; một listener cuộn (rAF, passive) ghi tiến độ `--p` (0→1); mỗi lớp vòm `transform: scale()` theo `--p` với hệ số khác nhau → cảm giác đi vào hầm. Mắt cô gái sáng dần (opacity). Hết hầm thì nhả sticky sang phần nội dung.
+- [x] Đom đóm trôi + nhấp nháy (transform/opacity), cành đung đưa rất nhẹ (rotate).
+- [x] Mobile: giảm còn 3 lớp vòm, tắt sticky dài nếu máy yếu; `prefers-reduced-motion` → hiện khung tĩnh như avatar.
 
 ## Phase 4 — Các phần còn lại (map nội dung vào element KV)
 
@@ -125,3 +125,18 @@ Song song, user muốn tổ chức project theo sơ đồ: **CLAUDE.md/AGENTS.md
 - [ ] Wordmark "RETHINK" dạng PNG/SVG nền trong.
 - [ ] (Tuỳ chọn) PNG sọ chim tách nền cho phòng thứ 4; nếu không có thì cắt từ avatar.
 - [ ] Docs nội dung sự kiện + link form đăng ký.
+
+## Nhật ký thực hiện (15/10/2026 — Phase 1–4 xong ở local, CHƯA push)
+
+Khác với plan ban đầu, phát hiện khi đo tài nguyên thật:
+- **Bảng màu ước lượng sai** ở 2 chỗ: chữ script là mù tạt-chanh `#d1c91e` (không phải vàng nhạt), bóng sàn là đen ấm `#140d05`. Đã thay bằng màu lấy mẫu từ pixel.
+- **`Máu_.png` là vết máu pixel trên nền TRẮNG đặc, góc canvas xám** → script cắt góc + tách nền trắng (unmultiply). Dùng làm vết loang, không phải giọt chảy.
+- **`Trail Máu.png` là thảm máu sàn hầm vẽ phối cảnh** → đặt ở sàn đường hầm dưới chân cô gái (đúng avatar KV). Trục lịch trình dùng đường máu CSS.
+- **`Compass Logo.png` là hình mờ (mọi pixel ≤ 20% alpha)** → script chuẩn hoá alpha.
+- `Texture_.jpg` bỏ (170KB nhiễu, trùng vai trò `bg-co`). Tổng ảnh ≈ 1,08MB.
+- Wordmark tạm: font **Mystery Quest** (chỉ Latin). Trạm 4 dùng nhãn cầu nhìn theo chuột thay sọ chim.
+- Gate `check:hlw` từng **bỏ sót keyframe viết một dòng** → đã sửa sang đếm ngoặc, thử cả 2 dạng sai đều bị chặn.
+- `halloween.css` không thuộc layer Tailwind nên **đè lên utility responsive** (`lg:hidden`) → không đặt `display` trong class `.hlw-*`.
+- Subagent chưa chạy được trong phiên mở ở thư mục gốc `Rethink/` — phải mở phiên trong `web/`.
+
+Đã kiểm: build xanh · `check:hlw` (8 keyframe, 0 rò rỉ) · ảnh chụp 1440 + 390 từng section · hero ở p = 0 / 0,5 / 1 · không tràn ngang mobile · reduced-motion: hầm thu còn 1 màn hình, 0 animation chạy.

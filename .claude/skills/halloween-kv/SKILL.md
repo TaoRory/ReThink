@@ -18,46 +18,49 @@ Mood: an acid-green grass tunnel of nested arches; dark moss-green cylindrical b
 
 The old pale blue/pink "Pale Lake" theme is retired. Do not bring it back.
 
-## Palette — ESTIMATE, replace with sampled values in Phase 1
-| Token idea | Hex | Where |
+## Palette — SAMPLED from KV pixels (`node scripts/optimize-kv.mjs --palette` + object sampling)
+| Token | Hex | Sampled from |
 |---|---|---|
-| grass acid | `#7aa51e` / `#5f8a1a` | ground, arches |
-| moss shadow | `#0c140c` | page ground, deep shadow |
-| branch | `#1e3328` | cylinders, borders |
-| script lime | `#e6ec7a` | RETHINK wordmark, headings |
-| firefly | `#f2f56a` | motes, highlights |
-| blood | `#7a0a0a` → `#a01212` | trails, drips, accents |
-| bone | `#d9d6c4` | masks, compass, body text on dark |
-| compass glow | `#e0702a` | the one warm light |
+| `--hlw-grass` / `-2` | `#446402` / `#3d5b03` | Background cỏ |
+| `--hlw-arch` | `#2b3800` | Vòm Cỏ band |
+| `--hlw-branch` | `#303b1e` | Cành Cây |
+| `--hlw-script` | `#d1c91e` | RETHINK letters on the cover (mustard-lime, NOT pale yellow) |
+| `--hlw-firefly` | `#ffeacc` | Light 1 core |
+| `--hlw-blood` / `-deep` | `#802e36` / `#631c1a` | Máu_ / Trail Máu |
+| `--hlw-bone-dim` | `#959981` | cat mask |
+| `--hlw-compass` | `#d2913f` | compass glow, avatar |
+| `--hlw-shadow` | `#140d05` | avatar floor shadow (warm, not green) |
+Page ground `--hlw-ink` `#0a0f04` is a chosen moss-black. My eyeball estimates before sampling were wrong on the script colour and the shadow — sample, don't guess.
 
-## Asset map — originals → `public/halloween/` (ASCII names)
-| Original | Output | Role |
+## Asset map — originals → `public/halloween/` (run `node scripts/optimize-kv.mjs`)
+| Output | Role | Notes found by measuring |
 |---|---|---|
-| `Vòm Cỏ.png` 2377×2504 | `vom-co.webp` | one arch; stack 4–5 at decreasing scale for the tunnel |
-| `Background Vòm Cỏ.png` | `bg-vom-co.webp` | fill inside the deepest arch |
-| `Background cỏ.png` 2564×1920 | `bg-co.webp` | page ground |
-| `Texture_.jpg` | `texture.webp` | subtle repeat |
-| `Cành Cây.png` 2504×1901 | `canh-cay.webp` | crossing branches; one carries the wordmark |
-| `Nhân Vật Chính.png` | `nhan-vat.webp` | the girl |
-| `Mask Mèo/Chó/Cú.png` | `mask-meo/-cho/-cu.webp` | rooms 1–3 (room 4 = bird skull, crop from avatar or ask) |
-| `Eyeball 1–3.png` | `eyeball-1..3.webp` | follow the cursor |
-| `Light 1, 2, 3, 3(1).png` | `light-1..4.webp` | fireflies |
-| `Compass Logo.png` / `Compass Full 3D.png` | `compass-logo.webp` / `compass-3d.webp` | event mark, scroll-progress needle |
-| `Máu_.png` / `Trail Máu.png` | `mau.webp` / `trail-mau.webp` | section drips / timeline spine |
-| `Tay.png` / `Chân.png` | `tay.webp` / `chan.webp` | decoration |
-| `Background Tay_.jpg` | `bg-tay.webp` | hands-behind-glass, FAQ backdrop |
-| Cover FB | `og.jpg` 1200×630 | Open Graph image |
-
-Budget: whole page < 1.8MB desktop / < 900KB phone; hero LCP image < 250KB. Render through `next/image` with real `sizes`.
+| `vom-co.webp` | one arch; stacked ×5 for the tunnel, ×1 framing the CTA | 250KB (q62) |
+| `bg-vom-co.webp` | lit scene inside the deepest arch | |
+| `bg-co.webp` | `.hlw-grass` section ground | |
+| `canh-cay.webp` | branch cluster, hero top-right (mirrored) | |
+| `nhan-vat.webp` | the girl; eyes at 46.6% / 53.9%, 9.3% from top | served `unoptimized` |
+| `mask-meo/-cho/-cu.webp` | stations 1–3, hero corners | pixel |
+| `eyeball-1..3.webp` | `eyeball-1` iris sits at **185°** → the only one that tracks | pixel |
+| `light-1..4.webp` | fireflies (`<Motes>`) | pixel |
+| `compass-logo.webp` | story emblem, slow spin | source is a **≤20%-alpha watermark** → script normalises alpha |
+| `compass-3d.webp` | compass on the tunnel floor | |
+| `mau.webp` | a pixel blood **stain** (not a drip) | source is OPAQUE WHITE with grey canvas corners → script crops + keys white |
+| `trail-mau.webp` | the **blood carpet on the tunnel floor** in perspective (KV avatar floor) | not a line — don't use it as a timeline |
+| `tay.webp` / `chan.webp` | severed arm / leg on the CTA floor | |
+| `bg-tay.webp` | hands behind wet glass, FAQ backdrop | |
+| `og.jpg` | Open Graph 1200×630 from the cover | |
+`Texture_.jpg` is dropped (170KB of noise, `bg-co` does the job). Total ≈ 1.08MB.
 
 ## Pixel-art rules
 Masks, compass, fireflies and eyeballs are dithered pixel-art. Resize them with **nearest-neighbour** (sharp `kernel: "nearest"`) and display with `image-rendering: pixelated`, or they blur into mush.
 
 ## Code structure (keep it)
 - `app/halloween.css` — imported at the top of `globals.css`. **Every selector starts with `.hlw`.** `.hlw` = tokens only (the nav/footer borrow it); `.hlw-page` = the full-height ground. Putting `min-height` on `.hlw` once inflated the header to full screen.
+- **`halloween.css` is unlayered, so its rules BEAT Tailwind utilities.** Never set `display` (or anything a responsive utility controls) in an `.hlw-*` class — it silently overrides `hidden` / `lg:block` in the markup. Put those in the markup only.
 - `components/pages/HalloweenPage.tsx` — the page; loads its own display font via `next/font`.
 - `components/halloween/Scene.tsx` — visual pieces. `components/halloween/Chrome.tsx` — nav/footer decoration, switched on in `SiteNav`/`SiteFooter` when `stripLocale(pathname).startsWith("/halloween")`.
-- Wordmark: put it behind one `<HalloweenWordmark>` component. Use a Google script font until the designer's transparent PNG/SVG arrives, then swap in one place.
+- Wordmark: `HalloweenWordmark` in `Scene.tsx`, currently set in **Mystery Quest** (Google, latin only — never use it for Vietnamese text). When the designer's transparent PNG/SVG arrives, swap the body of that one component.
 
 ## Animation catalogue (transform/opacity only — `npm run check:hlw` enforces it)
 - **Hero tunnel:** sticky section ~250vh; ONE passive scroll listener (rAF) writes `--p` 0→1; each arch layer `scale()`s by its own factor so you walk in; the girl's eye glow fades up. Phone: 3 layers. Reduced motion: static composition.
@@ -68,8 +71,7 @@ Masks, compass, fireflies and eyeballs are dithered pixel-art. Resize them with 
 - One-shot effects may be dramatic; anything looping must stay cheap. The user has reverted a hero before for lag.
 
 ## Placeholders (all copy on the page is invented)
-- Event name: drop "Pale Lake"; use neutral "Halloween 2026" until docs arrive.
-- Date 30/10/2026 18:00–22:00, venue, rooms, schedule, FAQ — all invented.
-- Hard-coded in `HalloweenPage.tsx` (move into the dict): `TIMES`, the pinned date label, the `ticker` words, the "PL" wax seal.
-- Remove the two "nội dung mẫu" notes and fill the registration link when real content lands.
-- Waiting on the designer: transparent RETHINK wordmark; optional cut-out bird skull.
+- Event name is a neutral "Halloween 2026"; date 30/10/2026 18:00–22:00, venue, the four stations, schedule and FAQ are invented to fit the KV (tunnel, masks, compass).
+- Every string is in `dict.*.halloween` now (times, date label and ticker words included) — nothing visible is hard-coded in `HalloweenPage.tsx`.
+- Remove the two "nội dung mẫu" notes and set the registration link (CTA button currently loops back to the page) when real content lands.
+- Waiting on the designer: transparent RETHINK wordmark; optionally a cut-out bird skull (station 4 uses the tracking eye meanwhile).

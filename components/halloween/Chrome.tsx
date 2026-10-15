@@ -1,29 +1,20 @@
-import { Bat, Candle, Ghost, Web } from "./Scene";
+import Image from "next/image";
+import { Eyeball, Motes } from "./Scene";
 
 /**
- * Decoration the site chrome puts on while you are inside the event.
+ * Decoration the site chrome puts on while you are inside the Halloween page.
  *
- * Both pieces are plain presentational components with no hooks, so the
- * client-rendered SiteNav and SiteFooter can drop them in behind a path
- * check. They sit at z-0 under the real nav/footer content and never take
- * pointer events, so nothing here can swallow a click on a link.
+ * Plain presentational components (no hooks), so the client-rendered
+ * SiteNav and SiteFooter can drop them in behind a path check. They sit
+ * under the real nav/footer content and never take pointer events.
+ * The footer eye is driven by the page's EyeTracker (same document).
  */
 
 export function HalloweenNavDecor() {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-visible" aria-hidden="true">
-      <Web className="hlw-web hlw-web-l" size={96} />
-      <Web className="hlw-web hlw-web-r" size={96} />
-
-      {/* one bat crosses the bar every 17s */}
-      <Bat className="hlw-nav-bat" top="0.55rem" size={22} />
-
-      {/* wax dripping off the bottom edge, with the odd drop falling free */}
-      <span className="hlw-chrome-drip">
-        <span className="hlw-drop" style={{ left: "18%", top: "10px" }} />
-        <span className="hlw-drop hlw-drop-2" style={{ left: "47%", top: "10px" }} />
-        <span className="hlw-drop hlw-drop-3" style={{ left: "76%", top: "10px" }} />
-      </span>
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      <Motes count={4} size={10} />
+      <span className="hlw-grass-edge" />
     </div>
   );
 }
@@ -31,19 +22,17 @@ export function HalloweenNavDecor() {
 export function HalloweenFooterDecor() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <Web className="hlw-web hlw-web-r" size={110} />
-      <div className="hlw-fog hlw-fog-low absolute bottom-0 opacity-70" />
-
-      {/* a row of candles burning along the bottom edge */}
-      <div className="absolute bottom-0 left-0 flex w-full items-end justify-around px-10 opacity-70">
-        <Candle size={26} />
-        <Candle size={34} flame="hlw-flame-b" />
-        <Candle size={22} flame="hlw-flame-c" />
-        <Candle size={30} />
-        <Candle size={24} flame="hlw-flame-b" />
-      </div>
-
-      <Ghost className="hlw-ghost-slow absolute right-[12%] top-6 opacity-40" size={52} tint="pink" />
+      <Image
+        src="/halloween/mau.webp"
+        alt=""
+        width={480}
+        height={651}
+        unoptimized
+        className="hlw-pixel absolute -left-8 -top-10 w-32 rotate-[160deg] opacity-60 sm:w-44"
+      />
+      <Motes count={6} />
+      <Eyeball track size={54} className="absolute bottom-6 right-6 opacity-90" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(to_top,rgba(68,100,2,0.35),transparent)]" />
     </div>
   );
 }

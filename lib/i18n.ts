@@ -52,7 +52,7 @@ export const dict = {
       about: "Về ReThink",
       tedx: "TEDx VinUniversity",
       join: "Tuyển thành viên Gen 5",
-      halloween: "Halloween 2026 — Pale Lake",
+      halloween: "Halloween 2026",
       game: "Game — Club Fair",
       fb: "Facebook — ReThink",
       tedxSite: "Website TEDx VinUniversity",
@@ -392,64 +392,64 @@ export const dict = {
     /* ----------------------------------------------------------------
        Halloween event. PLACEHOLDER COPY — every string below is a stand-in
        written to show the layout working; it gets replaced from the real
-       event brief. The event name "Pale Lake" is invented too.
+       event brief. Fitted to the Halloween KV (grass tunnel, masks, compass).
        ---------------------------------------------------------------- */
     halloween: {
       meta: {
-        title: "Halloween 2026 — Pale Lake",
+        title: "Halloween 2026",
         description:
-          "Pale Lake — đêm Halloween 2026 của ReThink tại VinUniversity. Bốn căn phòng, một căn nhà bên hồ, và một câu chuyện chưa ai kể hết.",
+          "Halloween 2026 của ReThink tại VinUniversity — một đường hầm cỏ, bốn chiếc mặt nạ và một chiếc la bàn. (Nội dung mẫu.)",
       },
       draftNote: "Nội dung mẫu — đang chờ bản chính thức",
       kicker: "Halloween 2026 · VinUniversity",
-      eventName: "Pale Lake",
+      eventName: "Halloween 2026",
       tagline:
-        "Một đêm bên hồ. Mọi cánh cửa trong căn nhà đều mở — trừ một cánh.",
+        "Đi hết đường hầm cỏ. Chiếc la bàn sẽ chỉ lối — nhưng chưa chắc đó là lối ra.",
       whenLabel: "Thời gian",
       when: "Thứ Sáu, 30/10/2026 · 18:00 – 22:00",
+      dateShort: "30.10",
+      timeShort: "18:00 – 22:00",
       whereLabel: "Địa điểm",
       where: "Sảnh chính — VinUniversity, Gia Lâm, Hà Nội",
       ctaJoin: "Đăng ký tham gia",
-      ctaRooms: "Xem các căn phòng",
+      ctaRooms: "Xem bốn mặt nạ",
+      scrollHint: "Cuộn để bước vào",
+      tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "Rethink"],
 
       storyKicker: "Câu chuyện",
-      storyHeading: "The House by the Lake",
+      storyHeading: "Into the Tunnel",
       storyP1:
-        "Cứ cuối tháng Mười, căn nhà bên hồ lại sáng đèn. Không ai nhớ ai là người thắp ngọn đầu tiên — chỉ biết đèn sẽ tắt đúng lúc người khách cuối cùng bước ra khỏi cửa.",
+        "Cuối khuôn viên có một đường hầm bằng cỏ mà ban ngày không ai nhìn thấy. Đêm 30/10, những vòm cỏ ấy mở ra — vòm sau nhỏ hơn vòm trước, và ở tận cùng có một người đang đứng đợi.",
       storyP2:
-        "Đêm nay căn nhà mở cho tất cả. Mỗi căn phòng giữ một mẩu ký ức của chủ nhà; ghép đủ bốn mẩu, bạn sẽ biết chuyện gì đã xảy ra ở đây.",
+        "Hãy mang theo chiếc la bàn. Nó luôn chỉ đúng hướng, nhưng không bao giờ cho bạn biết điều gì đang chờ ở đó.",
 
-      roomsKicker: "Bốn căn phòng",
-      roomsHeading: "The Rooms",
+      roomsKicker: "Bốn trạm",
+      roomsHeading: "Four Masks",
       roomsLead:
-        "Mỗi phòng là một trạm trò chơi riêng, có người dẫn và có vật chứng để mang đi. Hoàn thành cả bốn để mở được căn phòng thứ năm.",
-      roomNames: [
-        "Phòng Soi Gương",
-        "Căn Bếp Cũ",
-        "Hành Lang Chân Dung",
-        "Bến Thuyền",
-      ],
+        "Mỗi chiếc mặt nạ treo trên cành là một trạm trò chơi, có người dẫn và có vật chứng để mang đi. Đủ bốn vật chứng mới mở được vòm cuối cùng.",
+      roomNames: ["Mặt Nạ Mèo", "Mặt Nạ Chó", "Mặt Nạ Cú", "Con Mắt"],
       roomDescs: [
-        "Tấm gương trong phòng không phản chiếu đúng thứ đứng trước nó. Hãy tìm ra điểm sai trước khi nó tìm ra bạn.",
-        "Công thức để trên bàn còn thiếu một nguyên liệu. Thứ còn thiếu ấy không nằm trong bếp.",
-        "Mười hai bức chân dung, mười hai gương mặt không ai nhận ra. Một trong số đó vừa chớp mắt.",
-        "Chiếc thuyền vẫn buộc ở đó từ mùa trước. Người chèo nó đi thì chưa quay lại.",
+        "Chiếc mặt nạ treo trên cành cao nhất. Ai đeo nó sẽ thấy những thứ người khác bỏ sót.",
+        "Nó canh lối vào thứ hai. Muốn đi qua, phải trả lời đúng một câu hỏi.",
+        "Mặt nạ cú không bao giờ ngủ. Trạm này chơi trong bóng tối hoàn toàn.",
+        "Không có mặt nạ, chỉ có một con mắt dõi theo bạn suốt buổi tối. Tìm ra nó đang nhìn gì.",
       ],
-      roomTags: ["Puzzle", "Workshop", "Photo", "Live game"],
+      roomTags: ["Puzzle", "Workshop", "Live game", "Photo"],
 
       scheduleKicker: "Trình tự đêm diễn",
       scheduleHeading: "The Night",
+      scheduleTimes: ["18:00", "18:30", "20:45", "21:40"],
       scheduleTitles: [
-        "Mở cửa & nhận vật chứng",
-        "Bốn căn phòng mở cùng lúc",
-        "Căn phòng thứ năm",
+        "Mở cửa & nhận la bàn",
+        "Bốn mặt nạ thức dậy",
+        "Vòm cuối cùng",
         "Đóng cửa",
       ],
       scheduleDescs: [
-        "Nhận thẻ khách và tấm bản đồ căn nhà. Trang phục hoá trang được khuyến khích, không bắt buộc.",
-        "Tự do di chuyển giữa các phòng, không cần theo thứ tự. Mỗi phòng khoảng 20 phút.",
+        "Nhận thẻ khách và chiếc la bàn. Trang phục hoá trang được khuyến khích, không bắt buộc.",
+        "Tự do di chuyển giữa bốn trạm, không cần theo thứ tự. Mỗi trạm khoảng 20 phút.",
         "Chỉ mở cho những ai đã có đủ bốn vật chứng. Lời giải được công bố tại đây.",
-        "Chụp ảnh tập thể bên hồ, trao giải cho ba bộ hoá trang được bình chọn nhiều nhất.",
+        "Chụp ảnh tập thể trong đường hầm, trao giải cho ba bộ hoá trang được bình chọn nhiều nhất.",
       ],
 
       rulesKicker: "Trước khi vào",
@@ -460,14 +460,14 @@ export const dict = {
         "Sự kiện có đáng sợ không?",
       ],
       ruleAs: [
-        "Có. Số lượng khách mỗi khung giờ có hạn để các phòng không bị quá tải. Đăng ký miễn phí qua đường dẫn ở cuối trang.",
+        "Có. Mỗi khung giờ nhận số lượng khách có hạn để các trạm không quá tải. Đăng ký miễn phí qua đường dẫn ở cuối trang.",
         "Không bắt buộc, nhưng đêm này sinh ra là để hoá trang. Ba bộ được bình chọn nhiều nhất sẽ có giải.",
-        "Không có jumpscare, không có diễn viên đuổi theo bạn. Đây là một đêm kỳ lạ và chậm rãi, hợp với người thích giải đố hơn người thích bị doạ.",
+        "Có máu giả và hình ảnh kinh dị, nhưng không có jumpscare hay diễn viên đuổi theo bạn. Hợp với người thích giải đố hơn người thích bị doạ.",
       ],
 
-      ctaHeading: "Cửa mở lúc 18:00",
+      ctaHeading: "Cửa hầm mở lúc 18:00",
       ctaLead:
-        "Số chỗ mỗi khung giờ có hạn. Đăng ký trước để chắc chắn có một chỗ trong căn nhà.",
+        "Số chỗ mỗi khung giờ có hạn. Đăng ký trước để chắc chắn có một chỗ trong đường hầm.",
       ctaBtn: "Đăng ký tham gia",
       ctaNote: "Đường dẫn đăng ký sẽ được cập nhật.",
     },
@@ -496,7 +496,7 @@ export const dict = {
       about: "About ReThink",
       tedx: "TEDx VinUniversity",
       join: "Join Gen 5",
-      halloween: "Halloween 2026 — Pale Lake",
+      halloween: "Halloween 2026",
       game: "Game — Club Fair",
       fb: "Facebook — ReThink",
       tedxSite: "TEDx VinUniversity site",
@@ -834,60 +834,60 @@ export const dict = {
     /* Halloween event — PLACEHOLDER COPY, see the Vietnamese block above. */
     halloween: {
       meta: {
-        title: "Halloween 2026 — Pale Lake",
+        title: "Halloween 2026",
         description:
-          "Pale Lake — ReThink's Halloween 2026 night at VinUniversity. Four rooms, a house by the lake, and a story nobody has finished telling.",
+          "ReThink's Halloween 2026 at VinUniversity — a tunnel of grass, four masks and a compass. (Placeholder copy.)",
       },
       draftNote: "Placeholder copy — final text to come",
       kicker: "Halloween 2026 · VinUniversity",
-      eventName: "Pale Lake",
+      eventName: "Halloween 2026",
       tagline:
-        "One night by the lake. Every door in the house is open — except one.",
+        "Walk to the end of the grass tunnel. The compass will point the way — not necessarily the way out.",
       whenLabel: "When",
       when: "Friday 30 October 2026 · 18:00 – 22:00",
+      dateShort: "30.10",
+      timeShort: "18:00 – 22:00",
       whereLabel: "Where",
       where: "Main hall — VinUniversity, Gia Lam, Hanoi",
       ctaJoin: "Reserve a place",
-      ctaRooms: "See the rooms",
+      ctaRooms: "Meet the four masks",
+      scrollHint: "Scroll to walk in",
+      tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "Rethink"],
 
       storyKicker: "The story",
-      storyHeading: "The House by the Lake",
+      storyHeading: "Into the Tunnel",
       storyP1:
-        "Every year at the end of October, the house by the lake lights up. Nobody remembers who lit the first lamp — only that they go out the moment the last guest steps outside.",
+        "At the far end of campus there is a tunnel of grass nobody sees by day. On the night of 30 October its arches open — each one smaller than the last, and at the very end someone is waiting.",
       storyP2:
-        "Tonight the house is open to everyone. Each room keeps a fragment of the owner's memory; collect all four and you will know what happened here.",
+        "Bring the compass. It always points the right way, but it never tells you what is waiting there.",
 
-      roomsKicker: "Four rooms",
-      roomsHeading: "The Rooms",
+      roomsKicker: "Four stations",
+      roomsHeading: "Four Masks",
       roomsLead:
-        "Each room is its own station, with a host and a piece of evidence to carry away. Finish all four and the fifth room opens.",
-      roomNames: [
-        "The Mirror Room",
-        "The Old Kitchen",
-        "The Portrait Hall",
-        "The Boathouse",
-      ],
+        "Each mask hanging from the branches is a game station, with a host and a piece of evidence to carry away. Only four pieces of evidence open the last arch.",
+      roomNames: ["The Cat Mask", "The Hound Mask", "The Owl Mask", "The Eye"],
       roomDescs: [
-        "The mirror does not reflect quite what stands in front of it. Find what is wrong before it finds you.",
-        "The recipe on the table is missing one ingredient. What's missing is not in the kitchen.",
-        "Twelve portraits, twelve faces nobody recognises. One of them just blinked.",
-        "The boat has been tied there since last season. Whoever rowed it out has not come back.",
+        "It hangs from the highest branch. Whoever wears it sees what everyone else missed.",
+        "It guards the second entrance. To pass, answer one question correctly.",
+        "The owl never sleeps. This station is played in total darkness.",
+        "No mask — just one eye that follows you all evening. Find out what it is looking at.",
       ],
-      roomTags: ["Puzzle", "Workshop", "Photo", "Live game"],
+      roomTags: ["Puzzle", "Workshop", "Live game", "Photo"],
 
       scheduleKicker: "Running order",
       scheduleHeading: "The Night",
+      scheduleTimes: ["18:00", "18:30", "20:45", "21:40"],
       scheduleTitles: [
-        "Doors open & evidence issued",
-        "All four rooms open at once",
-        "The fifth room",
+        "Doors open & compasses issued",
+        "The four masks wake",
+        "The last arch",
         "Closing",
       ],
       scheduleDescs: [
-        "Pick up your guest card and a map of the house. Costumes encouraged, never required.",
-        "Move between rooms in any order, no queue. About 20 minutes each.",
+        "Pick up your guest card and a compass. Costumes encouraged, never required.",
+        "Move between the four stations in any order. About 20 minutes each.",
         "Opens only for guests holding all four pieces of evidence. The answer is given here.",
-        "Group photograph by the lake, and prizes for the three most-voted costumes.",
+        "Group photograph inside the tunnel, and prizes for the three most-voted costumes.",
       ],
 
       rulesKicker: "Before you come",
@@ -898,14 +898,14 @@ export const dict = {
         "Is it actually scary?",
       ],
       ruleAs: [
-        "Yes. Each time slot takes a limited number of guests so the rooms don't crowd. Registration is free, through the link at the bottom of this page.",
+        "Yes. Each time slot takes a limited number of guests so the stations don't crowd. Registration is free, through the link at the bottom of this page.",
         "Not compulsory — but this is the night for it. The three most-voted costumes win prizes.",
-        "No jumpscares, no actors chasing anyone. It is a strange, slow evening, better suited to people who like puzzles than to people who like being startled.",
+        "There is fake blood and horror imagery, but no jumpscares and no actors chasing anyone. Better suited to people who like puzzles than to people who like being startled.",
       ],
 
-      ctaHeading: "Doors open at 18:00",
+      ctaHeading: "The tunnel opens at 18:00",
       ctaLead:
-        "Places per time slot are limited. Reserve ahead to be sure of a spot inside the house.",
+        "Places per time slot are limited. Reserve ahead to be sure of a spot inside the tunnel.",
       ctaBtn: "Reserve a place",
       ctaNote: "Registration link to follow.",
     },

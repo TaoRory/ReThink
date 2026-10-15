@@ -1,7 +1,8 @@
 /*
  * Screenshot a page.
  *   node scripts/cdp/shot.js <url> <out.png> [width=1440] [height=900] [scrollY=0] [full]
- * Env: CDP_PORT (default 9333).
+ * Env: CDP_PORT (default 9333), SETTLE ms to wait after scrolling (default 900 —
+ *      raise it for lazy images and one-shot transitions).
  */
 const fs = require("fs");
 const { openPage, evaluate, sleep } = require("./lib");
@@ -17,7 +18,7 @@ if (!url || !out) {
   const cdp = await openPage({ port, url, width: Number(w), height: Number(h) });
   if (Number(scroll) > 0) {
     await evaluate(cdp, `window.scrollTo({ top: ${Number(scroll)}, behavior: "instant" })`);
-    await sleep(900);
+    await sleep(Number(process.env.SETTLE || 900));
   }
   const shot = await cdp.send("Page.captureScreenshot", {
     format: "png",

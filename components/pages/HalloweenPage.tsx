@@ -1,132 +1,117 @@
-import { Cormorant_Garamond } from "next/font/google";
+import { Mystery_Quest } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
+import { EyeTracker } from "@/components/halloween/EyeTracker";
 import {
-  Bat,
-  Candle,
-  Crow,
-  Doorway,
-  Ghost,
-  LakeShore,
-  LakeSky,
-  Lantern,
-  Portrait,
-  Sconce,
-  Spider,
-  WaxSpine,
-  Web,
+  Branch,
+  Eyeball,
+  HalloweenWordmark,
+  HangingMask,
+  Motes,
+  TunnelStage,
 } from "@/components/halloween/Scene";
+import { TunnelProgress } from "@/components/halloween/TunnelProgress";
 import { dict, localePath, type Locale } from "@/lib/i18n";
 
 /**
- * The Halloween event page.
+ * The Halloween ReThink event page, built from the designer's KV
+ * (../KV/kv halloween - ReThink). See .claude/skills/halloween-kv.
  *
- * Laid out as a walk rather than a stack of equal sections: you arrive at the
- * lake, read a letter pinned to the wall, pass a wall of crooked portraits,
- * follow a candle burning down through the night's running order, and leave
- * through a lit door. Sections overlap, tilt and break their own grid on
- * purpose — nothing here sits in a tidy three-column row.
+ * You scroll INTO a tunnel of grass arches toward the girl at its end, then
+ * out into the sections: the story, four masks hanging from a branch, the
+ * night's running order along a trail of blood, hands behind wet glass for
+ * the FAQ, and a last arch to register through.
  *
- * Shares nothing with the ReThink KV but the shell. All copy is placeholder
- * and lives in `dict.*.halloween`.
+ * All copy is placeholder in dict.*.halloween.
  */
-const eventFont = Cormorant_Garamond({
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  subsets: ["latin", "vietnamese"],
-  variable: "--font-hlw",
+
+/** Temporary stand-in for the KV's hand-drawn script (see HalloweenWordmark).
+ *  Latin only — use it for ASCII/English strings, never Vietnamese. */
+const scriptFont = Mystery_Quest({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-hlw-script",
   display: "swap",
 });
 
-/** which sitter hangs in which frame, and how that frame hangs on the wall */
-const WALL = [
-  { art: "crow", span: "lg:col-span-4", offset: "lg:mt-0", tilt: "-1.8deg", wire: "2.6rem" },
-  { art: "owl", span: "lg:col-span-3", offset: "lg:mt-20", tilt: "1.4deg", wire: "5.2rem" },
-  { art: "deer", span: "lg:col-span-5", offset: "lg:mt-6", tilt: "-0.9deg", wire: "3.4rem" },
-  { art: "rabbit", span: "lg:col-span-4 lg:col-start-3", offset: "lg:-mt-6", tilt: "2.1deg", wire: "4.4rem" },
+const MASKS = [
+  { src: "mask-meo.webp", w: 150, h: 189 },
+  { src: "mask-cho.webp", w: 142, h: 180 },
+  { src: "mask-cu.webp", w: 104, h: 163 },
+  null, // the fourth station is the eye
 ] as const;
-
-const TIMES = ["18:00", "18:30", "20:45", "21:40"];
+const SWAYS = ["", "hlw-sway-b", "hlw-sway-c", "hlw-sway-b"];
 
 export function HalloweenPage({ locale }: { locale: Locale }) {
   const t = dict[locale].halloween;
-  const ticker = [t.eventName, "30 · 10 · 2026", t.kicker, "Trick or Treat"];
 
   return (
-    <div className={`hlw hlw-page ${eventFont.variable}`}>
-      {/* ============ ACT I — arrival ============ */}
-      <section className="relative overflow-hidden pt-16">
-        <LakeSky />
-        <Bat top="20%" size={40} />
-        <Bat className="hlw-bat-2" top="31%" size={26} />
-        <Bat className="hlw-bat-3" top="13%" size={32} />
-        <Bat className="hlw-bat-4" top="26%" size={20} />
+    <div className={`hlw hlw-page ${scriptFont.variable}`}>
+      <EyeTracker />
 
-        {/* the date, on a label pinned at an angle */}
-        <div className="absolute right-[7%] top-[34%] z-20 hidden rotate-[6deg] lg:block">
-          <div className="hlw-paper-card px-6 py-5 text-center">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#7c5a46]">
-              {t.whenLabel}
-            </p>
-            <p className="hlw-display mt-2 text-2xl leading-none text-[#2b2118]">30.10</p>
-            <p className="mt-1 text-[11px] tracking-[0.2em] text-[#5c4636]">18:00 – 22:00</p>
+      {/* ================= the tunnel ================= */}
+      <TunnelProgress>
+        <TunnelStage>
+          {/* the wordmark rides a branch across the frame, as in the KV */}
+          <div
+            className="hlw-wordbranch pointer-events-none absolute left-[-8%] top-[14%] w-[86vw] max-w-[1150px] sm:top-[16%]"
+            aria-hidden="true"
+          >
+            <Branch className="relative flex h-[clamp(64px,10vw,140px)] w-full items-center justify-center">
+              <HalloweenWordmark className="text-[clamp(2.6rem,8.4vw,7.4rem)]" />
+            </Branch>
           </div>
-        </div>
 
-        {/* a vertical rail of caps up the left edge */}
-        <div className="absolute left-5 top-[34%] z-20 hidden lg:block">
-          <p className="hlw-vrail">{t.kicker}</p>
-        </div>
-
-        <div className="relative z-10 mx-auto flex min-h-[46vh] max-w-6xl flex-col justify-center px-5 pb-16 pt-24">
-          <p className="hlw-kicker lg:hidden">{t.kicker}</p>
-
-          {/* the title is pushed off-centre and overhangs the left margin */}
-          <h1 className="hlw-hero-title mt-6 text-[clamp(3.2rem,15vw,11rem)] leading-[0.82] lg:-ml-2">
-            {t.eventName}
-          </h1>
-
-          {/* kept to the left half: the pinned label owns the right-hand side */}
-          <div className="mt-8 max-w-xl">
-            <p className="hlw-display text-[clamp(1.05rem,2.2vw,1.45rem)] italic leading-relaxed text-[color:var(--hlw-blue-soft)]">
-              {t.tagline}
-            </p>
-
-            <div className="mt-7 text-sm">
-              <p className="hlw-kicker">{t.whereLabel}</p>
-              <p className="mt-2 text-[color:var(--hlw-paper)]">{t.where}</p>
-              <p className="mt-3 text-[color:var(--hlw-paper)] lg:hidden">{t.when}</p>
+          <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-5 pb-[12vh]">
+            <div className="hlw-hero-copy relative max-w-xl">
+              <div className="absolute -inset-x-10 -inset-y-8 -z-10 bg-[radial-gradient(closest-side,rgba(10,15,4,0.9),rgba(10,15,4,0.55)_60%,transparent)]" />
+              <p className="hlw-kicker">{t.kicker}</p>
+              <h1 className="hlw-title mt-4 text-[clamp(2rem,6vw,3.6rem)] leading-[1.02]">
+                <span className="sr-only">ReThink — </span>
+                {t.eventName}
+              </h1>
+              <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[color:var(--hlw-bone)]/90">
+                {t.tagline}
+              </p>
+              <dl className="mt-6 grid gap-x-10 gap-y-3 text-sm sm:grid-cols-2">
+                <div>
+                  <dt className="hlw-kicker">{t.whenLabel}</dt>
+                  <dd className="mt-1.5">{t.when}</dd>
+                </div>
+                <div>
+                  <dt className="hlw-kicker">{t.whereLabel}</dt>
+                  <dd className="mt-1.5">{t.where}</dd>
+                </div>
+              </dl>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href="#dang-ky" className="hlw-btn">
+                  {t.ctaJoin}
+                </a>
+                <a href="#rooms" className="hlw-btn hlw-btn-ghost">
+                  {t.ctaRooms}
+                </a>
+              </div>
+              <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
+                {t.draftNote}
+              </p>
             </div>
           </div>
 
-          <div className="mt-12 flex flex-wrap items-center gap-4">
-            <a href="#dang-ky" className="hlw-btn">
-              {t.ctaJoin}
-            </a>
-            <a href="#rooms" className="hlw-btn hlw-btn-ghost">
-              {t.ctaRooms}
-            </a>
-          </div>
-
-          <p className="mt-10 text-[10px] uppercase tracking-[0.3em] text-[color:var(--hlw-pink-deep)]">
-            {t.draftNote}
+          <p className="hlw-hint hlw-bob absolute bottom-[3.5vh] left-1/2 z-10 -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.4em] text-[color:var(--hlw-script)]">
+            {t.scrollHint} ↓
           </p>
-        </div>
+        </TunnelStage>
+      </TunnelProgress>
 
-        <LakeShore />
-      </section>
-
-      {/* ---- a tilted ticker, cutting across the seam ---- */}
-      <div className="hlw-slant relative z-20 -my-8 overflow-hidden border-y border-[rgba(243,188,210,0.3)] bg-[rgba(243,188,210,0.1)] py-3">
+      {/* ================= ticker ================= */}
+      <div className="relative z-10 overflow-hidden border-y border-[rgba(209,201,30,0.3)] bg-[color:var(--hlw-grass-2)] py-3">
         <div className="hlw-ticker flex w-max gap-10 whitespace-nowrap">
           {[0, 1].map((pass) => (
             <div key={pass} className="flex gap-10">
-              {ticker.map((word) => (
-                <span
-                  key={word}
-                  className="hlw-title flex items-center gap-10 text-xs text-[color:var(--hlw-pink-soft)]"
-                >
+              {[...t.tickerWords, ...t.tickerWords].map((word, i) => (
+                <span key={i} className="hlw-script flex items-center gap-10 text-lg">
                   {word}
-                  <span className="text-[color:var(--hlw-pink)]">✦</span>
+                  <span className="text-[color:var(--hlw-blood)]">▪</span>
                 </span>
               ))}
             </div>
@@ -134,187 +119,166 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
         </div>
       </div>
 
-      {/* ============ ACT II — the letter ============ */}
-      <section className="relative z-10 overflow-hidden px-5 pb-28 pt-36">
-        <div className="hlw-fog absolute right-[-20%] top-10 opacity-60" />
+      {/* ================= the story ================= */}
+      <section className="hlw-grass relative overflow-hidden px-5 py-28" data-reveal>
+        <Motes count={6} />
 
-        <div className="relative mx-auto max-w-6xl">
-          <div className="grid items-start gap-12 lg:grid-cols-[1.15fr_0.85fr]">
-            {/* the letter, pinned slightly crooked */}
-            <div className="hlw-paper-card relative rotate-[-1.4deg] px-8 py-10 sm:px-12 sm:py-14">
-              {/* wax seal */}
-              <span className="absolute -right-5 -top-5 flex h-16 w-16 rotate-[12deg] items-center justify-center rounded-full bg-[color:var(--hlw-pink-mid)] text-[10px] font-semibold uppercase tracking-[0.2em] text-[#3a2342] shadow-lg">
-                PL
-              </span>
-
-              <p className="text-[10px] font-semibold uppercase tracking-[0.42em] text-[#8a6450]">
-                {t.storyKicker}
-              </p>
-              <h2 className="hlw-display mt-4 text-[clamp(1.8rem,4.4vw,3rem)] uppercase leading-tight tracking-[0.06em] text-[#241b14]">
-                {t.storyHeading}
-              </h2>
-              <div className="mt-7 space-y-5 text-[15px] leading-[1.85] text-[#3f3227]">
-                <p className="first-letter:hlw-display first-letter:float-left first-letter:mr-3 first-letter:text-6xl first-letter:leading-[0.8] first-letter:text-[#8a3f5e]">
-                  {t.storyP1}
-                </p>
-                <p>{t.storyP2}</p>
-              </div>
-              <p className="hlw-display mt-9 text-right text-2xl italic text-[#6b4a3a]">
-                {t.eventName}
-              </p>
+        <div className="relative mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-[1.3fr_1fr]">
+          <div>
+            <p className="hlw-kicker">
+              <span className="hlw-rule mr-3" />
+              {t.storyKicker}
+            </p>
+            <h2 className="hlw-script mt-5 text-[clamp(2.4rem,6vw,4.4rem)]">{t.storyHeading}</h2>
+            <div className="mt-7 max-w-xl space-y-5 text-[15px] leading-[1.85] text-[color:var(--hlw-bone)]/90">
+              <p>{t.storyP1}</p>
+              <p>{t.storyP2}</p>
             </div>
+          </div>
 
-            {/* the vignette beside it, overlapping the letter's edge */}
-            <div className="relative flex min-h-[22rem] items-end justify-center gap-10 lg:-ml-16 lg:mt-24">
-              <Web className="absolute -top-6 right-0 text-[rgba(243,188,210,0.22)]" size={110} />
-              <Lantern className="absolute right-10 top-0" size={42} sway="hlw-sway-slow" />
-              <Ghost size={96} tint="pink" />
-              <Candle size={50} flame="hlw-flame-b" />
-              <Crow className="absolute bottom-0 left-2" size={52} />
-            </div>
+          <div className="relative mx-auto aspect-square w-full max-w-[340px]" aria-hidden="true">
+            {/* blood on the floor under the compass */}
+            <Image
+              src="/halloween/mau.webp"
+              alt=""
+              width={480}
+              height={651}
+              unoptimized
+              className="hlw-pixel hlw-splat absolute -bottom-10 -left-6 w-44 -rotate-12"
+            />
+            {/* a dark pool so the pale compass reads against the grass */}
+            <div className="absolute inset-[6%] rounded-full bg-[radial-gradient(closest-side,rgba(10,15,4,0.85),rgba(10,15,4,0.5)_60%,transparent)]" />
+            <Image
+              src="/halloween/compass-logo.webp"
+              alt=""
+              width={480}
+              height={502}
+              unoptimized
+              className="hlw-pixel hlw-spin relative h-auto w-full"
+            />
+            <Eyeball track size={74} className="absolute -left-6 top-6" />
+            <Eyeball variant={2} size={56} className="absolute -right-2 bottom-10 rotate-45" />
+            <Eyeball variant={3} size={40} className="absolute bottom-0 left-12 -rotate-12" />
           </div>
         </div>
       </section>
 
-      {/* ============ ACT III — the portrait wall ============ */}
-      <section
-        id="rooms"
-        className="hlw-wallpaper hlw-drip relative z-10 overflow-hidden border-y border-[rgba(243,188,210,0.22)] px-5 py-28"
-      >
-        <Web className="hlw-web hlw-web-l" size={140} />
-        <Web className="hlw-web hlw-web-r" size={140} />
-
-        <div className="relative mx-auto max-w-6xl">
+      {/* ================= the four masks ================= */}
+      <section id="rooms" className="relative overflow-hidden px-5 pb-28 pt-24">
+        <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <p className="hlw-kicker">
                 <span className="hlw-rule mr-3" />
                 {t.roomsKicker}
               </p>
-              <h2 className="hlw-title mt-5 text-[clamp(1.9rem,5vw,3.4rem)]">
-                {t.roomsHeading}
-              </h2>
+              <h2 className="hlw-script mt-5 text-[clamp(2.4rem,6vw,4.4rem)]">{t.roomsHeading}</h2>
             </div>
-            <p className="max-w-sm text-sm leading-relaxed text-[color:var(--hlw-blue-soft)]/75">
+            <p className="max-w-sm text-sm leading-relaxed text-[color:var(--hlw-bone)]/80">
               {t.roomsLead}
             </p>
           </div>
 
-          {/* the picture rail the frames hang from */}
-          <div className="relative mt-20">
-            <span className="absolute inset-x-0 top-0 hidden h-px bg-[rgba(243,188,210,0.35)] lg:block" />
+          {/* the branch the masks hang from */}
+          <div className="relative mt-16">
+            <Branch className="absolute -left-[8%] top-0 hidden h-6 w-[116%] -rotate-[1.2deg] lg:block" />
 
-            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-16">
-              {WALL.map((slot, i) => (
-                <article
-                  key={t.roomNames[i]}
-                  className={`hlw-frame relative p-4 ${slot.span} ${slot.offset}`}
-                  style={{ transform: `rotate(${slot.tilt})` }}
-                >
-                  <span
-                    className="hlw-wire hidden lg:block"
-                    style={{ height: slot.wire }}
-                  />
-                  <Spider />
-                  <div className="aspect-[6/7] overflow-hidden bg-[rgba(8,15,22,0.55)]">
-                    <Portrait kind={slot.art} />
+            <div className="grid gap-x-6 gap-y-14 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+              {t.roomNames.map((name, i) => {
+                const mask = MASKS[i];
+                return (
+                  <div key={name} className={`hlw-sway ${SWAYS[i]}`}>
+                    <span className="mx-auto hidden h-10 w-px bg-[rgba(222,217,196,0.45)] lg:block" />
+                    <article className="hlw-card px-5 pb-6 pt-7 text-center">
+                      <div className="flex h-[190px] items-center justify-center">
+                        {mask ? (
+                          <Image
+                            src={`/halloween/${mask.src}`}
+                            alt=""
+                            width={mask.w}
+                            height={mask.h}
+                            unoptimized
+                            className="hlw-pixel hlw-mask h-auto max-h-[180px] w-auto"
+                          />
+                        ) : (
+                          <Eyeball track size={150} />
+                        )}
+                      </div>
+                      <span className="hlw-plaque mt-5">{t.roomTags[i]}</span>
+                      <h3 className="hlw-title mt-4 text-base">{name}</h3>
+                      <p className="mt-3 text-[13px] leading-relaxed text-[color:var(--hlw-bone)]/75">
+                        {t.roomDescs[i]}
+                      </p>
+                    </article>
                   </div>
-                  <div className="mt-5 text-center">
-                    <span className="hlw-plaque">{t.roomTags[i]}</span>
-                    <h3 className="hlw-title mt-4 text-lg leading-snug">
-                      {t.roomNames[i]}
-                    </h3>
-                    <p className="mt-3 text-[13px] leading-relaxed text-[color:var(--hlw-blue-soft)]/75">
-                      {t.roomDescs[i]}
-                    </p>
-                  </div>
-                </article>
-              ))}
-
-              {/* a sconce burning in the gap the frames leave open */}
-              <div className="hidden items-center justify-center lg:col-span-2 lg:col-start-8 lg:row-start-2 lg:flex">
-                <Sconce flame="hlw-flame-c" />
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============ ACT IV — the night, down a burning candle ============ */}
-      <section className="relative z-10 overflow-hidden px-5 py-32">
-        <div className="hlw-fog hlw-fog-blue absolute left-[-20%] top-20 opacity-70" />
-        <Bat className="hlw-bat-2" top="12%" size={24} />
-
-        <div className="relative mx-auto max-w-5xl">
+      {/* ================= the night, along a trail of blood ================= */}
+      <section className="hlw-grass relative overflow-hidden px-5 py-28" data-reveal>
+        <div className="mx-auto max-w-6xl">
           <div className="text-center">
             <p className="hlw-kicker">{t.scheduleKicker}</p>
-            <h2 className="hlw-title mt-5 text-[clamp(1.9rem,5vw,3.4rem)]">
-              {t.scheduleHeading}
-            </h2>
+            <h2 className="hlw-script mt-5 text-[clamp(2.4rem,6vw,4.4rem)]">{t.scheduleHeading}</h2>
           </div>
 
-          <div className="relative mt-20">
-            {/* the candle burning down the middle */}
-            <div className="absolute left-1/2 top-0 hidden h-full -translate-x-1/2 sm:block">
-              <Candle size={44} />
-              <WaxSpine className="-mt-2 h-[calc(100%-4rem)] w-[46px]" />
+          <div className="relative mt-16">
+            {/* a line of blood running out left to right when the section arrives */}
+            <div className="absolute left-[6%] right-[6%] top-[3.6rem] hidden lg:block" aria-hidden="true">
+              <div className="hlw-bloodline hlw-trail" />
             </div>
 
-            <ol className="space-y-16 sm:space-y-20">
-              {t.scheduleTitles.map((title, i) => {
-                const right = i % 2 === 1;
-                return (
-                  <li
-                    key={title}
-                    className={`relative sm:w-[calc(50%-3.5rem)] ${
-                      right ? "sm:ml-auto sm:text-left" : "sm:text-right"
-                    }`}
-                  >
-                    <p
-                      className={`hlw-display text-4xl leading-none text-[color:var(--hlw-pink)] ${
-                        right ? "" : "sm:text-right"
-                      }`}
-                    >
-                      {TIMES[i]}
-                    </p>
-                    <h3 className="hlw-title mt-3 text-base">{title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-[color:var(--hlw-blue-soft)]/75">
+            <ol className="relative grid gap-10 lg:grid-cols-4">
+              {t.scheduleTitles.map((title, i) => (
+                <li key={title} className="hlw-stop relative pl-8 lg:pl-0 lg:text-center">
+                  <span className="hlw-blood-drop absolute left-0 top-2 lg:hidden" aria-hidden="true" />
+                  <p className="hlw-script text-4xl">{t.scheduleTimes[i]}</p>
+                  <span className="hlw-blood-drop mx-auto mt-3 hidden lg:block" aria-hidden="true" />
+                  <div className="lg:mt-6">
+                    <h3 className="hlw-title mt-3 text-sm">{title}</h3>
+                    <p className="mt-3 text-[13px] leading-relaxed text-[color:var(--hlw-bone)]/80">
                       {t.scheduleDescs[i]}
                     </p>
-                    {/* the thread out to the candle */}
-                    <span
-                      className={`absolute top-4 hidden h-px w-14 bg-[rgba(243,188,210,0.4)] sm:block ${
-                        right ? "-left-14" : "-right-14"
-                      }`}
-                    />
-                  </li>
-                );
-              })}
+                  </div>
+                </li>
+              ))}
             </ol>
           </div>
         </div>
       </section>
 
-      {/* ============ ACT V — the doors ============ */}
-      <section className="relative z-10 border-t border-[rgba(243,188,210,0.18)] px-5 py-28">
-        <div className="mx-auto max-w-4xl">
+      {/* ================= house rules: hands behind the glass ================= */}
+      <section className="hlw-faq relative overflow-hidden px-5 py-28">
+        <div className="absolute inset-0" aria-hidden="true">
+          <Image
+            src="/halloween/bg-tay.webp"
+            alt=""
+            fill
+            sizes="100vw"
+            className="hlw-hands object-cover"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--hlw-ink),rgba(10,15,4,0.35)_30%,rgba(10,15,4,0.35)_70%,var(--hlw-ink))]" />
+        </div>
+
+        <div className="relative mx-auto max-w-3xl">
           <p className="hlw-kicker">
             <span className="hlw-rule mr-3" />
             {t.rulesKicker}
           </p>
-          <h2 className="hlw-title mt-5 text-[clamp(1.9rem,5vw,3.4rem)]">
-            {t.rulesHeading}
-          </h2>
+          <h2 className="hlw-script mt-5 text-[clamp(2.4rem,6vw,4.4rem)]">{t.rulesHeading}</h2>
 
-          <div className="mt-14 grid gap-6 sm:grid-cols-3">
+          <div className="mt-12 space-y-4">
             {t.ruleQs.map((q, i) => (
-              <details key={q} className="group">
-                <summary className="hlw-door hlw-frame flex min-h-[11rem] flex-col justify-between p-6">
-                  <span className="hlw-plaque self-start">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="hlw-title mt-6 block text-[15px] leading-snug">{q}</span>
-                  <span className="mt-4 block h-2.5 w-2.5 rounded-full bg-[color:var(--hlw-pink)] opacity-70" />
+              <details key={q} className="hlw-card overflow-hidden">
+                <summary className="hlw-q flex items-center justify-between gap-6 px-6 py-5">
+                  <span className="hlw-title text-sm">{q}</span>
+                  <span className="hlw-q-mark text-2xl leading-none text-[color:var(--hlw-script)]">+</span>
                 </summary>
-                <p className="hlw-door-answer mt-4 border-l border-[rgba(243,188,210,0.4)] pl-5 text-sm leading-relaxed text-[color:var(--hlw-blue-soft)]/80">
+                <p className="px-6 pb-6 text-sm leading-relaxed text-[color:var(--hlw-bone)]/85">
                   {t.ruleAs[i]}
                 </p>
               </details>
@@ -323,37 +287,75 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* ============ ACT VI — the way out ============ */}
-      <section
-        id="dang-ky"
-        className="relative z-10 overflow-hidden px-5 pb-32 pt-24 text-center"
-      >
-        <div className="hlw-fog absolute bottom-0" />
-        <div className="hlw-fog hlw-fog-blue absolute bottom-10 opacity-60" />
+      {/* ================= the last arch ================= */}
+      <section id="dang-ky" className="relative overflow-hidden px-5 pb-32 pt-20 text-center">
+        <Motes count={8} />
 
         <div className="relative mx-auto max-w-3xl">
-          <Doorway className="mx-auto w-48 sm:w-64" />
-
-          <div className="-mt-10 flex justify-center gap-12">
-            <Candle size={38} />
-            <Candle size={30} flame="hlw-flame-c" />
+          {/* the last arch, with her waiting inside */}
+          <div className="relative mx-auto w-[min(420px,86vw)]" aria-hidden="true">
+            <Image
+              src="/halloween/bg-vom-co.webp"
+              alt=""
+              width={720}
+              height={944}
+              sizes="420px"
+              className="absolute left-[18%] top-[20%] h-auto w-[64%]"
+            />
+            <Image
+              src="/halloween/nhan-vat.webp"
+              alt=""
+              width={380}
+              height={624}
+              unoptimized
+              className="absolute bottom-[6%] left-1/2 h-[46%] w-auto -translate-x-1/2"
+            />
+            <Image
+              src="/halloween/vom-co.webp"
+              alt=""
+              width={1400}
+              height={1475}
+              sizes="420px"
+              className="relative h-auto w-full"
+            />
+            <Eyeball track size={58} className="absolute -left-4 top-[30%]" />
+            <Eyeball track size={46} className="absolute -right-2 top-[18%]" />
+            <Eyeball track size={38} className="absolute right-[6%] bottom-[14%]" />
           </div>
 
-          <h2 className="hlw-title mt-10 text-[clamp(1.8rem,4.6vw,3rem)]">
-            {t.ctaHeading}
-          </h2>
-          <p className="mx-auto mt-6 max-w-xl text-[15px] leading-relaxed text-[color:var(--hlw-blue-soft)]/80">
+          <h2 className="hlw-title mt-10 text-[clamp(1.6rem,4.4vw,2.6rem)]">{t.ctaHeading}</h2>
+          <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[color:var(--hlw-bone)]/85">
             {t.ctaLead}
           </p>
-          <div className="mt-10 flex justify-center">
+          <div className="mt-9 flex justify-center">
             <Link href={localePath(locale, "/halloween")} className="hlw-btn">
               {t.ctaBtn}
             </Link>
           </div>
-          <p className="mt-5 text-[10px] uppercase tracking-[0.3em] text-[color:var(--hlw-pink-deep)]">
+          <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
             {t.ctaNote}
           </p>
         </div>
+
+        {/* what is left on the floor */}
+        <Image
+          src="/halloween/tay.webp"
+          alt=""
+          width={600}
+          height={352}
+          sizes="280px"
+          className="pointer-events-none absolute -left-10 bottom-4 w-52 opacity-90 sm:w-72"
+          aria-hidden="true"
+        />
+        <Image
+          src="/halloween/chan.webp"
+          alt=""
+          width={600}
+          height={397}
+          sizes="260px"
+          className="pointer-events-none absolute -right-10 bottom-2 hidden w-64 -scale-x-100 opacity-80 sm:block"
+          aria-hidden="true"
+        />
       </section>
     </div>
   );

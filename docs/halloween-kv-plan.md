@@ -152,3 +152,8 @@ Phản hồi: kéo lên xuống mất đồ, lỗi tùm lum; hầm không cần 
 - Vòm "biến mất" vì nền cỏ sáng nuốt vòng vòm sẫm màu → nền sân khấu tối + tường cỏ sáng nằm trong mỗi vòm; tường vẽ sau cùng thì che mất vòm trong → vẽ tường trước, vòng vòm sau.
 - Chữ trên desktop đè lên chữ RETHINK trên cành → dải chữ nằm ngang phía dưới; mobile dành sẵn 300px dưới tranh.
 - Đo: ảnh mobile 560KB / laptop 619KB; cuộn qua hầm trung vị 4,2ms (GPU thật), p95 5,3ms; giảm chuyển động → 0 animation, header vẫn fixed.
+
+### Vòng 4 (16/10) — "vẫn bị lỗi ấy, cho tôi về bản như cũ lúc mới adapt KV xong"
+Bản 2D theo Avatar vẫn bị xén thành hình chữ nhật trên máy chủ dự án (chữ cắt dọc, cô gái mất nửa người). **Đã khôi phục `app/halloween.css`, `Scene.tsx`, `HalloweenPage.tsx` về đúng commit `b5c7191`**, chỉ giữ lại một sửa lỗi độc lập: `.hlw-chrome { position: relative }` đè `fixed` của header (nav trôi mất khi cuộn).
+- Hai hướng dựng lại (CSS 3D thật; 2D theo Avatar) đều bị bỏ. Nguyên nhân xén **chưa xác định**: không tái hiện được ở headless Chrome (cả có và không GPU thật).
+- Nếu lỗi xén còn xuất hiện ở bản cũ: kiểm tra trên bản build thật (`npm run build && npm run start`), và xem các trang nặng khác trên máy đó có bị không, trước khi sửa code.

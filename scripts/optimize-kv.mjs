@@ -12,7 +12,6 @@
 import sharp from "sharp";
 import { mkdirSync, statSync } from "node:fs";
 import path from "node:path";
-import { unwarpFloor } from "./unwarp-floor.mjs";
 
 const KV = "../KV/kv halloween - ReThink/Halloween ReThink";
 const SRC = `${KV}/Visual Guideline & KV`;
@@ -109,10 +108,6 @@ for (const [src, out, maxW, kind, opts = {}] of JOBS) {
   const info = await img.toFile(dest);
   rows.push([out, `${info.width}x${info.height}`, Math.round(statSync(dest).size / 1024)]);
 }
-
-// the blood carpet, un-projected to a top-down texture for the 3D floor
-const floor = await unwarpFloor(path.join(OUT, "floor-mau.webp"));
-rows.push(["floor-mau.webp", floor.size, Math.round(statSync(path.join(OUT, "floor-mau.webp")).size / 1024)]);
 
 // Open Graph image from the Facebook cover
 await sharp(`${KV}/Bộ Nhận Diện/15102026 Cover FB Halloween.png`)

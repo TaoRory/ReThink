@@ -141,9 +141,14 @@ Khác với plan ban đầu, phát hiện khi đo tài nguyên thật:
 
 Đã kiểm: build xanh · `check:hlw` (8 keyframe, 0 rò rỉ) · ảnh chụp 1440 + 390 từng section · hero ở p = 0 / 0,5 / 1 · không tràn ngang mobile · reduced-motion: hầm thu còn 1 màn hình, 0 animation chạy.
 
-### Vòng 2 (15/10 tối) — "kéo vào hầm chưa thật"
-Phản hồi: cành/mặt nạ không phóng to như các vòm; thảm máu như một tấm nhãn dán. Nguyên nhân gốc: mỗi lớp được `scale()` quanh gốc riêng của nó, nên lớp nào không scale thì đứng yên, và thảm là ảnh phẳng.
-- Dựng lại hầm thành **một cảnh CSS 3D thật**; cuộn chỉ di chuyển camera. Đo: 9 vật thể × 5 mốc cuộn, sai số 0px so với công thức `P/(P+z−pT)`.
-- Thảm máu: **un-project** ảnh phối cảnh thành texture nhìn từ trên xuống (`scripts/unwarp-floor.mjs`), đặt thành mặt sàn thật.
-- Lỗi tự gây ra rồi sửa: lớp nhiễu làm thảm lộ mảng xám; nền sáng cuối hầm đặt nông hơn cô gái nên che cô; la bàn quá to; trên mobile cô gái rộng hơn lòng vòm; chạy `npm run build` khi `npm run dev` đang chạy làm hỏng server của chủ dự án.
-- Hiệu năng (GPU thật): trung vị 4,3ms/khung khi cuộn qua hầm = các trang nhẹ khác.
+### Vòng 2 (15/10 tối) — "kéo vào hầm chưa thật" → đã THAY BẰNG hướng 2D (xem vòng 3)
+Cành/mặt nạ không phóng theo vòm, thảm máu như nhãn dán. Đã thử dựng cảnh CSS 3D thật (đo khớp công thức 0px) — nhưng **bị bỏ ở vòng 3** vì lỗi hiển thị trên GPU thật của chủ dự án.
+
+### Vòng 3 (16/10) — "ko cần xịn tới vậy, lỗi tùm lum, giữ bố cục như Avatar"
+Phản hồi: kéo lên xuống mất đồ, lỗi tùm lum; hầm không cần đi xa; muốn giữ hiệu ứng nhìn từ dưới lên (thảm máu phối cảnh) và bố cục đúng ảnh Avatar.
+- **Bỏ hoàn toàn 3D.** Trên GPU thật Chrome xén các lớp lớn khi chúng đi qua mặt phẳng camera (cành bị cắt đôi, cô gái mất đầu). Headless không bao giờ lộ ra → bài học: thử trên trình duyệt thật của chủ dự án trước khi dựng thứ phức tạp.
+- Dựng lại 2D: một điểm tụ chung, mỗi lớp scale quanh đó theo `d/(d−p·Tn)`, `Tn = 0,42` (đi nông: vật gần nhất ≈ 2,3x, cô gái ≈ 1,1x). Bố cục lấy toạ độ từ chính ảnh Avatar. Bỏ `floor-mau`/`unwarp-floor` (không cần nữa).
+- **Lỗi thật tìm ra giữa chừng:** `.hlw-chrome { position: relative }` (CSS không nằm trong layer Tailwind) đè lên `fixed` của header → thanh nav **trôi mất khi cuộn** trên trang Halloween và hero bắt đầu thấp 65px. Đây rất có thể là một phần của "kéo lên xuống nó bị mất".
+- Vòm "biến mất" vì nền cỏ sáng nuốt vòng vòm sẫm màu → nền sân khấu tối + tường cỏ sáng nằm trong mỗi vòm; tường vẽ sau cùng thì che mất vòm trong → vẽ tường trước, vòng vòm sau.
+- Chữ trên desktop đè lên chữ RETHINK trên cành → dải chữ nằm ngang phía dưới; mobile dành sẵn 300px dưới tranh.
+- Đo: ảnh mobile 560KB / laptop 619KB; cuộn qua hầm trung vị 4,2ms (GPU thật), p95 5,3ms; giảm chuyển động → 0 animation, header vẫn fixed.

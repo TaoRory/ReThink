@@ -57,22 +57,25 @@ Masks, compass, fireflies and eyeballs are dithered pixel-art. Resize them with 
 
 ## Code structure (keep it)
 - `app/halloween.css` — imported at the top of `globals.css`. **Every selector starts with `.hlw`.** `.hlw` = tokens only (the nav/footer borrow it); `.hlw-page` = the full-height ground. Putting `min-height` on `.hlw` once inflated the header to full screen.
-- **`halloween.css` is unlayered, so its rules BEAT Tailwind utilities.** Never set `display` (or anything a responsive utility controls) in an `.hlw-*` class — it silently overrides `hidden` / `lg:block` in the markup. Put those in the markup only.
+- **`halloween.css` is unlayered, so its rules BEAT Tailwind utilities — including `position`.** `.hlw-chrome { position: relative }` once overrode the header's `fixed`, so the nav scrolled away on /halloween and the hero started 65px low. Never set `position`, `display` or anything a utility controls on a class that lands on shared chrome.
+- (older note, same cause) **`halloween.css` is unlayered, so its rules BEAT Tailwind utilities.** Never set `display` (or anything a responsive utility controls) in an `.hlw-*` class — it silently overrides `hidden` / `lg:block` in the markup. Put those in the markup only.
 - `components/pages/HalloweenPage.tsx` — the page; loads its own display font via `next/font`.
 - `components/halloween/Scene.tsx` — visual pieces. `components/halloween/Chrome.tsx` — nav/footer decoration, switched on in `SiteNav`/`SiteFooter` when `stripLocale(pathname).startsWith("/halloween")`.
 - Wordmark: `HalloweenWordmark` in `Scene.tsx`, currently set in **Mystery Quest** (Google, latin only — never use it for Vietnamese text). When the designer's transparent PNG/SVG arrives, swap the body of that one component.
 
-## The hero tunnel is a real 3D scene — do not go back to per-layer scale()
-Everything (arches, branches, masks, fireflies, girl, compass, floor) sits in ONE CSS 3D scene (`.hlw-world`, in `halloween.css`), and scrolling moves exactly one thing: the **camera** (`translateZ`). One passive rAF-coalesced listener (`TunnelProgress`) writes `--p` (0→1).
-- Units: 1 world unit = `--u` = 1vh. `z` = depth behind the picture plane. `--P` camera distance (= CSS perspective), `--T` how far it walks, `--H` camera height.
-- Screen scale of an object at depth z is `P / (P + z − p·T)`. **This is verified to 0px** against 9 objects × 5 scroll positions (`$TEMP`-style probe: read `getBoundingClientRect().width`, compare to the formula). Re-run that kind of check after changing any depth.
-- Add an object with `<Obj z x y w>` in `Scene.tsx` + a `.hlw-p-*` class setting `--w/--x/--y`; it gets perspective, scaling and the near-fade for free. Nothing needs its own scale factor.
-- Why: the first version scaled each layer from its own origin, so any element not scaled (branch, masks) just sat still and the blood carpet grew like a sticker. Shared camera = shared vanishing point.
-- **The floor is a plane, not a picture:** `Trail Máu.png` is drawn in perspective, so `scripts/unwarp-floor.mjs` un-projects it (fits the two edge lines, finds the horizon, resamples linearly in 1/depth) into a top-down `floor-mau.webp`, laid on the ground with `rotateX(90deg)`. Measured: edges `x = 963.7 − 1.273y` / `1301.9 + 1.427y`, horizon y = −125.3.
-- Don't add an opaque overlay (noise, gradient) to a transparent plane texture: it shows through every transparent patch as a grey blotch (happened with a grain tile).
-- Depth order matters: the lit end-wall (`z=262`) must be DEEPER than the girl (`z=250)`; at 200 it hid her.
-- Phones: `--aw` and the girl's `--w` shrink together — 1 unit = 1vh and a phone is narrow, so the girl must fit inside the deepest arch's opening (~56% of arch width).
-- Perf measured with a real GPU: median 4.3ms/frame scrolling through the tunnel, same as the light pages. Headless `--disable-gpu` shows 50–500ms for EVERY page, including `/` — never judge perf from a software-rendered run.
+## The hero: the Avatar composition in flat 2D, one vanishing point
+**Do not rebuild this as a CSS 3D scene.** That was tried (`preserve-3d`, `perspective`, `rotateX` floor) and on the owner's real GPU Chrome sliced the big layers where they crossed the camera plane: the wordmark branch cut in half, the girl missing her head, the lit wall clipped. The headless test browser never showed it, and a 0px-exact projection measurement hid it too. The owner's verdict: far too elaborate, and what they liked was the first simple version.
+
+How it works now (`Scene.tsx` + the HERO block of `halloween.css`):
+- A square composition (`--S`, like the Avatar) holds layers `<L d>`. `d` = depth (1 = nearest big arch, larger = further in). Items `<I cx cy w>` are placed by their centre/width as fractions of the square, **measured off the designer's Avatar** (arches: widths .84/.668/.409/.207, tops .088/.171/.305/.476; girl feet at y .727, width .124; carpet cy .84, w .88; branches/masks/arms listed in `Scene.tsx`).
+- Scroll writes `--p` (0→1) via ONE passive rAF listener (`TunnelProgress`). Each layer scales about the vanishing point `(50%, 64%)` by `d / (d − p·Tn)`. This is the same projection a camera gives, so branches, masks, arches and the floor rush past together — but it is only `transform: scale()` on ordinary boxes, nothing for the browser to sort or clip.
+- `Tn = 0.42` is small on purpose (owner: "no need to go that deep"): nearest things ≈ 2.3x, girl ≈ 1.1x. Don't raise it without being asked.
+- **Draw order matters** (DOM order = paint order): 1) lit grass walls, outermost first; 2) far wall, ground, carpet; 3) girl, compass; 4) arch rings, deepest first; 5) masks/eyes; 6) branches thin→thick, the wordmark branch; 7) nearest masks and hands; 8) fireflies. A wall painted after a deeper layer hides it.
+- **Contrast:** the Avatar's walls are bright grass and its rings are DARK. Rings on a bright stage vanish, so the stage is near-black and each arch gets a `.hlw-wall` fill (bright `bg-co`) behind its ring.
+- Desktop: the copy is a single band along the bottom (the diagonal wordmark branch occupies the left half, so any copy there collides with it). Phone: `--copy: 300px` is reserved under the picture instead.
+- The carpet is `trail-mau.webp` (already drawn in perspective). Uniform scaling about the vanishing point is only qualitatively right for a floor, which is fine at this small travel.
+- Verified: ring/girl widths match the formula to the pixel at p = 0, 0.5, 1. Mask widths read ~6% high only because they sway (rotated bounding box).
+- Images in the hero are `loading="eager"` — a lazy far-away image can pop in late.
 
 ## Animation catalogue (transform/opacity only — `npm run check:hlw` enforces it)
 - Fireflies blink; branches/masks sway a degree or two; masks shake on hover.

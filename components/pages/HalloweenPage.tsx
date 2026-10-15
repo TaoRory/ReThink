@@ -45,42 +45,51 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
       {/* ================= the tunnel ================= */}
       <TunnelProgress>
         <TunnelStage>
-          <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-5 pb-[12vh]">
-            <div className="hlw-hero-copy relative max-w-xl">
-              <div className="absolute -inset-x-10 -inset-y-8 -z-10 bg-[radial-gradient(closest-side,rgba(10,15,4,0.9),rgba(10,15,4,0.55)_60%,transparent)]" />
-              <p className="hlw-kicker">{t.kicker}</p>
-              <h1 className="hlw-title mt-4 text-[clamp(2rem,6vw,3.6rem)] leading-[1.02]">
-                <span className="sr-only">ReThink — </span>
-                {t.eventName}
-              </h1>
-              <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[color:var(--hlw-bone)]/90">
-                {t.tagline}
-              </p>
-              <dl className="mt-6 grid gap-x-10 gap-y-3 text-sm sm:grid-cols-2">
-                <div>
-                  <dt className="hlw-kicker">{t.whenLabel}</dt>
-                  <dd className="mt-1.5">{t.when}</dd>
-                </div>
-                <div>
-                  <dt className="hlw-kicker">{t.whereLabel}</dt>
-                  <dd className="mt-1.5">{t.where}</dd>
-                </div>
-              </dl>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="#dang-ky" className="hlw-btn">
-                  {t.ctaJoin}
-                </a>
-                <a href="#rooms" className="hlw-btn hlw-btn-ghost">
-                  {t.ctaRooms}
-                </a>
+          {/* The copy is one band along the bottom of the screen, so it never competes with
+              the big diagonal branch that carries the wordmark. On a phone the composition
+              leaves the bottom --copy px free for it instead of sitting under it. */}
+          <div className="hlw-hero-copy absolute inset-x-0 bottom-0 z-10">
+            <div className="hlw-copy-scrim" aria-hidden="true" />
+            <div className="relative mx-auto grid max-w-6xl items-end gap-x-10 gap-y-3 px-5 pb-4 pt-6 lg:grid-cols-[1fr_1.35fr_auto] lg:pb-[7vh]">
+              <div>
+                <p className="hlw-kicker">{t.kicker}</p>
+                <h1 className="hlw-title mt-3 text-[clamp(1.7rem,4.2vw,3.4rem)] leading-[1.02]">
+                  <span className="sr-only">ReThink — </span>
+                  {t.eventName}
+                </h1>
               </div>
-              <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
-                {t.draftNote}
-              </p>
+
+              <div className="text-sm">
+                <p className="text-[14px] leading-relaxed text-[color:var(--hlw-bone)]/90">{t.tagline}</p>
+                <dl className="mt-3 grid gap-x-8 gap-y-2 text-[13px] sm:grid-cols-2">
+                  <div>
+                    <dt className="hlw-kicker">{t.whenLabel}</dt>
+                    <dd className="mt-1">{t.when}</dd>
+                  </div>
+                  <div>
+                    <dt className="hlw-kicker">{t.whereLabel}</dt>
+                    <dd className="mt-1">{t.where}</dd>
+                  </div>
+                </dl>
+              </div>
+
+              <div>
+                <div className="flex flex-wrap gap-3 lg:flex-col lg:items-stretch">
+                  <a href="#dang-ky" className="hlw-btn max-sm:!px-4 max-sm:!py-3 max-sm:!text-[10px] max-sm:!tracking-[0.14em]">
+                    {t.ctaJoin}
+                  </a>
+                  <a href="#rooms" className="hlw-btn hlw-btn-ghost max-sm:!px-4 max-sm:!py-3 max-sm:!text-[10px] max-sm:!tracking-[0.14em]">
+                    {t.ctaRooms}
+                  </a>
+                </div>
+                <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
+                  {t.draftNote}
+                </p>
+              </div>
             </div>
           </div>
 
-          <p className="hlw-hint hlw-bob absolute bottom-[3.5vh] left-1/2 z-10 -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.4em] text-[color:var(--hlw-script)]">
+          <p className="hlw-hint hlw-bob absolute bottom-[1.6vh] left-1/2 max-sm:hidden z-10 -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.4em] text-[color:var(--hlw-script)]">
             {t.scrollHint} ↓
           </p>
         </TunnelStage>

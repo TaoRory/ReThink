@@ -140,3 +140,10 @@ Khác với plan ban đầu, phát hiện khi đo tài nguyên thật:
 - Subagent chưa chạy được trong phiên mở ở thư mục gốc `Rethink/` — phải mở phiên trong `web/`.
 
 Đã kiểm: build xanh · `check:hlw` (8 keyframe, 0 rò rỉ) · ảnh chụp 1440 + 390 từng section · hero ở p = 0 / 0,5 / 1 · không tràn ngang mobile · reduced-motion: hầm thu còn 1 màn hình, 0 animation chạy.
+
+### Vòng 2 (15/10 tối) — "kéo vào hầm chưa thật"
+Phản hồi: cành/mặt nạ không phóng to như các vòm; thảm máu như một tấm nhãn dán. Nguyên nhân gốc: mỗi lớp được `scale()` quanh gốc riêng của nó, nên lớp nào không scale thì đứng yên, và thảm là ảnh phẳng.
+- Dựng lại hầm thành **một cảnh CSS 3D thật**; cuộn chỉ di chuyển camera. Đo: 9 vật thể × 5 mốc cuộn, sai số 0px so với công thức `P/(P+z−pT)`.
+- Thảm máu: **un-project** ảnh phối cảnh thành texture nhìn từ trên xuống (`scripts/unwarp-floor.mjs`), đặt thành mặt sàn thật.
+- Lỗi tự gây ra rồi sửa: lớp nhiễu làm thảm lộ mảng xám; nền sáng cuối hầm đặt nông hơn cô gái nên che cô; la bàn quá to; trên mobile cô gái rộng hơn lòng vòm; chạy `npm run build` khi `npm run dev` đang chạy làm hỏng server của chủ dự án.
+- Hiệu năng (GPU thật): trung vị 4,3ms/khung khi cuộn qua hầm = các trang nhẹ khác.

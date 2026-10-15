@@ -62,13 +62,24 @@ Masks, compass, fireflies and eyeballs are dithered pixel-art. Resize them with 
 - `components/halloween/Scene.tsx` — visual pieces. `components/halloween/Chrome.tsx` — nav/footer decoration, switched on in `SiteNav`/`SiteFooter` when `stripLocale(pathname).startsWith("/halloween")`.
 - Wordmark: `HalloweenWordmark` in `Scene.tsx`, currently set in **Mystery Quest** (Google, latin only — never use it for Vietnamese text). When the designer's transparent PNG/SVG arrives, swap the body of that one component.
 
+## The hero tunnel is a real 3D scene — do not go back to per-layer scale()
+Everything (arches, branches, masks, fireflies, girl, compass, floor) sits in ONE CSS 3D scene (`.hlw-world`, in `halloween.css`), and scrolling moves exactly one thing: the **camera** (`translateZ`). One passive rAF-coalesced listener (`TunnelProgress`) writes `--p` (0→1).
+- Units: 1 world unit = `--u` = 1vh. `z` = depth behind the picture plane. `--P` camera distance (= CSS perspective), `--T` how far it walks, `--H` camera height.
+- Screen scale of an object at depth z is `P / (P + z − p·T)`. **This is verified to 0px** against 9 objects × 5 scroll positions (`$TEMP`-style probe: read `getBoundingClientRect().width`, compare to the formula). Re-run that kind of check after changing any depth.
+- Add an object with `<Obj z x y w>` in `Scene.tsx` + a `.hlw-p-*` class setting `--w/--x/--y`; it gets perspective, scaling and the near-fade for free. Nothing needs its own scale factor.
+- Why: the first version scaled each layer from its own origin, so any element not scaled (branch, masks) just sat still and the blood carpet grew like a sticker. Shared camera = shared vanishing point.
+- **The floor is a plane, not a picture:** `Trail Máu.png` is drawn in perspective, so `scripts/unwarp-floor.mjs` un-projects it (fits the two edge lines, finds the horizon, resamples linearly in 1/depth) into a top-down `floor-mau.webp`, laid on the ground with `rotateX(90deg)`. Measured: edges `x = 963.7 − 1.273y` / `1301.9 + 1.427y`, horizon y = −125.3.
+- Don't add an opaque overlay (noise, gradient) to a transparent plane texture: it shows through every transparent patch as a grey blotch (happened with a grain tile).
+- Depth order matters: the lit end-wall (`z=262`) must be DEEPER than the girl (`z=250)`; at 200 it hid her.
+- Phones: `--aw` and the girl's `--w` shrink together — 1 unit = 1vh and a phone is narrow, so the girl must fit inside the deepest arch's opening (~56% of arch width).
+- Perf measured with a real GPU: median 4.3ms/frame scrolling through the tunnel, same as the light pages. Headless `--disable-gpu` shows 50–500ms for EVERY page, including `/` — never judge perf from a software-rendered run.
+
 ## Animation catalogue (transform/opacity only — `npm run check:hlw` enforces it)
-- **Hero tunnel:** sticky section ~250vh; ONE passive scroll listener (rAF) writes `--p` 0→1; each arch layer `scale()`s by its own factor so you walk in; the girl's eye glow fades up. Phone: 3 layers. Reduced motion: static composition.
-- Fireflies drift + blink; branches sway a degree or two; masks swing on their branch, shake on hover.
-- Eyeballs follow the cursor — ONE shared pointermove listener, rAF-throttled, rotating/translating the pupil layer.
-- Blood trail "flows" to each timeline stop (one-shot `scaleX` on enter).
-- FAQ: a hand presses against the glass when a question opens (`scale`).
-- One-shot effects may be dramatic; anything looping must stay cheap. The user has reverted a hero before for lag.
+- Fireflies blink; branches/masks sway a degree or two; masks shake on hover.
+- Eyeballs follow the cursor — ONE shared pointermove listener (`EyeTracker`), rAF-throttled.
+- One-shots keyed to `[data-reveal].revealed`: blood stain spreads, the line of blood runs along the timeline.
+- FAQ: hands behind the glass press closer when a question is open (`:has(details[open])`).
+- Reduced motion: the camera stays at 0, `--p` is forced to 0, nothing animates.
 
 ## Placeholders (all copy on the page is invented)
 - Event name is a neutral "Halloween 2026"; date 30/10/2026 18:00–22:00, venue, the four stations, schedule and FAQ are invented to fit the KV (tunnel, masks, compass).

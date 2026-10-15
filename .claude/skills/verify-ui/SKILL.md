@@ -9,6 +9,8 @@ Never report a visual change as done from reading code. Measure or look.
 
 ## 1. Build and serve (Windows / Git Bash)
 
+> **Never run `npm run build` while `npm run dev` is running.** Both write `.next/`; the build overwrites the dev server's files and it starts answering 500 (`Cannot find module './331.js'`). If the owner has a dev server open on :3000, stop it first, and when you finish restore it: `rm -rf .next`, then `npm run dev` in the background. Say so — the owner's browser tab will need a refresh.
+
 ```bash
 npm run build
 # `npm run start` keeps serving the OLD build from memory — always kill port 3000 first

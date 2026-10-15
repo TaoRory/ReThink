@@ -2,14 +2,7 @@ import { Mystery_Quest } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { EyeTracker } from "@/components/halloween/EyeTracker";
-import {
-  Branch,
-  Eyeball,
-  HalloweenWordmark,
-  HangingMask,
-  Motes,
-  TunnelStage,
-} from "@/components/halloween/Scene";
+import { Branch, Eyeball, Motes, TunnelStage } from "@/components/halloween/Scene";
 import { TunnelProgress } from "@/components/halloween/TunnelProgress";
 import { dict, localePath, type Locale } from "@/lib/i18n";
 
@@ -52,16 +45,6 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
       {/* ================= the tunnel ================= */}
       <TunnelProgress>
         <TunnelStage>
-          {/* the wordmark rides a branch across the frame, as in the KV */}
-          <div
-            className="hlw-wordbranch pointer-events-none absolute left-[-8%] top-[14%] w-[86vw] max-w-[1150px] sm:top-[16%]"
-            aria-hidden="true"
-          >
-            <Branch className="relative flex h-[clamp(64px,10vw,140px)] w-full items-center justify-center">
-              <HalloweenWordmark className="text-[clamp(2.6rem,8.4vw,7.4rem)]" />
-            </Branch>
-          </div>
-
           <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-5 pb-[12vh]">
             <div className="hlw-hero-copy relative max-w-xl">
               <div className="absolute -inset-x-10 -inset-y-8 -z-10 bg-[radial-gradient(closest-side,rgba(10,15,4,0.9),rgba(10,15,4,0.55)_60%,transparent)]" />

@@ -162,72 +162,142 @@
 .hlw-btn-ghost:hover { background: rgba(68, 100, 2, 0.4); border-color: var(--hlw-bone); }
 
 /* ============================================================
-   HERO — the grass tunnel you scroll into
+   HERO — a real 3D tunnel you walk into
+   ------------------------------------------------------------
+   One CSS 3D scene. Scrolling moves exactly one thing, the camera
+   (`.hlw-world`), so every arch, branch, mask, firefly and the floor are
+   projected through the same camera and vanishing point. Per-layer scale()
+   tricks looked fake: unscaled layers just sat there.
+
+   Units: 1 world unit = --u = 1vh. z = depth behind the picture plane.
+   --P camera distance (also the CSS perspective), --T how far it walks,
+   --H camera height above the floor. Screen scale = P / (P + z - p*T).
    ============================================================ */
 
 /* the scroll track; the stage inside stays pinned while you scroll it */
 .hlw-tunnel {
   --p: 0;
   position: relative;
-  height: 260vh;
+  height: 280vh;
 }
 .hlw-tunnel-stage {
+  --u: 1vh;
+  --P: 90;
+  --T: 170;
+  --H: 54;
+  --aw: 150; /* arch width, in units */
   position: sticky;
   top: 0;
   height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 62%, rgba(68, 100, 2, 0.55), transparent 62%),
-    var(--hlw-ink);
+  perspective: calc(var(--P) * var(--u));
+  perspective-origin: 50% 64%;
+  /* above the horizon: tunnel dark; below it: the ground colour the floor planes fade into */
+  background: linear-gradient(to bottom, #0a0f04 0%, #0e1505 64%, #0f1606 64%, #070a03 100%);
 }
 
-/* every arch: centred, standing on the floor, scaling toward the viewer.
-   --s = resting scale, --k = how fast this layer rushes past */
-.hlw-arch {
+/* the camera. Its origin sits on the vanishing point, so child offsets are
+   measured from where the tunnel recedes to. */
+.hlw-world {
   position: absolute;
   left: 50%;
-  bottom: -3%;
-  width: min(118vh, 128vw);
-  transform-origin: 50% 72%;
-  transform: translate3d(-50%, 0, 0) scale(calc(var(--s) * (1 + var(--p) * var(--k))));
-  will-change: transform;
-}
-/* the outer arches fade once they have flown past your shoulders */
-.hlw-arch-fade { opacity: calc(1 - clamp(0, (var(--p) - var(--f)) * 3.2, 1)); }
-
-/* the blood carpet on the floor: its narrow far edge ends at the girl's feet */
-.hlw-floor {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  height: 15vh;
-  transform-origin: 50% 100%;
-  transform: translate3d(-50%, 0, 0) scale(calc(1 + var(--p) * 1.15));
-  opacity: 0.9;
+  top: 64%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, calc(var(--p) * var(--T) * var(--u)));
   will-change: transform;
 }
 
-/* the girl, deep in the tunnel, getting closer */
-.hlw-girl {
+/* an object standing in the scene. --z depth, --x/--y offset, --w width (units).
+   Opacity falls to 0 as the camera closes on it, so nothing swells into a
+   giant blurry slab on its way past. */
+.hlw-obj {
+  --dist: calc(var(--P) + var(--z, 0) - var(--p) * var(--T));
   position: absolute;
-  left: 50%;
-  bottom: 13%;
-  height: 27vh;
-  transform-origin: 50% 100%;
-  transform: translate3d(-50%, 0, 0) scale(calc(1 + var(--p) * 1.15));
-  will-change: transform;
+  left: 0;
+  top: 0;
+  width: calc(var(--w, 100) * var(--u));
+  transform:
+    translate3d(
+      calc(var(--x, 0) * var(--u)),
+      calc(var(--y, 0) * var(--u)),
+      calc(var(--z, 0) * var(--u) * -1)
+    )
+    translate(-50%, var(--ty, -50%));
+  opacity: clamp(0, calc((var(--dist) - var(--f0, 16)) / var(--f1, 24)), 1);
 }
-.hlw-girl img { height: 100%; width: auto; }
-/* her eyes light up the deeper you go. Two small points placed on the eyes
-   in the artwork (measured: left eye at 46.6% / 9.3% of nhan-vat.webp,
-   right eye ~53.9%) — a single band read as a glowing mask over her mouth. */
-.hlw-girl-eyes {
+
+/* flat planes (the floor): lie a box on its back with rotateX(90deg) so its
+   top edge is the far end. --zc is the plane's centre depth, --w/--l its size. */
+.hlw-plane {
   position: absolute;
-  inset: 0;
-  opacity: calc(0.3 + var(--p) * 1.1);
+  left: 0;
+  top: 0;
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--l) * var(--u));
+  transform:
+    translate3d(
+      calc(var(--w) * var(--u) * -0.5),
+      calc((var(--H) - var(--l) * 0.5 - var(--lift, 0)) * var(--u)),
+      calc(var(--zc) * var(--u) * -1)
+    )
+    rotateX(90deg);
 }
-/* each eye is its own square, so the glow fades to nothing inside it
-   (one shared short box clipped the gradients into a hard-edged visor) */
+
+/* the dark ground; its far end is the same colour as the stage below the
+   horizon, so the plane has no visible edge */
+.hlw-ground {
+  --w: 700;
+  --l: 760;
+  --zc: 250;
+  background: linear-gradient(to bottom, #0f1606 0%, #0f1606 8%, #0b1104 45%, #060902 100%);
+}
+
+/* the blood carpet, un-projected to a top-down texture (scripts/unwarp-floor.mjs).
+   Spans z = -3 .. 252: from just behind the starting camera to the girl's feet.
+   (No grain overlay: it is opaque, so it shows through every transparent patch.) */
+.hlw-carpet {
+  --w: 96;
+  --l: 255;
+  --zc: 124.5;
+  --lift: 0.25;
+  background: url("/halloween/floor-mau.webp") center / 100% 100%;
+  /* feather the long edges so it reads as a stain on the ground, not a rug */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+}
+
+/* warm light the compass throws on the floor */
+.hlw-compass-glow {
+  --w: 40;
+  --l: 30;
+  --zc: 222;
+  --lift: 0.5;
+  background: radial-gradient(closest-side, rgba(210, 145, 63, 0.65), rgba(128, 46, 54, 0.28) 55%, transparent);
+}
+
+/* ---- the arches ---- */
+.hlw-p-arch {
+  --w: var(--aw);
+  --ty: -100%;                 /* feet on the floor */
+  --y: var(--H);
+  filter: brightness(var(--light, 1));   /* static: a one-off raster, never animated */
+  --f0: 14;
+  --f1: 22;
+}
+.hlw-p-farbg {
+  --w: 92;
+  --ty: -100%;
+  --y: var(--H);
+  --f0: 0;
+  --f1: 1;
+}
+
+/* ---- the girl and the compass stand on the carpet ---- */
+.hlw-p-girl { --w: 64; --ty: -100%; --y: var(--H); --f0: 0; --f1: 1; }
+.hlw-girl-eyes { position: absolute; inset: 0; opacity: calc(0.3 + var(--p) * 1.1); }
+/* each eye is its own square, so the glow fades to nothing inside it */
 .hlw-girl-eyes i {
   position: absolute;
   top: 9.3%;
@@ -239,25 +309,34 @@
 }
 .hlw-girl-eyes i:first-child { left: 46.6%; }
 .hlw-girl-eyes i:last-child { left: 53.9%; }
+.hlw-p-compass { --w: 22; --ty: -100%; --y: var(--H); --f0: 0; --f1: 1; }
 
-/* the compass glowing on the floor */
-.hlw-floor-glow {
-  position: absolute;
-  left: 50%;
-  bottom: 2%;
-  width: 46vh;
-  height: 18vh;
-  transform: translateX(-50%);
-  background: radial-gradient(closest-side, rgba(210, 145, 63, 0.55), rgba(128, 46, 54, 0.25) 55%, transparent);
+/* ---- the wordmark branch: nearest thing in the scene, so it flies past first ---- */
+.hlw-p-word { --w: 138; --x: -20; --y: -46; --f0: 12; --f1: 14; }
+.hlw-word-tilt { transform: rotate(-16deg); height: calc(12 * var(--u)); }
+.hlw-word-text { font-size: calc(13 * var(--u)); }
+
+/* ---- the branch cluster at the top right, with the dog mask hanging from it ---- */
+.hlw-p-cluster { --w: 142; --x: 53; --y: -38; --f0: 14; --f1: 22; }
+.hlw-cluster-mask { position: absolute; left: 76%; top: 14%; width: 20%; }
+.hlw-cluster-mask img { width: 100% !important; height: auto !important; }
+
+.hlw-p-cat { --w: 28; --x: -71; --y: -53; --ty: 0%; --f0: 12; --f1: 14; }
+.hlw-p-owl { --w: 14; --x: 46; --y: -8; --ty: 0%; --f0: 14; --f1: 16; }
+
+/* fireflies */
+.hlw-p-fly { --w: 3; --f0: 8; --f1: 10; }
+.hlw-fly { width: 100%; height: auto; animation: hlw-fly-blink var(--b, 2.8s) steps(2, end) infinite; animation-delay: var(--dl, 0s); }
+@keyframes hlw-fly-blink {
+  0%, 100% { opacity: 0.95; }
+  50%      { opacity: 0.25; }
 }
 
-/* the branch carrying the wordmark: the nearest thing to you, so it rushes
-   past first and is gone before the girl gets close */
-.hlw-wordbranch {
-  transform-origin: 32% 50%;
-  transform: rotate(-16deg) scale(calc(1 + var(--p) * 1.7));
-  opacity: calc(1 - clamp(0, (var(--p) - 0.12) * 2.6, 1));
-  will-change: transform;
+.hlw-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 58%, transparent 52%, rgba(5, 8, 2, 0.6) 100%);
 }
 
 /* copy over the tunnel; it steps aside as you walk in */
@@ -463,12 +542,20 @@ details[open] .hlw-q-mark { transform: rotate(45deg); }
 }
 
 @media (max-width: 768px) {
-  .hlw-tunnel { height: 200vh; }
-  .hlw-arch { width: 150vw; }
-  .hlw-arch-desktop { display: none; }
-  /* the deepest arch's opening on a 390x844 screen is ~194px tall with its
-     floor near y=745 — she has to fit inside it, or the arch cuts her in half */
-  .hlw-girl { height: 17vh; bottom: 11%; }
+  .hlw-tunnel { height: 220vh; }
+  /* 1 unit = 1vh, and a phone is much narrower than it is tall: shrink the arches
+     so one still shows its curve inside a 390px width */
+  .hlw-tunnel-stage { --aw: 92; }
+  /* she has to fit inside the deepest arch's opening (~56% of its width), or the arch cuts her in half */
+  .hlw-p-girl { --w: 44; }
+  .hlw-p-compass { --w: 15; }
+  .hlw-p-farbg { --w: 66; }
+  .hlw-p-word { --w: 58; --x: -6; --y: -42; }
+  .hlw-word-tilt { height: calc(6.5 * var(--u)); }
+  .hlw-word-text { font-size: calc(6.4 * var(--u)); }
+  .hlw-p-cluster { --w: 96; --x: 28; --y: -40; }
+  .hlw-p-cat, .hlw-p-owl { display: none; }
+  .hlw-p-fly:nth-child(even) { display: none; }
 }
 
 /* no motion: a still frame of the tunnel, all copy visible */
@@ -476,7 +563,7 @@ details[open] .hlw-q-mark { transform: rotate(45deg); }
   .hlw-tunnel { height: auto; }
   .hlw-tunnel-stage { position: relative; }
   .hlw-tunnel, .hlw-tunnel * { --p: 0 !important; }
-  .hlw-mote, .hlw-sway, .hlw-drift, .hlw-spin, .hlw-bob, .hlw-ticker,
+  .hlw-mote, .hlw-fly, .hlw-sway, .hlw-drift, .hlw-spin, .hlw-bob, .hlw-ticker,
   .hlw-card:hover .hlw-mask {
     animation: none !important;
   }

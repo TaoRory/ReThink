@@ -153,6 +153,7 @@ export function HangingMask({
         style={{ height: cord }}
       />
       <Image
+        loading="eager"
         src={`${H}/${src}`}
         alt=""
         width={width}
@@ -166,98 +167,178 @@ export function HangingMask({
 }
 
 /* ------------------------------------------------------------------ */
-/* the hero tunnel                                                     */
+/* the hero tunnel — a real 3D scene                                   */
 /* ------------------------------------------------------------------ */
 
-/**
- * Nested grass arches, as in the KV avatar. --s = resting scale, --k = how
- * fast the layer rushes toward you, --f = progress at which it starts to fade.
- * `hlw-arch-desktop` layers are dropped on phones.
+/*
+ * Everything in the tunnel lives in one CSS 3D scene, and the scroll moves ONE
+ * thing: the camera (see `.hlw-world` in halloween.css). That is what makes it
+ * read as walking in, where the first version only `scale()`d each layer from
+ * its own origin: a branch or mask that wasn't scaled just sat there, and the
+ * blood carpet grew like a sticker. In a shared 3D scene every object —
+ * arches, branches, masks, fireflies, the floor — is projected through the same
+ * camera and the same vanishing point, so near things rush outward past you
+ * and far things barely move, with no per-layer fudge factors.
+ *
+ * Units: 1 world unit = 1vh (`--u`). z is "how far behind the picture plane",
+ * so bigger z = deeper in the tunnel. The camera starts `--P` units in front of
+ * the plane (also the CSS perspective distance) and walks `--T` units forward.
+ * An object at depth z appears at scale P / (P + z - p*T).
+ * Transforms and opacity only — see the performance rule in halloween.css.
  */
-const ARCHES = [
-  { s: 1.28, k: 3.0, f: 0.04, desktop: true },
-  { s: 0.95, k: 2.5, f: 0.22, desktop: false },
-  { s: 0.7, k: 2.0, f: 0.42, desktop: false },
-  { s: 0.52, k: 1.6, f: 0.62, desktop: true },
-  { s: 0.38, k: 1.25, f: 2, desktop: false },
+
+/** an object standing in the scene. Position vars go inline; sizes live in CSS classes. */
+function Obj({
+  z,
+  x,
+  y,
+  w,
+  className = "",
+  style,
+  children,
+}: {
+  z: number;
+  x?: number;
+  y?: number;
+  w?: number;
+  className?: string;
+  style?: CSSProperties;
+  children?: ReactNode;
+}) {
+  return (
+    <div
+      className={`hlw-obj ${className}`}
+      style={
+        {
+          "--z": z,
+          ...(x !== undefined && { "--x": x }),
+          ...(y !== undefined && { "--y": y }),
+          ...(w !== undefined && { "--w": w }),
+          ...style,
+        } as CSSProperties
+      }
+    >
+      {children}
+    </div>
+  );
+}
+
+/** equal arches at increasing depth: a tunnel, not a stack of different-sized pictures */
+const ARCH_Z = [0, 32, 72, 124, 196];
+/** deeper arches are lit from inside the tunnel, near ones stand in shadow */
+const ARCH_LIGHT = [0.62, 0.74, 0.88, 1, 1.12];
+
+/** fireflies hang in the air at real depths, so they stream past with the camera */
+const FLIES = [
+  { x: -52, y: -30, z: 10, img: 1 },
+  { x: 44, y: -16, z: 24, img: 2 },
+  { x: -28, y: 8, z: 48, img: 3 },
+  { x: 30, y: -34, z: 70, img: 4 },
+  { x: -64, y: -6, z: 86, img: 1 },
+  { x: 58, y: 12, z: 104, img: 2 },
+  { x: -14, y: -22, z: 128, img: 3 },
+  { x: 22, y: 20, z: 150, img: 4 },
+  { x: -40, y: 26, z: 172, img: 1 },
+  { x: 8, y: -40, z: 196, img: 2 },
+  { x: 36, y: -4, z: 214, img: 3 },
+  { x: -18, y: 14, z: 232, img: 4 },
 ];
 
 export function TunnelStage({ children }: { children?: ReactNode }) {
   return (
     <div className="hlw-tunnel-stage">
       {/* everything in this layer is scenery; the real copy comes in as children */}
-      <div className="absolute inset-0" aria-hidden="true">
-      {/* the far end: the lit inner scene, behind the smallest arch */}
-      <div
-        className="hlw-arch"
-        style={{ "--s": 0.3, "--k": 1.25, "--f": 2, width: "min(60vh, 64vw)" } as CSSProperties}
-      >
-        <Image src={`${H}/bg-vom-co.webp`} alt="" width={720} height={944} sizes="64vw" className="h-auto w-full" />
+      <div className="hlw-world" aria-hidden="true">
+        {/* ---- the floor: flat planes the camera walks over ---- */}
+        <div className="hlw-plane hlw-ground" />
+        <div className="hlw-plane hlw-carpet" />
+        <div className="hlw-plane hlw-compass-glow" />
+
+        {/* ---- the far end, lit from inside ---- */}
+        <Obj z={262} className="hlw-p-farbg">
+          <Image loading="eager" src={`${H}/bg-vom-co.webp`} alt="" width={720} height={944} sizes="40vw" className="h-auto w-full" />
+        </Obj>
+
+        {/* ---- arches, deepest first ---- */}
+        {[...ARCH_Z].reverse().map((z, k) => {
+          const i = ARCH_Z.length - 1 - k;
+          return (
+            <Obj
+              key={z}
+              z={z}
+              className="hlw-p-arch"
+              style={{ "--light": ARCH_LIGHT[i] } as CSSProperties}
+            >
+              <Image
+                src={`${H}/vom-co.webp`}
+                alt=""
+                width={1400}
+                height={1475}
+                sizes="(max-width: 768px) 120vh, 150vh"
+                priority
+                className="h-auto w-full"
+              />
+            </Obj>
+          );
+        })}
+
+        {/* ---- the girl, on the carpet at the far end ---- */}
+        <Obj z={250} className="hlw-p-girl">
+          <Image src={`${H}/nhan-vat.webp`} alt="" width={380} height={624} unoptimized priority className="h-auto w-full" />
+          <span className="hlw-girl-eyes">
+            <i />
+            <i />
+          </span>
+        </Obj>
+        <Obj z={222} className="hlw-p-compass">
+          <Image loading="eager" src={`${H}/compass-3d.webp`} alt="" width={290} height={153} unoptimized className="hlw-pixel h-auto w-full" />
+        </Obj>
+
+        {/* ---- the wordmark branch, nearest of all: the first thing to rush past ---- */}
+        <Obj z={0} className="hlw-p-word">
+          <div className="hlw-word-tilt">
+            <Branch className="relative flex h-full w-full items-center justify-center">
+              <HalloweenWordmark className="hlw-word-text" />
+            </Branch>
+          </div>
+        </Obj>
+
+        {/* ---- branches with their masks hanging from them: one rigid piece ---- */}
+        <Obj z={26} className="hlw-p-cluster">
+          <div className="hlw-drift -scale-x-100">
+            <Image loading="eager" src={`${H}/canh-cay.webp`} alt="" width={1600} height={1215} sizes="60vh" className="h-auto w-full" />
+          </div>
+          <div className="hlw-cluster-mask">
+            <HangingMask src="mask-cho.webp" width={130} height={164} cord={90} sway="hlw-sway-b" />
+          </div>
+        </Obj>
+
+        <Obj z={8} className="hlw-p-cat">
+          <Branch className="relative mx-auto h-3 w-[22rem] -rotate-6" />
+          <HangingMask src="mask-meo.webp" width={150} height={189} cord={40} />
+        </Obj>
+
+        <Obj z={44} className="hlw-p-owl">
+          <HangingMask src="mask-cu.webp" width={104} height={163} cord={30} sway="hlw-sway-c" />
+        </Obj>
+
+        {/* ---- fireflies ---- */}
+        {FLIES.map((f, i) => (
+          <Obj key={i} z={f.z} x={f.x} y={f.y} className="hlw-p-fly">
+            <img
+              src={`${H}/light-${f.img}.webp`}
+              alt=""
+              width={14}
+              height={14}
+              className="hlw-fly hlw-pixel"
+              style={{ "--dl": `${-(i * 1.7).toFixed(1)}s` } as CSSProperties}
+            />
+          </Obj>
+        ))}
       </div>
 
-      {/* the blood carpet along the tunnel floor, leading to her feet (KV avatar) */}
-      <div className="hlw-floor">
-        <Image src={`${H}/trail-mau.webp`} alt="" width={1400} height={387} sizes="60vh" className="h-full w-auto max-w-none" />
-      </div>
-
-      {/* the girl at the end of the tunnel */}
-      <div className="hlw-girl">
-        <Image src={`${H}/nhan-vat.webp`} alt="" width={380} height={624} unoptimized priority />
-        <span className="hlw-girl-eyes">
-          <i />
-          <i />
-        </span>
-      </div>
-
-      {/* arches, deepest first so the nearer ones paint over */}
-      {[...ARCHES].reverse().map((a, i) => (
-        <div
-          key={i}
-          className={`hlw-arch hlw-arch-fade ${a.desktop ? "hlw-arch-desktop" : ""}`}
-          style={{ "--s": a.s, "--k": a.k, "--f": a.f } as CSSProperties}
-        >
-          <Image
-            src={`${H}/vom-co.webp`}
-            alt=""
-            width={1400}
-            height={1475}
-            sizes="(max-width: 768px) 150vw, 128vw"
-            priority={i === ARCHES.length - 1}
-            className="h-auto w-full"
-          />
-        </div>
-      ))}
-
-      {/* the compass glowing on the floor */}
-      <div className="hlw-floor-glow" />
-      <Image
-        src={`${H}/compass-3d.webp`}
-        alt=""
-        width={290}
-        height={153}
-        unoptimized
-        className="hlw-pixel absolute bottom-[3%] left-1/2 w-[18vh] -translate-x-1/2"
-      />
-
-      {/* branches across the front, as in the KV */}
-      <div className="hlw-drift absolute -right-[12%] -top-[8%] w-[70vw] max-w-[1000px] -scale-x-100 opacity-95">
-        <Image src={`${H}/canh-cay.webp`} alt="" width={1600} height={1215} sizes="70vw" className="h-auto w-full" />
-      </div>
-
-      {/* masks hanging in the corners */}
-      <div className="absolute left-[4%] top-0 hidden sm:block">
-        <Branch className="relative h-3 w-56 -rotate-6" />
-        <HangingMask src="mask-meo.webp" width={150} height={189} cord={40} />
-      </div>
-      <div className="absolute right-[6%] top-[10%] hidden md:block">
-        <HangingMask src="mask-cho.webp" width={130} height={164} cord={90} sway="hlw-sway-b" />
-      </div>
-      <div className="absolute right-[22%] top-[38%] hidden lg:block">
-        <HangingMask src="mask-cu.webp" width={86} height={134} cord={30} sway="hlw-sway-c" />
-      </div>
-
-      <Motes count={10} />
-      </div>
+      {/* darkens the edges so the world has no visible seams */}
+      <div className="hlw-vignette" aria-hidden="true" />
 
       {children}
     </div>

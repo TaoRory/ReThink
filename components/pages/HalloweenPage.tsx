@@ -6,7 +6,6 @@ import {
   Branch,
   Eyeball,
   HalloweenWordmark,
-  HangingMask,
   Motes,
   TunnelStage,
 } from "@/components/halloween/Scene";
@@ -52,52 +51,46 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
       {/* ================= the tunnel ================= */}
       <TunnelProgress>
         <TunnelStage>
-          {/* the wordmark rides a branch across the frame, as in the KV */}
-          <div
-            className="hlw-wordbranch pointer-events-none absolute left-[-8%] top-[14%] w-[86vw] max-w-[1150px] sm:top-[16%]"
-            aria-hidden="true"
-          >
-            <Branch className="relative flex h-[clamp(64px,10vw,140px)] w-full items-center justify-center">
-              <HalloweenWordmark className="text-[clamp(2.6rem,8.4vw,7.4rem)]" />
-            </Branch>
-          </div>
-
-          <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-5 pb-[12vh]">
-            <div className="hlw-hero-copy relative max-w-xl">
-              <div className="absolute -inset-x-10 -inset-y-8 -z-10 bg-[radial-gradient(closest-side,rgba(10,15,4,0.9),rgba(10,15,4,0.55)_60%,transparent)]" />
-              <p className="hlw-kicker">{t.kicker}</p>
-              <h1 className="hlw-title mt-4 text-[clamp(2rem,6vw,3.6rem)] leading-[1.02]">
-                <span className="sr-only">ReThink — </span>
-                {t.eventName}
-              </h1>
-              <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[color:var(--hlw-bone)]/90">
-                {t.tagline}
-              </p>
-              <dl className="mt-6 grid gap-x-10 gap-y-3 text-sm sm:grid-cols-2">
-                <div>
-                  <dt className="hlw-kicker">{t.whenLabel}</dt>
-                  <dd className="mt-1.5">{t.when}</dd>
+          {/* The first screen is the Avatar and nothing else. The event details are
+              waiting at the end of the tunnel: they fade in as the picture fades out. */}
+          <div className="hlw-arrival absolute inset-0 z-10 flex items-center justify-center px-5 pt-[65px]">
+            <div className="mx-auto grid w-full max-w-5xl items-center gap-4 md:grid-cols-[0.8fr_1.2fr] md:gap-14">
+              <HalloweenWordmark className="mx-auto w-[34vw] max-w-[360px] md:w-full" />
+              <div className="text-center md:text-left">
+                <p className="hlw-kicker">{t.kicker}</p>
+                <h1 className="hlw-title mt-3 text-[clamp(1.9rem,5vw,3.6rem)] leading-[1.02]">
+                  <span className="sr-only">ReThink — </span>
+                  {t.eventName}
+                </h1>
+                <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-[color:var(--hlw-bone)]/90 md:mx-0">
+                  {t.tagline}
+                </p>
+                <dl className="mt-5 grid gap-x-10 gap-y-3 text-sm sm:grid-cols-2">
+                  <div>
+                    <dt className="hlw-kicker">{t.whenLabel}</dt>
+                    <dd className="mt-1.5">{t.when}</dd>
+                  </div>
+                  <div>
+                    <dt className="hlw-kicker">{t.whereLabel}</dt>
+                    <dd className="mt-1.5">{t.where}</dd>
+                  </div>
+                </dl>
+                <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
+                  <a href="#dang-ky" className="hlw-btn">
+                    {t.ctaJoin}
+                  </a>
+                  <a href="#rooms" className="hlw-btn hlw-btn-ghost">
+                    {t.ctaRooms}
+                  </a>
                 </div>
-                <div>
-                  <dt className="hlw-kicker">{t.whereLabel}</dt>
-                  <dd className="mt-1.5">{t.where}</dd>
-                </div>
-              </dl>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="#dang-ky" className="hlw-btn">
-                  {t.ctaJoin}
-                </a>
-                <a href="#rooms" className="hlw-btn hlw-btn-ghost">
-                  {t.ctaRooms}
-                </a>
+                <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
+                  {t.draftNote}
+                </p>
               </div>
-              <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
-                {t.draftNote}
-              </p>
             </div>
           </div>
 
-          <p className="hlw-hint hlw-bob absolute bottom-[3.5vh] left-1/2 z-10 -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.4em] text-[color:var(--hlw-script)]">
+          <p className="hlw-hint hlw-bob absolute bottom-[3.5vh] left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.4em] text-[color:var(--hlw-script)]">
             {t.scrollHint} ↓
           </p>
         </TunnelStage>

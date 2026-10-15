@@ -63,21 +63,24 @@ Masks, compass, fireflies and eyeballs are dithered pixel-art. Resize them with 
 - `components/halloween/Scene.tsx` — visual pieces. `components/halloween/Chrome.tsx` — nav/footer decoration, switched on in `SiteNav`/`SiteFooter` when `stripLocale(pathname).startsWith("/halloween")`.
 - Wordmark: `HalloweenWordmark` in `Scene.tsx`, currently set in **Mystery Quest** (Google, latin only — never use it for Vietnamese text). When the designer's transparent PNG/SVG arrives, swap the body of that one component.
 
-## The hero: the FIRST KV adaptation (commit b5c7191) — the owner's chosen version
-The owner asked, twice, to go back to this one. **Do not "improve" the hero without being asked, and do not replace it with either of the two rebuilds below.**
+## The hero: the Avatar REBUILT FROM ITS ELEMENTS (owner's request, 16/10)
+The owner rejected both "drop the Avatar image in" and loose re-compositions. They want every piece of the Avatar as its own element, placed exactly as in the Avatar, then a scroll into the tunnel where elements grow and disappear, with light rising from the compass.
 
-What it is (`Scene.tsx` `TunnelStage` + the HERO block of `halloween.css`): a 260vh scroll track pins a stage; ONE passive rAF listener (`TunnelProgress`) writes `--p` (0→1); the nested arch layers, the girl, the carpet and the wordmark branch each scale/fade from `--p` in CSS; masks hang in the corners; fireflies drift. The copy is left-aligned over the scene and fades out as you walk in.
+**How the placement was measured — reuse this, don't eyeball:**
+- Sources cropped to visible content (alpha > 40) → `public/halloween/kv/*.webp`, so a CSS box = what you see. Boxes in `Scene.tsx` are fractions of the square `[x, y, w, h]`. Some pieces are stretched in the Avatar (owl is taller than its file) — boxes are not forced to the file's aspect.
+- Raw pixel matching FAILS: the Avatar is colour-graded (≈0.62× the raw elements overall, ≈0.45× at the edges). Normalised cross-correlation on texture also failed. What worked:
+  - distinctive pieces (girl, masks, compass, inner wall, arm, leg): 1% grid laid over the Avatar;
+  - `Cành Cây.png` = the whole top branch group: its main limb is 47°, same as the RETHINK branch → box `[0, 0, 1.02, 0.71]`;
+  - arches: an EDGE search (gradient magnitude along the band's boundary) found the frame arch at x .151–.849, y .118–.922; the rest follow from arches standing on one perspective floor (bottom = .654 + .384·w, widths geometric) — and the predicted tops (.272, .383, .461) match the bright bands measured down the centre line. Outer arch crown at y .04;
+  - wordmark: R/N/K letter centroids of the SVG mapped onto the Avatar's lettering (angle within 0.5°) → `[0.0997, -0.128, 0.732, 0.677]`. Its "26-27" runs on up the branch;
+  - fireflies: detected as bright yellow squares in the Avatar.
+- `Mask Mèo/Chó/Cú` exist; the **bird skull and the small hooded mask do not** — they are cut from the Avatar with a soft oval (`skull.webp`, `hood.webp`). Ask the designer for real cut-outs.
+- `RETHINK 26-27 2.svg` is a PNG wrapped in an SVG (plus a drop-shadow filter) — extract the PNG.
+- The grade is a plain dark radial overlay measured against the Avatar (centre .12 → edge .66 alpha); light sources (glow behind the girl, compass beam/pool) sit ABOVE it, or it darkens them. The glow must be BEHIND the girl in paint order or it washes her out.
+- Comparing: screenshot the `.hlw-scene` box, resize to the Avatar, mean |diff| per channel. Went 20.2 → 13.6.
 
-Two rebuilds were tried and REJECTED on 15–16/10:
-1. **A real CSS 3D scene** (`preserve-3d`, `perspective`, a `rotateX` floor, one camera). It measured exact (0px against `P/(P+z−pT)`) and looked right in headless Chrome — and on the owner's machine Chrome clipped large layers to rectangles (wordmark branch sliced across, the girl cut at the waist, the lit wall clipped). Verdict: "far too elaborate".
-2. **A flat 2D Avatar composition** with one shared vanishing point (depth layers scaling about it, positions measured off the Avatar). It looked closer to the Avatar and measured exact — and the owner's Chrome STILL showed rectangular clipping (copy text cut at a vertical line, the girl missing her torso). They asked to go back.
-The cause of that clipping is **not understood**: it never reproduced in headless Chrome, with or without a real GPU. It looks like unpainted compositor tiles, which points at many large `will-change: transform` layers on the owner's machine rather than at any one layout. If it appears again, first ask whether it also happens on other heavy pages on their machine, and whether it happens on a production build (`npm run build && npm run start`) as well as `npm run dev` — before changing code.
-
-Still true, from the abandoned work:
-- The Avatar has BRIGHT grass walls and DARK arch rings; rings on a bright stage vanish.
-- Draw order is DOM order: a wall painted after a deeper layer hides it.
-- A fixed header must stay `position: fixed` (see the unlayered-CSS trap above — the nav-scroll bug was real and is fixed in this version too).
-- The headless browser here cannot be trusted to show clipping bugs; the owner's browser is the real test.
+**Walking in:** every element is a full-square `.hlw-layer` at depth `--d`, scaled about the end of the tunnel (50.5% 62%) by `d / (d − p·Tn)`, `Tn = 2.1`; it fades out just before reaching the camera. Near things (branches, masks, arm) go first, the girl grows ~2.5×. At the end the scene fades and the event details fade in.
+**Rule:** no `mask-image`/`overflow` on anything that contains a scaled layer — a mask clips children to its box, which is what cut earlier versions into rectangles on the owner's screen. (Earlier rebuilds: real CSS 3D — clipped on the owner's GPU; flat 2D Avatar comp; and dropping the Avatar image in — all rejected.)
 
 ## Animation catalogue (transform/opacity only — `npm run check:hlw` enforces it)
 - Fireflies blink; branches/masks sway a degree or two; masks shake on hover.

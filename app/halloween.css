@@ -162,112 +162,170 @@
 .hlw-btn-ghost:hover { background: rgba(68, 100, 2, 0.4); border-color: var(--hlw-bone); }
 
 /* ============================================================
-   HERO — the grass tunnel you scroll into
+   HERO — the Avatar rebuilt from its elements, then a walk in
+   ------------------------------------------------------------
+   Each element (Scene.tsx `TunnelStage`) sits in its own full-square layer
+   at depth --d. Scrolling sets --p 0→1 and every layer scales about the end
+   of the tunnel by
+
+        --sc = d / (d - p * Tn)
+
+   so near things grow fast and leave, far things barely move — one shared
+   vanishing point. A layer fades out just before it would reach the camera.
+
+   RULE: no mask-image / overflow on anything that contains a scaled layer.
+   A mask clips its children to its own box; that is what cut earlier
+   versions into rectangles on the owner's screen.
    ============================================================ */
 
-/* the scroll track; the stage inside stays pinned while you scroll it */
 .hlw-tunnel {
   --p: 0;
+  --Tn: 2.1;
   position: relative;
-  height: 260vh;
+  height: 280vh;
 }
 .hlw-tunnel-stage {
+  --nav: 65px;
+  --S: min(calc(100vh - var(--nav)), 100vw);
   position: sticky;
   top: 0;
   height: 100vh;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 62%, rgba(68, 100, 2, 0.55), transparent 62%),
-    var(--hlw-ink);
+  overflow: hidden; /* the viewport edge — not a scaled box */
+  background: #070a03;
 }
 
-/* every arch: centred, standing on the floor, scaling toward the viewer.
-   --s = resting scale, --k = how fast this layer rushes past */
-.hlw-arch {
-  position: absolute;
-  left: 50%;
-  bottom: -3%;
-  width: min(118vh, 128vw);
-  transform-origin: 50% 72%;
-  transform: translate3d(-50%, 0, 0) scale(calc(var(--s) * (1 + var(--p) * var(--k))));
-  will-change: transform;
-}
-/* the outer arches fade once they have flown past your shoulders */
-.hlw-arch-fade { opacity: calc(1 - clamp(0, (var(--p) - var(--f)) * 3.2, 1)); }
-
-/* the blood carpet on the floor: its narrow far edge ends at the girl's feet */
-.hlw-floor {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  height: 15vh;
-  transform-origin: 50% 100%;
-  transform: translate3d(-50%, 0, 0) scale(calc(1 + var(--p) * 1.15));
-  opacity: 0.9;
-  will-change: transform;
-}
-
-/* the girl, deep in the tunnel, getting closer */
-.hlw-girl {
-  position: absolute;
-  left: 50%;
-  bottom: 13%;
-  height: 27vh;
-  transform-origin: 50% 100%;
-  transform: translate3d(-50%, 0, 0) scale(calc(1 + var(--p) * 1.15));
-  will-change: transform;
-}
-.hlw-girl img { height: 100%; width: auto; }
-/* her eyes light up the deeper you go. Two small points placed on the eyes
-   in the artwork (measured: left eye at 46.6% / 9.3% of nhan-vat.webp,
-   right eye ~53.9%) — a single band read as a glowing mask over her mouth. */
-.hlw-girl-eyes {
+/* grass beyond the square on wide screens, darkened like the Avatar's edges */
+.hlw-surround {
   position: absolute;
   inset: 0;
-  opacity: calc(0.3 + var(--p) * 1.1);
+  background:
+    linear-gradient(to right, rgba(6, 9, 2, 0.93), rgba(6, 9, 2, 0.8) 50%, rgba(6, 9, 2, 0.93)),
+    url("/halloween/bg-co.webp") center / cover;
+  opacity: calc(1 - var(--p) * 1.2);
 }
-/* each eye is its own square, so the glow fades to nothing inside it
-   (one shared short box clipped the gradients into a hard-edged visor) */
+
+/* the square the Avatar is laid out in, under the nav */
+.hlw-scene {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--nav) + (100vh - var(--nav) - var(--S)) / 2);
+  width: var(--S);
+  height: var(--S);
+  transform: translateX(-50%);
+  opacity: calc(1 - clamp(0, (var(--p) - 0.74) / 0.2, 1));
+}
+
+/* one element's layer: the whole square, scaled about the end of the tunnel */
+.hlw-layer {
+  --den: calc(var(--d) - var(--p) * var(--Tn));
+  position: absolute;
+  inset: 0;
+  transform-origin: 50.5% 62%;
+  transform: scale(calc(var(--d) / max(var(--den), 0.05)));
+  opacity: clamp(0, calc((var(--den) - 0.12) / 0.22), 1);
+  pointer-events: none;
+}
+.hlw-el { position: absolute; }
+.hlw-fill { display: block; width: 100%; height: 100%; }
+
+/* branches with no source file: the KV's moss cylinder, drawn */
+.hlw-limb {
+  position: absolute;
+  transform-origin: 0 50%;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, #0d1509 0%, #2c3d29 34%, #354a33 46%, #22301f 70%, #0b1107 100%);
+  box-shadow: 0 0.6vh 1.4vh rgba(0, 0, 0, 0.45);
+}
+
+/* the Avatar's grade, measured: the Avatar is ~0.72x as bright as the raw
+   elements at the end of the tunnel and ~0.45x at the edges. A plain dark
+   overlay (cheaper than a blend mode) reproduces both. */
+.hlw-grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    62% 62% at 50.5% 62%,
+    rgba(4, 7, 0, 0.12) 0%,
+    rgba(4, 7, 0, 0.36) 42%,
+    rgba(4, 7, 0, 0.66) 100%
+  );
+  /* kept on all the way in: zoomed walls without it read as flat green */
+}
+/* the carpet is darker still in the Avatar (red at 0.42x): static filter, never animated */
+.hlw-carpet .hlw-fill { filter: brightness(0.72) saturate(0.78); }
+
+/* the lit end of the tunnel behind the girl (Avatar: brightest region, warm yellow) */
+.hlw-end-glow {
+  mix-blend-mode: screen;
+  background: radial-gradient(50% 50% at 50% 55%, rgba(236, 222, 80, 0.42), rgba(190, 180, 40, 0.16) 55%, transparent 80%);
+}
+.hlw-owl .hlw-fill { filter: brightness(0.78) contrast(1.15); }
+
+/* light thrown upward from the compass */
+.hlw-compass-beam {
+  mix-blend-mode: screen;
+  background: radial-gradient(42% 100% at 50% 100%, rgba(255, 170, 90, 0.6), rgba(220, 95, 50, 0.24) 42%, transparent 74%);
+  animation: hlw-lamp-flicker 3.4s ease-in-out infinite;
+}
+.hlw-compass-pool {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: 260%;
+  height: 230%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(closest-side, rgba(255, 196, 110, 0.5), rgba(220, 100, 50, 0.18) 55%, transparent);
+  animation: hlw-lamp-flicker 3.4s ease-in-out infinite;
+  animation-delay: -0.6s;
+}
+@keyframes hlw-lamp-flicker {
+  0%, 100% { opacity: 0.9; }
+  22%      { opacity: 0.68; }
+  40%      { opacity: 1; }
+  63%      { opacity: 0.78; }
+  81%      { opacity: 0.95; }
+}
+
+/* her eyes brighten as you get closer */
+.hlw-girl-eyes { position: absolute; inset: 0; opacity: calc(0.25 + var(--p) * 1.2); }
 .hlw-girl-eyes i {
   position: absolute;
-  top: 9.3%;
-  width: 9%;
+  top: 8.6%;
+  width: 30%;
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 246, 170, 0.95), rgba(209, 201, 30, 0.42) 45%, transparent);
+  mix-blend-mode: screen;
+  background: radial-gradient(closest-side, rgba(255, 246, 170, 0.95), rgba(209, 201, 30, 0.35) 50%, transparent);
 }
-.hlw-girl-eyes i:first-child { left: 46.6%; }
-.hlw-girl-eyes i:last-child { left: 53.9%; }
+.hlw-girl-eyes i:first-child { left: 43%; }
+.hlw-girl-eyes i:last-child { left: 67%; }
 
-/* the compass glowing on the floor */
-.hlw-floor-glow {
-  position: absolute;
-  left: 50%;
-  bottom: 2%;
-  width: 46vh;
-  height: 18vh;
-  transform: translateX(-50%);
-  background: radial-gradient(closest-side, rgba(210, 145, 63, 0.55), rgba(128, 46, 54, 0.25) 55%, transparent);
+/* fireflies: the Avatar's square yellow motes */
+.hlw-fly .hlw-fill { display: none; }
+.hlw-fly {
+  background: #f2ec6e;
+  box-shadow: 0 0 0.6vh 0.15vh rgba(242, 236, 110, 0.75);
 }
-
-/* the branch carrying the wordmark: the nearest thing to you, so it rushes
-   past first and is gone before the girl gets close */
-.hlw-wordbranch {
-  transform-origin: 32% 50%;
-  transform: rotate(-16deg) scale(calc(1 + var(--p) * 1.7));
-  opacity: calc(1 - clamp(0, (var(--p) - 0.12) * 2.6, 1));
-  will-change: transform;
+.hlw-fly { animation: hlw-fly-blink 2.8s steps(2, end) infinite; }
+.hlw-fly:nth-child(3n) { animation-duration: 3.4s; animation-delay: -1.2s; }
+.hlw-fly:nth-child(3n + 1) { animation-duration: 2.3s; animation-delay: -0.5s; }
+@keyframes hlw-fly-blink {
+  0%, 100% { opacity: 0.95; }
+  50%      { opacity: 0.3; }
 }
 
-/* copy over the tunnel; it steps aside as you walk in */
-.hlw-hero-copy {
-  opacity: calc(1 - var(--p) * 2.6);
-  transform: translate3d(0, calc(var(--p) * -80px), 0);
+/* the event details, waiting at the end of the tunnel */
+.hlw-arrival {
+  opacity: clamp(0, calc((var(--p) - 0.8) / 0.16), 1);
+  transform: translate3d(0, calc((1 - clamp(0, calc((var(--p) - 0.8) / 0.16), 1)) * 24px), 0);
+  pointer-events: none;
 }
-.hlw-hint {
-  opacity: calc(1 - var(--p) * 6);
-}
+.hlw-tunnel[data-arrived] .hlw-arrival { pointer-events: auto; }
+.hlw-hint { opacity: calc(1 - var(--p) * 6); }
 
 /* ============================================================
    Moving parts — transform/opacity only
@@ -464,19 +522,20 @@ details[open] .hlw-q-mark { transform: rotate(45deg); }
 }
 
 @media (max-width: 768px) {
-  .hlw-tunnel { height: 200vh; }
-  .hlw-arch { width: 150vw; }
-  .hlw-arch-desktop { display: none; }
-  /* the deepest arch's opening on a 390x844 screen is ~194px tall with its
-     floor near y=745 — she has to fit inside it, or the arch cuts her in half */
-  .hlw-girl { height: 17vh; bottom: 11%; }
+  .hlw-tunnel { height: 230vh; }
+  .hlw-scene { top: calc(var(--nav) + 4vh); }
+  .hlw-hint { bottom: 8vh; }
 }
 
-/* no motion: a still frame of the tunnel, all copy visible */
+/* no motion: the Avatar as a still, with the details right under it */
 @media (prefers-reduced-motion: reduce) {
   .hlw-tunnel { height: auto; }
-  .hlw-tunnel-stage { position: relative; }
+  .hlw-tunnel-stage { position: relative; height: auto; min-height: 100vh; padding-bottom: 3rem; }
   .hlw-tunnel, .hlw-tunnel * { --p: 0 !important; }
+  .hlw-scene { position: relative; left: auto; top: auto; margin: var(--nav) auto 0; transform: none; }
+  .hlw-arrival { position: relative; opacity: 1; transform: none; pointer-events: auto; margin-top: 2rem; }
+  .hlw-hint { display: none; }
+  .hlw-compass-beam, .hlw-compass-pool, .hlw-fly,
   .hlw-mote, .hlw-sway, .hlw-drift, .hlw-spin, .hlw-bob, .hlw-ticker,
   .hlw-card:hover .hlw-mask {
     animation: none !important;

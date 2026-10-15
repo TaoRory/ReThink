@@ -20,17 +20,21 @@ export const EYEBALL_IRIS_DEG = 185;
 /* ------------------------------------------------------------------ */
 
 /**
- * "RETHINK" in the KV's hand-drawn script.
- *
- * TEMPORARY: set in a Google script face until the designer supplies the
- * transparent PNG/SVG. When it arrives, replace the body of this component
- * with an <Image> — nothing else on the site needs to change.
+ * "RETHINK 26-27" — the designer's hand-drawn wordmark, from
+ * `RETHINK 26-27 2.svg` (which is a PNG wrapped in an SVG; the PNG is
+ * extracted and trimmed to `wordmark.webp`). It is drawn already tilted on a
+ * diagonal, so it is used as artwork, not as a text line.
  */
 export function HalloweenWordmark({ className = "" }: { className?: string }) {
   return (
-    <span className={`hlw-script block whitespace-nowrap leading-none ${className}`}>
-      RETHINK
-    </span>
+    <Image
+      src={`${H}/kv/wordmark.webp`}
+      alt="ReThink 26-27"
+      width={1000}
+      height={926}
+      sizes="(max-width: 768px) 70vw, 420px"
+      className={`h-auto ${className}`}
+    />
   );
 }
 
@@ -166,97 +170,184 @@ export function HangingMask({
 }
 
 /* ------------------------------------------------------------------ */
-/* the hero tunnel                                                     */
+/* the hero: the Avatar, rebuilt from the KV elements                    */
 /* ------------------------------------------------------------------ */
 
-/**
- * Nested grass arches, as in the KV avatar. --s = resting scale, --k = how
- * fast the layer rushes toward you, --f = progress at which it starts to fade.
- * `hlw-arch-desktop` layers are dropped on phones.
+/*
+ * Every piece of the designer's Avatar placed as its own element, at the box
+ * it occupies in the Avatar. Boxes are fractions of the square [x, y, w, h],
+ * MEASURED, not eyeballed:
+ *  - girl, masks, compass, inner wall, arm, leg: read off a 1% grid laid
+ *    over the Avatar; each source PNG is cropped to its visible content
+ *    (alpha > 40) so a box is exactly what you see. The designer stretched
+ *    some pieces (the owl is taller than its file), so boxes are not forced
+ *    to the file's aspect.
+ *  - the branch cluster (Cành Cây.png): its main limb is at 47°, the same as
+ *    the RETHINK branch; placed at x 0, y 0, width 1.02.
+ *  - the arches: an edge search found the frame arch at x .151-.849,
+ *    y .118-.922; the others follow from arches standing on one perspective
+ *    floor, and their predicted tops (.272, .383, .461) land on the bright
+ *    bands measured down the Avatar's centre line.
+ *  - the wordmark: the R-to-K letter centroids of the SVG mapped onto the
+ *    Avatar's lettering (scale, angle within 0.5°, offset).
+ *  - fireflies: detected in the Avatar (bright yellow squares).
+ *  - the bird skull and the small hooded mask have no source file; they are
+ *    cut from the Avatar with a soft oval edge.
+ *
+ * Walking in (see .hlw-layer in halloween.css): each element has a depth d
+ * and scales about the end of the tunnel by d / (d - p*Tn). Near things
+ * grow fast and fade out as they pass; the girl barely moves.
  */
-const ARCHES = [
-  { s: 1.28, k: 3.0, f: 0.04, desktop: true },
-  { s: 0.95, k: 2.5, f: 0.22, desktop: false },
-  { s: 0.7, k: 2.0, f: 0.42, desktop: false },
-  { s: 0.52, k: 1.6, f: 0.62, desktop: true },
-  { s: 0.38, k: 1.25, f: 2, desktop: false },
+
+const K = `${H}/kv`;
+
+type Box = [number, number, number, number]; // x, y, w, h — fractions of the square
+
+/** one element of the scene, at depth d */
+function El({
+  d,
+  box,
+  src,
+  pixel = false,
+  className = "",
+  children,
+}: {
+  d: number;
+  box: Box;
+  src?: string;
+  pixel?: boolean;
+  className?: string;
+  children?: ReactNode;
+}) {
+  const [x, y, w, h] = box;
+  return (
+    <div className="hlw-layer" style={{ "--d": d } as CSSProperties}>
+      <div
+        className={`hlw-el ${className}`}
+        style={{ left: `${x * 100}%`, top: `${y * 100}%`, width: `${w * 100}%`, height: `${h * 100}%` }}
+      >
+        {src && (
+          // plain <img>: these are exact-size, pre-cropped crops; fill the measured box
+          <img src={`${K}/${src}`} alt="" className={`hlw-fill ${pixel ? "hlw-pixel" : ""}`} draggable={false} />
+        )}
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/** a moss cylinder from (x1,y1) to (x2,y2), thickness t — for the branches that have no file */
+function Limb({ d, from, to, t }: { d: number; from: [number, number]; to: [number, number]; t: number }) {
+  const [x1, y1] = from;
+  const [x2, y2] = to;
+  const len = Math.hypot(x2 - x1, y2 - y1);
+  const deg = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+  return (
+    <div className="hlw-layer" style={{ "--d": d } as CSSProperties}>
+      <div
+        className="hlw-limb"
+        style={{
+          left: `${x1 * 100}%`,
+          top: `${y1 * 100}%`,
+          width: `${len * 100}%`,
+          height: `calc(var(--S) * ${t})`,
+          transform: `translateY(-50%) rotate(${deg}deg)`,
+        }}
+      />
+    </div>
+  );
+}
+
+/** the nested arches: [x, y, w, h], deepest first, with depth */
+const ARCHES: [Box, number][] = [
+  [[0.38, 0.461, 0.25, 0.2885], 2.9],
+  [[0.329, 0.383, 0.352, 0.406], 2.1],
+  [[0.257, 0.272, 0.496, 0.572], 1.5],
+];
+const ARCH_B: [Box, number] = [[0.151, 0.118, 0.698, 0.806], 1.0];
+const ARCH_A: [Box, number] = [[0.03, 0.04, 0.94, 1.085], 0.75];
+
+/** fireflies detected in the Avatar: x, y, size */
+const FLIES: [number, number, number, number][] = [
+  [0.395, 0.393, 0.009, 2.2],
+  [0.613, 0.407, 0.006, 2.4],
+  [0.656, 0.457, 0.007, 2.0],
+  [0.482, 0.475, 0.009, 2.8],
+  [0.577, 0.525, 0.009, 2.6],
+  [0.466, 0.531, 0.007, 3.0],
+  [0.374, 0.564, 0.009, 1.8],
+  [0.576, 0.681, 0.011, 1.6],
+  [0.459, 0.693, 0.008, 2.0],
+  [0.542, 0.735, 0.008, 1.4],
+  [0.475, 0.797, 0.008, 1.2],
+  [0.542, 0.839, 0.009, 1.1],
+  [0.534, 0.851, 0.007, 1.0],
 ];
 
 export function TunnelStage({ children }: { children?: ReactNode }) {
   return (
     <div className="hlw-tunnel-stage">
-      {/* everything in this layer is scenery; the real copy comes in as children */}
-      <div className="absolute inset-0" aria-hidden="true">
-      {/* the far end: the lit inner scene, behind the smallest arch */}
-      <div
-        className="hlw-arch"
-        style={{ "--s": 0.3, "--k": 1.25, "--f": 2, width: "min(60vh, 64vw)" } as CSSProperties}
-      >
-        <Image src={`${H}/bg-vom-co.webp`} alt="" width={720} height={944} sizes="64vw" className="h-auto w-full" />
-      </div>
+      {/* grass beyond the square, so wide screens are not black at the sides */}
+      <div className="hlw-surround" aria-hidden="true" />
 
-      {/* the blood carpet along the tunnel floor, leading to her feet (KV avatar) */}
-      <div className="hlw-floor">
-        <Image src={`${H}/trail-mau.webp`} alt="" width={1400} height={387} sizes="60vh" className="h-full w-auto max-w-none" />
-      </div>
+      <div className="hlw-scene" aria-hidden="true">
+        {/* ---- deepest: the grass, the lit wall at the end, the floor ---- */}
+        <El d={6} box={[-0.02, -0.02, 1.04, 1.04]} src="../bg-co.webp" />
+        <El d={3.6} box={[0.405, 0.487, 0.2, 0.261]} src="inner.webp" />
+        {/* the light at the end of the tunnel — BEHIND her, as in the Avatar */}
+        <El d={3.5} box={[0.37, 0.47, 0.27, 0.31]} className="hlw-end-glow" />
+        <El d={1.6} box={[-0.185, 0.757, 1.37, 0.385]} src="carpet.webp" className="hlw-carpet" />
 
-      {/* the girl at the end of the tunnel */}
-      <div className="hlw-girl">
-        <Image src={`${H}/nhan-vat.webp`} alt="" width={380} height={624} unoptimized priority />
-        <span className="hlw-girl-eyes">
-          <i />
-          <i />
-        </span>
-      </div>
+        {/* ---- the girl, with a branch behind her ---- */}
+        <Limb d={3.3} from={[0.41, 0.605]} to={[0.585, 0.665]} t={0.022} />
+        <El d={3.2} box={[0.4737, 0.535, 0.0626, 0.21]} src="girl.webp">
+          <span className="hlw-girl-eyes">
+            <i />
+            <i />
+          </span>
+        </El>
 
-      {/* arches, deepest first so the nearer ones paint over */}
-      {[...ARCHES].reverse().map((a, i) => (
-        <div
-          key={i}
-          className={`hlw-arch hlw-arch-fade ${a.desktop ? "hlw-arch-desktop" : ""}`}
-          style={{ "--s": a.s, "--k": a.k, "--f": a.f } as CSSProperties}
-        >
-          <Image
-            src={`${H}/vom-co.webp`}
-            alt=""
-            width={1400}
-            height={1475}
-            sizes="(max-width: 768px) 150vw, 128vw"
-            priority={i === ARCHES.length - 1}
-            className="h-auto w-full"
-          />
-        </div>
-      ))}
+        {/* ---- arches, deepest first, with what hangs on them ---- */}
+        {ARCHES.map(([box, d]) => (
+          <El key={d} d={d} box={box} src="arch.webp" />
+        ))}
+        <El d={2.1} box={[0.533, 0.366, 0.055, 0.1]} src="skull.webp" />
+        <El d={1.8} box={[0.309, 0.472, 0.032, 0.047]} src="hood.webp" />
+        <Limb d={1.6} from={[0.305, 0.75]} to={[0.435, 0.375]} t={0.013} />
+        <Limb d={1.9} from={[0.565, 0.487]} to={[0.69, 0.615]} t={0.016} />
+        <Limb d={1.9} from={[0.645, 0.48]} to={[0.64, 0.54]} t={0.006} />
+        <Limb d={1.9} from={[0.64, 0.54]} to={[0.745, 0.545]} t={0.006} />
 
-      {/* the compass glowing on the floor */}
-      <div className="hlw-floor-glow" />
-      <Image
-        src={`${H}/compass-3d.webp`}
-        alt=""
-        width={290}
-        height={153}
-        unoptimized
-        className="hlw-pixel absolute bottom-[3%] left-1/2 w-[18vh] -translate-x-1/2"
-      />
+        {/* ---- the compass and the light it throws ---- */}
+        <El d={2.2} box={[0.474, 0.838, 0.086, 0.0447]} src="compass.webp">
+          <span className="hlw-compass-pool" />
+        </El>
 
-      {/* branches across the front, as in the KV */}
-      <div className="hlw-drift absolute -right-[12%] -top-[8%] w-[70vw] max-w-[1000px] -scale-x-100 opacity-95">
-        <Image src={`${H}/canh-cay.webp`} alt="" width={1600} height={1215} sizes="70vw" className="h-auto w-full" />
-      </div>
+        {/* ---- the frame arch and what is in front of it ---- */}
+        <El d={ARCH_B[1]} box={ARCH_B[0]} src="arch.webp" />
+        <El d={1.0} box={[0.148, 0.618, 0.075, 0.127]} src="owl.webp" pixel className="hlw-owl hlw-sway-c" />
+        <Limb d={1.3} from={[0.15, 0.565]} to={[0.85, 0.43]} t={0.033} />
+        <Limb d={0.85} from={[0.15, 0.895]} to={[0.85, 0.6]} t={0.052} />
+        <El d={ARCH_A[1]} box={ARCH_A[0]} src="arch.webp" />
 
-      {/* masks hanging in the corners */}
-      <div className="absolute left-[4%] top-0 hidden sm:block">
-        <Branch className="relative h-3 w-56 -rotate-6" />
-        <HangingMask src="mask-meo.webp" width={150} height={189} cord={40} />
-      </div>
-      <div className="absolute right-[6%] top-[10%] hidden md:block">
-        <HangingMask src="mask-cho.webp" width={130} height={164} cord={90} sway="hlw-sway-b" />
-      </div>
-      <div className="absolute right-[22%] top-[38%] hidden lg:block">
-        <HangingMask src="mask-cu.webp" width={86} height={134} cord={30} sway="hlw-sway-c" />
-      </div>
+        {/* ---- nearest: the masks, the branch cluster with the wordmark, the remains ---- */}
+        <El d={0.65} box={[0.022, 0.035, 0.133, 0.178]} src="cat.webp" pixel className="hlw-sway" />
+        <El d={0.65} box={[0.855, 0.02, 0.12, 0.215]} src="dog.webp" pixel className="hlw-sway-b" />
+        <El d={0.6} box={[0, 0, 1.02, 0.71]} src="branches.webp" />
+        <El d={0.6} box={[0.0997, -0.128, 0.732, 0.677]} src="wordmark.webp" className="hlw-word" />
+        <El d={0.55} box={[-0.005, 0.93, 0.292, 0.058]} src="arm.webp" />
+        <El d={0.6} box={[0.63, 0.842, 0.22, 0.063]} src="leg.webp" />
 
-      <Motes count={10} />
+        {/* ---- fireflies, in the air at their own depths ---- */}
+        {FLIES.map(([x, y, s, d], i) => (
+          <El key={i} d={d} box={[x - s / 2, y - s / 2, s, s]} className="hlw-fly" />
+        ))}
+
+        {/* ---- the Avatar's grade: dark edges ---- */}
+        <div className="hlw-grade" />
+
+        {/* ---- light sources, above the grade so it does not darken them ---- */}
+        <El d={2.2} box={[0.41, 0.56, 0.19, 0.325]} className="hlw-compass-beam" />
       </div>
 
       {children}

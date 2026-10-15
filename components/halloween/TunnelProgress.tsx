@@ -25,6 +25,8 @@ export function TunnelProgress({ children }: { children: ReactNode }) {
       const travel = rect.height - window.innerHeight;
       const p = travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 0;
       el.style.setProperty("--p", p.toFixed(4));
+      // the event details at the end of the tunnel only take clicks once you are there
+      el.toggleAttribute("data-arrived", p > 0.85);
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);

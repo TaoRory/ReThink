@@ -157,3 +157,11 @@ Phản hồi: kéo lên xuống mất đồ, lỗi tùm lum; hầm không cần 
 Bản 2D theo Avatar vẫn bị xén thành hình chữ nhật trên máy chủ dự án (chữ cắt dọc, cô gái mất nửa người). **Đã khôi phục `app/halloween.css`, `Scene.tsx`, `HalloweenPage.tsx` về đúng commit `b5c7191`**, chỉ giữ lại một sửa lỗi độc lập: `.hlw-chrome { position: relative }` đè `fixed` của header (nav trôi mất khi cuộn).
 - Hai hướng dựng lại (CSS 3D thật; 2D theo Avatar) đều bị bỏ. Nguyên nhân xén **chưa xác định**: không tái hiện được ở headless Chrome (cả có và không GPU thật).
 - Nếu lỗi xén còn xuất hiện ở bản cũ: kiểm tra trên bản build thật (`npm run build && npm run start`), và xem các trang nặng khác trên máy đó có bị không, trước khi sửa code.
+
+### Vòng 5 (16/10) — "dựng lại mọi thứ y hệt hình từ elements chứ ko phải quăng hình vào"
+- Màn đầu dựng lại từ **từng element riêng** của KV, đặt đúng vị trí trong ảnh Avatar (đo bằng lưới 1%, dò mép vòm, góc 47° của cụm cành, tâm chữ cái R/N/K, dò đom đóm). Sai số pixel trung bình so với Avatar 13,6/255.
+- Chữ RETHINK dùng file SVG mới của designer (thực chất là PNG bọc SVG).
+- Thiếu file: sọ chim và mặt nạ nhỏ trùm đầu → cắt tạm từ Avatar; cần designer gửi bản tách nền.
+- Cuộn vào hầm: mọi element to dần quanh điểm cuối hầm rồi mờ đi khi lướt qua; ánh sáng hắt lên từ la bàn.
+- **Tìm ra nguyên nhân lỗi xén hình chữ nhật:** `mask-image` trên một khung chứa ảnh được phóng to sẽ cắt ảnh theo khung đó. Không dùng mask/overflow trên khung chứa lớp phóng to.
+- Đo: màn đầu tải 763KB ảnh trên điện thoại (cả trang 1,1MB — vượt ngân sách 900KB nếu cuộn hết); khung hình 16,7ms (60Hz) như trang chủ.

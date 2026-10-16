@@ -267,23 +267,6 @@ const ARCHES: [Box, number][] = [
 const ARCH_B: [Box, number] = [[0.151, 0.118, 0.698, 0.806], 1.0];
 const ARCH_A: [Box, number] = [[0.03, 0.04, 0.94, 1.085], 0.75];
 
-/** fireflies detected in the Avatar: x, y, size */
-const FLIES: [number, number, number, number][] = [
-  [0.395, 0.393, 0.009, 2.2],
-  [0.613, 0.407, 0.006, 2.4],
-  [0.656, 0.457, 0.007, 2.0],
-  [0.482, 0.475, 0.009, 2.8],
-  [0.577, 0.525, 0.009, 2.6],
-  [0.466, 0.531, 0.007, 3.0],
-  [0.374, 0.564, 0.009, 1.8],
-  [0.576, 0.681, 0.011, 1.6],
-  [0.459, 0.693, 0.008, 2.0],
-  [0.542, 0.735, 0.008, 1.4],
-  [0.475, 0.797, 0.008, 1.2],
-  [0.542, 0.839, 0.009, 1.1],
-  [0.534, 0.851, 0.007, 1.0],
-];
-
 export function TunnelStage({ children }: { children?: ReactNode }) {
   return (
     <div className="hlw-tunnel-stage">
@@ -292,10 +275,8 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
 
       <div className="hlw-scene" aria-hidden="true">
         {/* ---- deepest: the grass, the lit wall at the end, the floor ---- */}
-        <El d={6} box={[-0.02, -0.02, 1.04, 1.04]} src="../bg-co.webp" />
+        <El d={3} box={[-0.02, -0.02, 1.04, 1.04]} src="../bg-co.webp" />
         <El d={3.6} box={[0.405, 0.487, 0.2, 0.261]} src="inner.webp" />
-        {/* the light at the end of the tunnel — BEHIND her, as in the Avatar */}
-        <El d={3.5} box={[0.37, 0.47, 0.27, 0.31]} className="hlw-end-glow" />
         <El d={1.6} box={[-0.185, 0.757, 1.37, 0.385]} src="carpet.webp" className="hlw-carpet" />
 
         {/* ---- the girl, with a branch behind her ---- */}
@@ -337,11 +318,6 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <El d={0.6} box={[0.0997, -0.128, 0.732, 0.677]} src="wordmark.webp" className="hlw-word" />
         <El d={0.55} box={[-0.005, 0.93, 0.292, 0.058]} src="arm.webp" />
         <El d={0.6} box={[0.63, 0.842, 0.22, 0.063]} src="leg.webp" />
-
-        {/* ---- fireflies, in the air at their own depths ---- */}
-        {FLIES.map(([x, y, s, d], i) => (
-          <El key={i} d={d} box={[x - s / 2, y - s / 2, s, s]} className="hlw-fly" />
-        ))}
 
         {/* ---- the Avatar's grade: dark edges ---- */}
         <div className="hlw-grade" />

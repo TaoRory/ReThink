@@ -201,7 +201,10 @@
   background:
     linear-gradient(to right, rgba(6, 9, 2, 0.93), rgba(6, 9, 2, 0.8) 50%, rgba(6, 9, 2, 0.93)),
     url("/halloween/bg-co.webp") center / cover;
-  opacity: calc(1 - var(--p) * 1.2);
+  /* rushes past with the walls: same vanishing point as the scene layers */
+  transform-origin: 50.5% 68%;
+  transform: scale(calc(1 + var(--p) * 2));
+  opacity: calc(1 - var(--p) * 1.1);
 }
 
 /* the square the Avatar is laid out in, under the nav */
@@ -242,10 +245,10 @@
    overlay (cheaper than a blend mode) reproduces both. */
 .hlw-grade {
   position: absolute;
-  inset: 0;
+  inset: -60%; /* wider than the square: zoomed layers spill past it and must be graded too */
   pointer-events: none;
   background: radial-gradient(
-    62% 62% at 50.5% 62%,
+    circle calc(var(--S) * 0.62) at 50.23% 55.45%,
     rgba(4, 7, 0, 0.12) 0%,
     rgba(4, 7, 0, 0.36) 42%,
     rgba(4, 7, 0, 0.66) 100%
@@ -255,17 +258,12 @@
 /* the carpet is darker still in the Avatar (red at 0.42x): static filter, never animated */
 .hlw-carpet .hlw-fill { filter: brightness(0.72) saturate(0.78); }
 
-/* the lit end of the tunnel behind the girl (Avatar: brightest region, warm yellow) */
-.hlw-end-glow {
-  mix-blend-mode: screen;
-  background: radial-gradient(50% 50% at 50% 55%, rgba(236, 222, 80, 0.42), rgba(190, 180, 40, 0.16) 55%, transparent 80%);
-}
 .hlw-owl .hlw-fill { filter: brightness(0.78) contrast(1.15); }
 
 /* light thrown upward from the compass */
 .hlw-compass-beam {
   mix-blend-mode: screen;
-  background: radial-gradient(42% 100% at 50% 100%, rgba(255, 170, 90, 0.6), rgba(220, 95, 50, 0.24) 42%, transparent 74%);
+  background: radial-gradient(34% 100% at 50% 100%, rgba(255, 176, 96, 0.62), rgba(224, 110, 52, 0.26) 38%, transparent 72%);
   animation: hlw-lamp-flicker 3.4s ease-in-out infinite;
 }
 .hlw-compass-pool {
@@ -303,20 +301,6 @@
 }
 .hlw-girl-eyes i:first-child { left: 43%; }
 .hlw-girl-eyes i:last-child { left: 67%; }
-
-/* fireflies: the Avatar's square yellow motes */
-.hlw-fly .hlw-fill { display: none; }
-.hlw-fly {
-  background: #f2ec6e;
-  box-shadow: 0 0 0.6vh 0.15vh rgba(242, 236, 110, 0.75);
-}
-.hlw-fly { animation: hlw-fly-blink 2.8s steps(2, end) infinite; }
-.hlw-fly:nth-child(3n) { animation-duration: 3.4s; animation-delay: -1.2s; }
-.hlw-fly:nth-child(3n + 1) { animation-duration: 2.3s; animation-delay: -0.5s; }
-@keyframes hlw-fly-blink {
-  0%, 100% { opacity: 0.95; }
-  50%      { opacity: 0.3; }
-}
 
 /* the event details, waiting at the end of the tunnel */
 .hlw-arrival {
@@ -535,7 +519,7 @@ details[open] .hlw-q-mark { transform: rotate(45deg); }
   .hlw-scene { position: relative; left: auto; top: auto; margin: var(--nav) auto 0; transform: none; }
   .hlw-arrival { position: relative; opacity: 1; transform: none; pointer-events: auto; margin-top: 2rem; }
   .hlw-hint { display: none; }
-  .hlw-compass-beam, .hlw-compass-pool, .hlw-fly,
+  .hlw-compass-beam, .hlw-compass-pool,
   .hlw-mote, .hlw-sway, .hlw-drift, .hlw-spin, .hlw-bob, .hlw-ticker,
   .hlw-card:hover .hlw-mask {
     animation: none !important;

@@ -636,3 +636,8 @@ details[open] .hlw-q-mark { transform: rotate(45deg); }
 .hlw-slot input:checked + span { background: var(--hlw-script); color: #0a0f04; border-color: var(--hlw-script); }
 .hlw-slot input:focus-visible + span { outline: 2px solid var(--hlw-bone); outline-offset: 2px; }
 .hlw-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.hlw-slot-off { cursor: not-allowed; }
+.hlw-slot-off span { opacity: 0.4; }
+.hlw-slot-off input { cursor: not-allowed; }
+textarea.hlw-input { resize: vertical; min-height: 6rem; }

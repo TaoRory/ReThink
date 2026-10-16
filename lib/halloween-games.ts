@@ -24,3 +24,11 @@ export function escapeSlots(): Slot[] {
   }
   return out;
 }
+
+/** the three ways to register for the escape room, and how many seats each takes in a session */
+export const ESCAPE_TYPES = [
+  { id: "solo", size: 1 },
+  { id: "team", size: 5 },
+  { id: "group", size: ESCAPE.capacity }, // a whole session
+] as const;
+export type EscapeType = (typeof ESCAPE_TYPES)[number]["id"];

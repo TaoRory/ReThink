@@ -42,6 +42,9 @@ const scriptFont = Mystery_Quest({
   display: "swap",
 });
 
+/** the closing "last arch" call-to-action — hidden for now (owner, 16/10); flip to bring it back */
+const SHOW_FINAL_CTA = false;
+
 export function HalloweenPage({ locale }: { locale: Locale }) {
   const t = dict[locale].halloween;
 
@@ -274,56 +277,60 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* ================= the last arch ================= */}
-      <section id="dang-ky" className="relative overflow-hidden px-5 pb-32 pt-20 text-center">
-        <Motes count={8} />
+      {SHOW_FINAL_CTA && (
+        <>
+        {/* ================= the last arch ================= */}
+        <section id="dang-ky" className="relative overflow-hidden px-5 pb-32 pt-20 text-center">
+          <Motes count={8} />
 
-        <div className="relative mx-auto max-w-3xl">
-          {/* the last arch, with her waiting inside */}
-          <div className="relative mx-auto w-[min(420px,86vw)]" aria-hidden="true">
-            <Image
-              src="/halloween/bg-vom-co.webp"
-              alt=""
-              width={720}
-              height={944}
-              sizes="420px"
-              className="absolute left-[18%] top-[20%] h-auto w-[64%]"
-            />
-            <Image
-              src="/halloween/nhan-vat.webp"
-              alt=""
-              width={380}
-              height={624}
-              unoptimized
-              className="absolute bottom-[6%] left-1/2 h-[46%] w-auto -translate-x-1/2"
-            />
-            <Image
-              src="/halloween/vom-co.webp"
-              alt=""
-              width={1400}
-              height={1475}
-              sizes="420px"
-              className="relative h-auto w-full"
-            />
-            <Eyeball track size={58} className="absolute -left-4 top-[30%]" />
-            <Eyeball track size={46} className="absolute -right-2 top-[18%]" />
-            <Eyeball track size={38} className="absolute right-[6%] bottom-[14%]" />
-          </div>
+          <div className="relative mx-auto max-w-3xl">
+            {/* the last arch, with her waiting inside */}
+            <div className="relative mx-auto w-[min(420px,86vw)]" aria-hidden="true">
+              <Image
+                src="/halloween/bg-vom-co.webp"
+                alt=""
+                width={720}
+                height={944}
+                sizes="420px"
+                className="absolute left-[18%] top-[20%] h-auto w-[64%]"
+              />
+              <Image
+                src="/halloween/nhan-vat.webp"
+                alt=""
+                width={380}
+                height={624}
+                unoptimized
+                className="absolute bottom-[6%] left-1/2 h-[46%] w-auto -translate-x-1/2"
+              />
+              <Image
+                src="/halloween/vom-co.webp"
+                alt=""
+                width={1400}
+                height={1475}
+                sizes="420px"
+                className="relative h-auto w-full"
+              />
+              <Eyeball track size={58} className="absolute -left-4 top-[30%]" />
+              <Eyeball track size={46} className="absolute -right-2 top-[18%]" />
+              <Eyeball track size={38} className="absolute right-[6%] bottom-[14%]" />
+            </div>
 
-          <h2 className="hlw-title mt-10 text-[clamp(1.6rem,4.4vw,2.6rem)]">{t.ctaHeading}</h2>
-          <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[color:var(--hlw-bone)]/85">
-            {t.ctaLead}
-          </p>
-          <div className="mt-9 flex justify-center">
-            <a href="#games" className="hlw-btn">
-              {t.ctaBtn}
-            </a>
+            <h2 className="hlw-title mt-10 text-[clamp(1.6rem,4.4vw,2.6rem)]">{t.ctaHeading}</h2>
+            <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[color:var(--hlw-bone)]/85">
+              {t.ctaLead}
+            </p>
+            <div className="mt-9 flex justify-center">
+              <a href="#games" className="hlw-btn">
+                {t.ctaBtn}
+              </a>
+            </div>
+            <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
+              {t.ctaNote}
+            </p>
           </div>
-          <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
-            {t.ctaNote}
-          </p>
-        </div>
-      </section>
+        </section>
+        </>
+      )}
     </div>
   );
 }

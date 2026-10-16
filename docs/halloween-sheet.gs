@@ -56,6 +56,8 @@ function tab_(game) {
     sh.setFrozenRows(1);
     sh.getRange(1, 1, 1, HEADERS[game].length).setFontWeight("bold");
   }
+  // keep "17:50" as text — otherwise Sheets turns it into a time value and the seat count breaks
+  if (game === "escape") sh.getRange("B:B").setNumberFormat("@");
   return sh;
 }
 
@@ -66,7 +68,7 @@ function taken_() {
   const last = sh.getLastRow();
   if (last < 2) return out;
   sh.getRange(2, 2, last - 1, 3).getValues().forEach(function (r) {
-    const slot = String(r[0]);
+    const slot = r[0] instanceof Date ? Utilities.formatDate(r[0], ss_().getSpreadsheetTimeZone(), "HH:mm") : String(r[0]);
     out[slot] = (out[slot] || 0) + (Number(r[2]) || 0);
   });
   return out;

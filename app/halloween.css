@@ -640,3 +640,16 @@ details[open] .hlw-q-mark { transform: rotate(45deg); }
 .hlw-slot-off span { opacity: 0.4; }
 .hlw-slot-off input { cursor: not-allowed; }
 textarea.hlw-input { resize: vertical; min-height: 6rem; }
+
+/* "Halloween 26" lettered along the main branch (hero) */
+.hlw-handbox { display: flex; align-items: center; justify-content: center; }
+.hlw-handtext {
+  font-family: var(--font-hlw-hand), cursive;
+  font-size: calc(var(--S) * 0.077);
+  line-height: 1;
+  white-space: nowrap;
+  color: #cfc83a;
+  opacity: 0.86;
+  -webkit-text-stroke: 0.06vh #cfc83a;
+  text-shadow: 0 0.2vh 0.5vh rgba(0, 0, 0, 0.55);
+}

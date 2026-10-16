@@ -1,4 +1,4 @@
-import { Mystery_Quest } from "next/font/google";
+import { Homemade_Apple, Mystery_Quest } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { EyeTracker } from "@/components/halloween/EyeTracker";
@@ -26,6 +26,14 @@ import { dict, localePath, type Locale } from "@/lib/i18n";
 
 /** Temporary stand-in for the KV's hand-drawn script (see Scene.tsx).
  *  Latin only — use it for ASCII/English strings, never Vietnamese. */
+/** handwriting for the lettering on the hero branch — close to the KV's hand-drawn RETHINK */
+const handFont = Homemade_Apple({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-hlw-hand",
+  display: "swap",
+});
+
 const scriptFont = Mystery_Quest({
   weight: "400",
   subsets: ["latin"],
@@ -37,7 +45,7 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
   const t = dict[locale].halloween;
 
   return (
-    <div className={`hlw hlw-page ${scriptFont.variable}`}>
+    <div className={`hlw hlw-page ${scriptFont.variable} ${handFont.variable}`}>
       <EyeTracker />
 
       {/* ================= the tunnel ================= */}

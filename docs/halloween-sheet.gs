@@ -56,19 +56,33 @@ function tab_(game) {
     sh.setFrozenRows(1);
     sh.getRange(1, 1, 1, HEADERS[game].length).setFontWeight("bold");
   }
-  // keep "17:50" as text — otherwise Sheets turns it into a time value and the seat count breaks
-  if (game === "escape") sh.getRange("B:B").setNumberFormat("@");
+  // keep these as text: Sheets would turn "17:50" into a time and drop the leading 0 of a phone number
+  const textCols = game === "escape" ? ["B:B", "G:G", "H:H"] : ["D:D", "E:E"];
+  textCols.forEach(function (c) {
+    sh.getRange(c).setNumberFormat("@");
+  });
   return sh;
 }
 
-// seats taken per session, from the sheet itself (column B = slot, D = headcount)
+// "17:50", "17:50:00" or "5:50 PM" (whatever the cell displays) → "17:50"
+function slotKey_(display) {
+  const m = String(display).match(/(\d{1,2}):(\d{2})/);
+  if (!m) return String(display);
+  let h = Number(m[1]);
+  if (/pm/i.test(display) && h < 12) h += 12;
+  if (/am/i.test(display) && h === 12) h = 0;
+  return ("0" + h).slice(-2) + ":" + m[2];
+}
+
+// seats taken per session, read from the sheet itself (column B = slot, D = headcount).
+// getDisplayValues so it works whether Sheets stored the slot as text or turned it into a time.
 function taken_() {
   const sh = tab_("escape");
   const out = {};
   const last = sh.getLastRow();
   if (last < 2) return out;
-  sh.getRange(2, 2, last - 1, 3).getValues().forEach(function (r) {
-    const slot = r[0] instanceof Date ? Utilities.formatDate(r[0], ss_().getSpreadsheetTimeZone(), "HH:mm") : String(r[0]);
+  sh.getRange(2, 2, last - 1, 3).getDisplayValues().forEach(function (r) {
+    const slot = slotKey_(r[0]);
     out[slot] = (out[slot] || 0) + (Number(r[2]) || 0);
   });
   return out;

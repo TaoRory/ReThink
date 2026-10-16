@@ -28,10 +28,10 @@ const STREAKS: [number, number, number][] = [
 ];
 /** drops that keep leaving the long streaks: [x, streak length, seconds, delay] */
 const DROPS: [number, number, number, number][] = [
-  [150, 170, 7.5, 2.9],
-  [450, 118, 9, 3.7],
-  [750, 196, 8, 4.4],
-  [1050, 142, 10, 5.1],
+  [150, 170, 7.5, 2.7],
+  [450, 118, 9, 3.2],
+  [750, 196, 8, 3.6],
+  [1050, 142, 10, 4.1],
 ];
 
 function streak([x, len, w]: [number, number, number]) {

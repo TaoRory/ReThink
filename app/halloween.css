@@ -660,7 +660,7 @@ textarea.hlw-input { resize: vertical; min-height: 6rem; }
    One-shot reveal when the section arrives, then a few drops slide off the
    streaks. Only transform and opacity ever change.
    ============================================================ */
-.hlw-wound { overflow: visible; --cut: 2.8s; }
+.hlw-wound { overflow: visible; --cut: 1.4s; }
 /* the blade: the cut is drawn from left to right in --cut seconds */
 .hlw-wound-blade {
   transform-box: view-box;

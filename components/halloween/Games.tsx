@@ -17,13 +17,22 @@ import { Branch } from "./Scene";
  * URL is set the form says registration is not open yet instead of pretending to send.
  */
 
+type StoryCopy = {
+  kicker: string;
+  heading: string;
+  blocks: readonly { heading?: string; paras: readonly string[] }[];
+  outro: string;
+};
+
 type GameCopy = {
   tag: string;
   name: string;
   desc: string;
   facts: readonly string[];
   cta: string;
+  storyCta: string;
   formTitle: string;
+  story: StoryCopy;
 };
 
 export type GamesCopy = {
@@ -52,6 +61,7 @@ export type GamesCopy = {
     submit: string;
     sending: string;
     close: string;
+    registerNow: string;
     successTitle: string;
     successBody: string;
     successSlot: string;
@@ -80,15 +90,15 @@ export function HalloweenGames({
   lead: string;
   copy: GamesCopy;
 }) {
-  const [game, setGame] = useState<GameId | null>(null);
+  const [panel, setPanel] = useState<{ game: GameId; mode: "register" | "story" } | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     const d = dialogRef.current;
     if (!d) return;
-    if (game && !d.open) d.showModal();
-    if (!game && d.open) d.close();
-  }, [game]);
+    if (panel && !d.open) d.showModal();
+    if (!panel && d.open) d.close();
+  }, [panel]);
 
   return (
     <section id="games" className="relative overflow-hidden px-5 pb-28 pt-24">
@@ -114,13 +124,8 @@ export function HalloweenGames({
               return (
                 <div key={id} className={`hlw-sway ${i ? "hlw-sway-b" : ""}`}>
                   <span className="mx-auto hidden h-10 w-px bg-[rgba(222,217,196,0.45)] md:block" />
-                  <button
-                    type="button"
-                    onClick={() => setGame(id)}
-                    className="hlw-card hlw-game block w-full px-6 pb-7 pt-8 text-center"
-                    aria-haspopup="dialog"
-                  >
-                    <span className="flex h-[170px] items-center justify-center">
+                  <article className="hlw-card hlw-game flex flex-col px-6 pb-7 pt-8 text-center">
+                    <div className="flex h-[170px] items-center justify-center">
                       <Image
                         src={`/halloween/${m.src}`}
                         alt=""
@@ -129,21 +134,28 @@ export function HalloweenGames({
                         unoptimized
                         className="hlw-pixel hlw-mask h-auto max-h-[160px] w-auto"
                       />
-                    </span>
-                    <span className="hlw-plaque mt-5 inline-block">{g.tag}</span>
-                    <span className="hlw-title mt-4 block text-lg">{g.name}</span>
-                    <span className="mx-auto mt-3 block max-w-sm text-[13px] leading-relaxed text-[color:var(--hlw-bone)]/75">
+                    </div>
+                    <span className="hlw-plaque mx-auto mt-5 inline-block">{g.tag}</span>
+                    <h3 className="hlw-title mt-4 text-lg">{g.name}</h3>
+                    <p className="mx-auto mt-3 max-w-sm text-[13px] leading-relaxed text-[color:var(--hlw-bone)]/75">
                       {g.desc}
-                    </span>
-                    <span className="mt-4 flex flex-wrap justify-center gap-2">
+                    </p>
+                    <div className="mt-4 flex flex-wrap justify-center gap-2">
                       {g.facts.map((f) => (
                         <span key={f} className="hlw-fact">
                           {f}
                         </span>
                       ))}
-                    </span>
-                    <span className="hlw-btn mt-6 inline-flex">{g.cta}</span>
-                  </button>
+                    </div>
+                    <div className="mt-auto flex flex-wrap justify-center gap-3 pt-6">
+                      <button type="button" className="hlw-btn" aria-haspopup="dialog" onClick={() => setPanel({ game: id, mode: "register" })}>
+                        {g.cta}
+                      </button>
+                      <button type="button" className="hlw-btn hlw-btn-ghost" aria-haspopup="dialog" onClick={() => setPanel({ game: id, mode: "story" })}>
+                        {g.storyCta}
+                      </button>
+                    </div>
+                  </article>
                 </div>
               );
             })}
@@ -154,14 +166,72 @@ export function HalloweenGames({
       <dialog
         ref={dialogRef}
         className="hlw hlw-modal"
-        onClose={() => setGame(null)}
+        onClose={() => setPanel(null)}
         onClick={(e) => {
-          if (e.target === dialogRef.current) setGame(null);
+          if (e.target === dialogRef.current) setPanel(null);
         }}
       >
-        {game && <RegisterForm key={game} game={game} copy={copy} onClose={() => setGame(null)} />}
+        {panel?.mode === "register" && (
+          <RegisterForm key={panel.game} game={panel.game} copy={copy} onClose={() => setPanel(null)} />
+        )}
+        {panel?.mode === "story" && (
+          <StoryPanel
+            key={panel.game}
+            game={copy[panel.game]}
+            closeLabel={copy.form.close}
+            registerLabel={copy.form.registerNow}
+            onClose={() => setPanel(null)}
+            onRegister={() => setPanel({ game: panel.game, mode: "register" })}
+          />
+        )}
       </dialog>
     </section>
+  );
+}
+
+function StoryPanel({
+  game,
+  closeLabel,
+  registerLabel,
+  onClose,
+  onRegister,
+}: {
+  game: GameCopy;
+  closeLabel: string;
+  registerLabel: string;
+  onClose: () => void;
+  onRegister: () => void;
+}) {
+  const st = game.story;
+  return (
+    <div className="hlw-modal-body">
+      <button type="button" className="hlw-modal-x" onClick={onClose} aria-label={closeLabel}>
+        ×
+      </button>
+      <p className="hlw-kicker">{st.kicker}</p>
+      <h3 className="hlw-script mt-3 text-3xl">{st.heading}</h3>
+      <div className="mt-5 grid gap-5">
+        {st.blocks.map((b, i) => (
+          <div key={i}>
+            {b.heading && <p className="hlw-kicker mb-2">{b.heading}</p>}
+            {b.paras.map((p) => (
+              <p key={p} className="mt-3 text-[14px] leading-relaxed text-[color:var(--hlw-bone)]/85 first:mt-0">
+                {p}
+              </p>
+            ))}
+          </div>
+        ))}
+      </div>
+      {st.outro && <p className="hlw-title mt-6 text-[15px] leading-snug">{st.outro}</p>}
+      <div className="mt-7 flex flex-wrap gap-3">
+        <button type="button" className="hlw-btn" onClick={onRegister}>
+          {registerLabel}
+        </button>
+        <button type="button" className="hlw-btn hlw-btn-ghost" onClick={onClose}>
+          {closeLabel}
+        </button>
+      </div>
+    </div>
   );
 }
 

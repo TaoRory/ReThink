@@ -430,11 +430,37 @@ export const dict = {
       games: {
         hunt: {
           tag: "Scavenger hunt",
-          name: "Săn Manh Mối",
-          desc: "Lần theo la bàn, gom manh mối rải khắp đường hầm. Chơi theo nhịp của riêng bạn.",
+          name: "The Last Summer Camp",
+          desc: "Pinewood, 1996. Một cuộc điều tra cuối cùng trước khi khu trại bị phá dỡ.",
           facts: ["Đăng ký trước qua biểu mẫu"],
-          cta: "Đăng ký săn manh mối",
+          cta: "Đăng ký tham gia",
+          storyCta: "Cốt truyện",
           formTitle: "Đăng ký Scavenger Hunt",
+          story: {
+            kicker: "Pinewood, 1996",
+            heading: "The Last Summer Camp",
+            blocks: [
+              {
+                paras: [
+                  "Năm 1996, Pinewood Summer Camp nổi tiếng với The Lost Camper Challenge — thử thách ban đêm mà các trại viên phải tự tìm đường qua khu rừng bằng bản đồ, la bàn và đèn pin, dưới sự giám sát của đội Night Watch.",
+                  "Thế nhưng, mùa hè năm ấy đã kết thúc bằng một bi kịch. Một trại viên được tìm thấy đã chết trong rừng khi tham gia thử thách. Vụ việc được kết luận là tai nạn, khiến Lost Camper Challenge bị hủy bỏ và Pinewood dần đóng cửa. Suốt ba mươi năm, những nghi vấn vẫn chưa có lời giải đáp.",
+                ],
+              },
+              {
+                paras: [
+                  "Ba mươi năm sau, Pinewood sắp bị phá dỡ để xây một khu nghỉ dưỡng. Nhưng hàng loạt hiện tượng kỳ lạ bất ngờ xuất hiện tại khu trại bỏ hoang: tiếng trẻ con khóc, tiếng còi vang lên giữa rừng, ánh đèn pin di chuyển quanh những cabin trống — và một bóng người đeo mặt nạ nai xuất hiện vào mỗi đêm.",
+                ],
+              },
+              {
+                heading: "Nhiệm vụ của bạn",
+                paras: [
+                  "Các bạn là một nhóm điều tra được mời đến Pinewood trước khi khu trại bị phá dỡ. Hãy khám phá các khu vực trong trại, vượt qua thử thách và thu thập bằng chứng còn sót lại từ năm 1996.",
+                  "Một bức ảnh tập thể chụp vào ngày khai mạc trại hè năm ấy đã bị xé thành nhiều mảnh và thất lạc khắp Pinewood. Hãy thu thập các mảnh ảnh, ghép chúng lại và giải mã bí mật được giấu phía sau.",
+                ],
+              },
+            ],
+            outro: "Đây là cuộc điều tra cuối cùng trước khi Pinewood biến mất. Liệu các bạn có thể khám phá sự thật đã bị chôn vùi suốt ba mươi năm?",
+          },
         },
         escape: {
           tag: "Escape room",
@@ -443,6 +469,13 @@ export const dict = {
           facts: ["17:00 – 22:30", "Mỗi ca 40 phút chơi + 10 phút dọn lại phòng", "Tối đa 15 người mỗi ca", "Đăng ký lẻ, nhóm 5 hoặc nhóm 15 người"],
           cta: "Chọn ca & đăng ký",
           formTitle: "Đăng ký Escape Room",
+          storyCta: "Cốt truyện",
+          story: {
+            kicker: "Căn phòng khoá kín",
+            heading: "Sắp được hé lộ",
+            blocks: [{ paras: ["Câu chuyện của căn phòng sẽ sớm được hé lộ. Hãy chờ nhé."] }],
+            outro: "",
+          },
         },
         form: {
           name: "Họ và tên",
@@ -471,6 +504,7 @@ export const dict = {
           submit: "Gửi đăng ký",
           sending: "Đang gửi…",
           close: "Đóng",
+          registerNow: "Đăng ký ngay",
           successTitle: "Đã nhận đăng ký!",
           successBody: "Chúng mình sẽ liên hệ qua email nếu cần xác nhận thêm.",
           successSlot: "Ca của bạn:",
@@ -911,11 +945,37 @@ export const dict = {
       games: {
         hunt: {
           tag: "Scavenger hunt",
-          name: "The Scavenger Hunt",
-          desc: "Follow the compass and gather the clues scattered through the tunnel. Play at your own pace.",
+          name: "The Last Summer Camp",
+          desc: "Pinewood, 1996. One last investigation before the camp is torn down.",
           facts: ["Reserve ahead with a short form"],
-          cta: "Join the hunt",
+          cta: "Register",
+          storyCta: "The story",
           formTitle: "Scavenger Hunt registration",
+          story: {
+            kicker: "Pinewood, 1996",
+            heading: "The Last Summer Camp",
+            blocks: [
+              {
+                paras: [
+                  "In 1996, Pinewood Summer Camp was famous for the Lost Camper Challenge — a night-time test in which campers had to find their own way through the forest with a map, a compass and a flashlight, watched over by the Night Watch.",
+                  "But that summer ended in tragedy. A camper was found dead in the forest during the challenge. It was ruled an accident; the Lost Camper Challenge was cancelled and Pinewood slowly closed. For thirty years the doubts have gone unanswered.",
+                ],
+              },
+              {
+                paras: [
+                  "Thirty years on, Pinewood is about to be demolished to make way for a resort. Then strange things begin to happen in the abandoned camp: children crying, a whistle blowing in the forest, flashlight beams moving around the empty cabins — and a figure in a deer mask who appears every night.",
+                ],
+              },
+              {
+                heading: "Your mission",
+                paras: [
+                  "You are an investigation team invited to Pinewood before the camp is demolished. Explore the camp, pass its challenges and collect the evidence left behind from 1996.",
+                  "A group photograph taken on the camp's opening day that summer was torn into pieces and scattered across Pinewood. Collect the pieces, put them back together and decode the secret hidden behind them.",
+                ],
+              },
+            ],
+            outro: "This is the last investigation before Pinewood disappears. Can you uncover the truth buried for thirty years?",
+          },
         },
         escape: {
           tag: "Escape room",
@@ -924,6 +984,13 @@ export const dict = {
           facts: ["17:00 – 22:30", "Each session: 40 min of play + 10 min to reset the room", "Up to 15 people per session", "Register alone, as a team of 5, or as a group of 15"],
           cta: "Pick a session & register",
           formTitle: "Escape Room registration",
+          storyCta: "The story",
+          story: {
+            kicker: "The locked room",
+            heading: "Coming soon",
+            blocks: [{ paras: ["The room's story will be revealed soon. Stay tuned."] }],
+            outro: "",
+          },
         },
         form: {
           name: "Full name",
@@ -952,6 +1019,7 @@ export const dict = {
           submit: "Send registration",
           sending: "Sending…",
           close: "Close",
+          registerNow: "Register now",
           successTitle: "Registration received!",
           successBody: "We will email you if we need anything else.",
           successSlot: "Your session:",

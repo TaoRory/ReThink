@@ -572,8 +572,7 @@ details[open] .hlw-q-mark { transform: rotate(45deg); }
 /* ============================================================
    Games: the two cards and the registration dialog
    ============================================================ */
-.hlw-game { cursor: pointer; color: inherit; font: inherit; }
-.hlw-game:hover, .hlw-game:focus-visible { border-color: rgba(222, 217, 196, 0.55); }
+.hlw-game { height: 100%; }
 .hlw-fact {
   font-size: 11px;
   letter-spacing: 0.04em;

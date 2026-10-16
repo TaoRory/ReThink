@@ -480,13 +480,14 @@
 [data-reveal].revealed .hlw-stop:nth-child(4) { transition-delay: 1.65s; }
 [data-reveal].revealed .hlw-stop:nth-child(5) { transition-delay: 2.2s; }
 
-/* FAQ: hands behind wet glass press closer when a question is open */
+/* FAQ: hands behind wet glass. Opening a question changes the section's height; a scale
+   transition on a full-bleed image stuttered while it re-laid out, so only opacity changes. */
 .hlw-hands {
-  transform: scale(1);
-  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s ease;
   opacity: 0.55;
+  transition: opacity 0.6s ease;
+  will-change: opacity;
 }
-.hlw-faq:has(details[open]) .hlw-hands { transform: scale(1.07); opacity: 0.8; }
+.hlw-faq:has(details[open]) .hlw-hands { opacity: 0.8; }
 .hlw-q { cursor: pointer; list-style: none; }
 .hlw-q::-webkit-details-marker { display: none; }
 .hlw-q-mark { transition: transform 0.35s ease; }

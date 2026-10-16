@@ -299,8 +299,6 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <El d={1.8} box={[0.309, 0.472, 0.032, 0.047]} src="hood.webp" />
         <Limb d={1.6} from={[0.305, 0.75]} to={[0.435, 0.375]} t={0.013} />
         <Limb d={1.9} from={[0.565, 0.487]} to={[0.69, 0.615]} t={0.016} />
-        <Limb d={1.9} from={[0.645, 0.48]} to={[0.64, 0.54]} t={0.006} />
-        <Limb d={1.9} from={[0.64, 0.54]} to={[0.745, 0.545]} t={0.006} />
 
         {/* ---- the compass and the light it throws ---- */}
         <El d={2.6} box={[0.474, 0.838, 0.086, 0.0447]} src="compass.webp">

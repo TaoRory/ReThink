@@ -362,26 +362,6 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
             {t.ctaNote}
           </p>
         </div>
-
-        {/* what is left on the floor */}
-        <Image
-          src="/halloween/tay.webp"
-          alt=""
-          width={600}
-          height={352}
-          sizes="280px"
-          className="pointer-events-none absolute -left-10 bottom-4 w-52 opacity-90 sm:w-72"
-          aria-hidden="true"
-        />
-        <Image
-          src="/halloween/chan.webp"
-          alt=""
-          width={600}
-          height={397}
-          sizes="260px"
-          className="pointer-events-none absolute -right-10 bottom-2 hidden w-64 -scale-x-100 opacity-80 sm:block"
-          aria-hidden="true"
-        />
       </section>
     </div>
   );

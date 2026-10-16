@@ -209,6 +209,7 @@ function El({
   box,
   src,
   pixel = false,
+  rot,
   className = "",
   children,
 }: {
@@ -216,6 +217,8 @@ function El({
   box: Box;
   src?: string;
   pixel?: boolean;
+  /** degrees, about the box centre */
+  rot?: number;
   className?: string;
   children?: ReactNode;
 }) {
@@ -224,7 +227,7 @@ function El({
     <div className="hlw-layer" style={{ "--d": d } as CSSProperties}>
       <div
         className={`hlw-el ${className}`}
-        style={{ left: `${x * 100}%`, top: `${y * 100}%`, width: `${w * 100}%`, height: `${h * 100}%` }}
+        style={{ left: `${x * 100}%`, top: `${y * 100}%`, width: `${w * 100}%`, height: `${h * 100}%`, ...(rot ? { transform: `rotate(${rot}deg)` } : {}) }}
       >
         {src && (
           // plain <img>: these are exact-size, pre-cropped crops; fill the measured box
@@ -316,6 +319,8 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <El d={0.65} box={[0.855, 0.02, 0.12, 0.215]} src="dog.webp" pixel className="hlw-sway-b" />
         <El d={0.6} box={[0, 0, 1.02, 0.71]} src="branches.webp" />
         <El d={0.6} box={[0.0997, -0.128, 0.732, 0.677]} src="wordmark.webp" className="hlw-word" />
+        {/* the co-host, lettered along the second branch */}
+        <El d={0.6} box={[0.57, 0.182, 0.28, 0.059]} src="logo-sc.webp" rot={-21} />
         <El d={0.55} box={[-0.005, 0.93, 0.292, 0.058]} src="arm.webp" />
         <El d={0.6} box={[0.63, 0.842, 0.22, 0.063]} src="leg.webp" />
 

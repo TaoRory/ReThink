@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { ESCAPE, ESCAPE_TYPES, escapeSlots, type EscapeType } from "@/lib/halloween-games";
+import { GAME_CFG, slotsFor, type GameId, type RegType } from "@/lib/halloween-games";
 import { Branch } from "./Scene";
 
 /**
@@ -32,6 +32,9 @@ type GameCopy = {
   cta: string;
   storyCta: string;
   formTitle: string;
+  /** the ways to register for this game (ids from GAME_CFG[game].types) */
+  types: Partial<Record<RegType, { name: string; note: string }>>;
+  slotNote: string;
   story: StoryCopy;
 };
 
@@ -44,7 +47,6 @@ export type GamesCopy = {
     studentId: string;
     phone: string;
     typeLegend: string;
-    types: Record<EscapeType, { name: string; note: string }>;
     seatsLeft: string;
     seatsLoading: string;
     full: string;
@@ -56,7 +58,6 @@ export type GamesCopy = {
     contactNote: string;
     slotFullNow: string;
     slotLegend: string;
-    slotNote: string;
     slotRequired: string;
     required: string;
     submit: string;
@@ -71,14 +72,11 @@ export type GamesCopy = {
   };
 };
 
-type GameId = "hunt" | "escape";
-
 const FORM_URL = process.env.NEXT_PUBLIC_HLW_FORM_URL ?? "";
 const MASK: Record<GameId, { src: string; w: number; h: number }> = {
   hunt: { src: "mask-meo.webp", w: 150, h: 189 },
   escape: { src: "mask-cu.webp", w: 104, h: 163 },
 };
-const SLOTS = escapeSlots();
 
 export function HalloweenGames({
   kicker,
@@ -189,7 +187,7 @@ export function HalloweenGames({
             game={panel.game}
             copy={copy}
             onClose={() => setPanel(null)}
-            taken={seats.taken}
+            taken={seats.takenBy?.[panel.game] ?? null}
             loading={seats.loading}
             reload={seats.load}
           />
@@ -257,10 +255,11 @@ function StoryPanel({
 
 type Status = "idle" | "sending" | "done" | "error";
 type Taken = Record<string, number>;
+type TakenBy = Partial<Record<GameId, Taken>>;
 
 /** seats already booked per session, read from the sheet's script (null = not known yet) */
 function useTaken() {
-  const [taken, setTaken] = useState<Taken | null>(null);
+  const [takenBy, setTakenBy] = useState<TakenBy | null>(null);
   const [loading, setLoading] = useState(false);
   const load = useCallback(async () => {
     if (!FORM_URL) return;
@@ -268,14 +267,15 @@ function useTaken() {
     try {
       const res = await fetch(`${FORM_URL}${FORM_URL.includes("?") ? "&" : "?"}action=availability`);
       const json = await res.json();
-      if (json?.ok && json.taken) setTaken(json.taken as Taken);
+      // older script versions only know the escape room: { taken }
+      if (json?.ok) setTakenBy((json.takenBy ?? (json.taken ? { escape: json.taken } : null)) as TakenBy | null);
     } catch {
       /* no counts — the picker still works, the sheet script enforces the limit */
     } finally {
       setLoading(false);
     }
   }, []);
-  return { taken, loading, load };
+  return { takenBy, loading, load };
 }
 
 function RegisterForm({
@@ -296,15 +296,16 @@ function RegisterForm({
   const g = copy[game];
   const f = copy.form;
   const uid = useId();
-  const isEscape = game === "escape";
+  const cfg = GAME_CFG[game];
+  const slots = slotsFor(game);
   const [status, setStatus] = useState<Status>("idle");
-  const [type, setType] = useState<EscapeType>("solo");
+  const [type, setType] = useState<RegType>("solo");
   const [slot, setSlot] = useState("");
   const [members, setMembers] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const size = ESCAPE_TYPES.find((t) => t.id === type)!.size;
-  const left = (id: string) => (taken ? Math.max(0, ESCAPE.capacity - (taken[id] ?? 0)) : null);
+  const size = cfg.types.find((t) => t.id === type)!.size;
+  const left = (id: string) => (taken ? Math.max(0, cfg.capacity - (taken[id] ?? 0)) : null);
   const fits = (id: string) => {
     const l = left(id);
     return l === null || l >= size;
@@ -324,10 +325,8 @@ function RegisterForm({
     const errs: Record<string, string> = {};
     for (const k of ["name", "email", "studentId"]) if (!v(k)) errs[k] = f.required;
     if (v("email") && !/^\S+@\S+\.\S+$/.test(v("email"))) errs.email = f.required;
-    if (isEscape) {
-      if (!slotOk) errs.slot = slot ? f.noRoomForType : f.slotRequired;
-      if (size > 1 && memberLines !== size) errs.members = f.membersCount.replace("{n}", String(size)).replace("{c}", String(memberLines));
-    }
+    if (!slotOk) errs.slot = slot ? f.noRoomForType : f.slotRequired;
+    if (size > 1 && memberLines !== size) errs.members = f.membersCount.replace("{n}", String(size)).replace("{c}", String(memberLines));
     setErrors(errs);
     if (Object.keys(errs).length) return;
 
@@ -338,15 +337,15 @@ function RegisterForm({
         headers: { "Content-Type": "text/plain;charset=utf-8" }, // a "simple" request: no CORS preflight
         body: JSON.stringify({
           game,
-          type: isEscape ? type : "solo",
-          headcount: isEscape ? size : 1,
-          slot: isEscape ? slot : "",
+          type,
+          headcount: size,
+          slot,
           name: v("name"),
           email: v("email"),
           studentId: v("studentId"),
           phone: v("phone"),
-          teamName: isEscape && size > 1 ? v("teamName") : "",
-          members: isEscape && size > 1 ? members.trim() : "",
+          teamName: size > 1 ? v("teamName") : "",
+          members: size > 1 ? members.trim() : "",
           at: new Date().toISOString(),
         }),
       });
@@ -366,8 +365,8 @@ function RegisterForm({
     }
   }
 
-  const slotInfo = SLOTS.find((s) => s.id === slot);
-  const typeInfo = copy.form.types[type];
+  const slotInfo = slots.find((s) => s.id === slot);
+  const typeInfo = g.types[type];
 
   return (
     <div className="hlw-modal-body">
@@ -380,10 +379,10 @@ function RegisterForm({
         <div className="mt-6" role="status">
           <p className="hlw-title text-lg">{f.successTitle}</p>
           <p className="mt-3 text-sm leading-relaxed text-[color:var(--hlw-bone)]/80">{f.successBody}</p>
-          {isEscape && slotInfo && (
+          {slotInfo && (
             <p className="mt-4 text-sm">
               <span className="hlw-kicker mr-2">{f.successSlot}</span>
-              {slotInfo.start} – {slotInfo.end} · {typeInfo.name}
+              {slotInfo.start} – {slotInfo.end}{typeInfo ? ` · ${typeInfo.name}` : ""}
             </p>
           )}
           <button type="button" className="hlw-btn hlw-btn-ghost mt-7" onClick={onClose}>
@@ -392,17 +391,17 @@ function RegisterForm({
         </div>
       ) : (
         <form onSubmit={onSubmit} noValidate className="mt-6 grid gap-4">
-          {isEscape && (
+          {(
             <>
               <fieldset className="grid gap-2">
                 <legend className="hlw-kicker mb-2">{f.typeLegend}</legend>
                 <div className="grid gap-2 sm:grid-cols-3" role="radiogroup">
-                  {ESCAPE_TYPES.map((t) => (
+                  {cfg.types.map((t) => (
                     <label key={t.id} className="hlw-slot">
                       <input type="radio" name="type" value={t.id} checked={type === t.id} onChange={() => setType(t.id)} />
                       <span>
-                        <b className="block text-[13px]">{f.types[t.id].name}</b>
-                        <small className="block text-[11px] font-normal opacity-80">{f.types[t.id].note}</small>
+                        <b className="block text-[13px]">{g.types[t.id]?.name}</b>
+                        <small className="block text-[11px] font-normal opacity-80">{g.types[t.id]?.note}</small>
                       </span>
                     </label>
                   ))}
@@ -412,7 +411,7 @@ function RegisterForm({
               <fieldset className="grid gap-2">
                 <legend className="hlw-kicker mb-2">{f.slotLegend}</legend>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3" role="radiogroup" aria-describedby={`${uid}-note`}>
-                  {SLOTS.map((s) => {
+                  {slots.map((s) => {
                     const l = left(s.id);
                     const ok = fits(s.id);
                     return (
@@ -442,20 +441,20 @@ function RegisterForm({
                   })}
                 </div>
                 <p id={`${uid}-note`} className="text-xs leading-relaxed text-[color:var(--hlw-bone)]/60">
-                  {f.slotNote}
+                  {g.slotNote}
                 </p>
                 {errors.slot && <p className="hlw-err">{errors.slot}</p>}
               </fieldset>
             </>
           )}
 
-          <p className="text-xs leading-relaxed text-[color:var(--hlw-bone)]/60">{isEscape && size > 1 ? f.contactNote : ""}</p>
+          <p className="text-xs leading-relaxed text-[color:var(--hlw-bone)]/60">{size > 1 ? f.contactNote : ""}</p>
           <Field id={`${uid}-name`} name="name" label={f.name} error={errors.name} autoComplete="name" />
           <Field id={`${uid}-email`} name="email" label={f.email} error={errors.email} type="email" autoComplete="email" />
           <Field id={`${uid}-sid`} name="studentId" label={f.studentId} error={errors.studentId} />
           <Field id={`${uid}-phone`} name="phone" label={f.phone} type="tel" autoComplete="tel" />
 
-          {isEscape && size > 1 && (
+          {size > 1 && (
             <>
               <Field id={`${uid}-team`} name="teamName" label={f.teamName} />
               <div>

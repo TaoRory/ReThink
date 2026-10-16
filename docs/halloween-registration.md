@@ -32,27 +32,35 @@ If you change the script later: **Deploy → Manage deployments → edit → new
 
 ## What is written
 
-**Escape Room** tab: submitted at · session start (e.g. `17:50`) · type (`solo` / `team` / `group`) ·
-number of people · contact person · email · student ID · phone · team name · members (one per line).
-
-**Scavenger Hunt** tab: submitted at · name · email · student ID · phone.
+Both tabs ("Escape Room", "Scavenger Hunt") have the same columns: submitted at · session start
+(e.g. `17:50`) · type (`solo` / `team` / `group`) · number of people · contact person · email ·
+student ID · phone · team name · members (one per line).
 
 ## Rules the script enforces (so the page cannot be tricked)
 
-- Capacity is **15 per session** (`CAPACITY` in the script and `ESCAPE.capacity` in
-  `lib/halloween-games.ts` — change both together).
-- Registration types: individual = 1 seat, team = 5 seats, group = 15 seats (a whole session).
-  A registration that would take the session over 15 is refused with `full`, and the page asks the
-  person to pick another session.
+- **Escape room:** 15 people per session. Individual = 1 seat, team of 5 = 5 seats, group of 15 = a whole session.
+- **Scavenger hunt:** 32 people per session (4 teams × 8). Individual = 1 seat, full team = 8 seats.
+- A registration that would take a session over its capacity is refused with `full`, and the page
+  asks the person to pick another session. Capacities live in `GAMES` at the top of the script and in
+  `GAME_CFG` in `lib/halloween-games.ts` — change both together.
 - The check runs under a script lock, so two people submitting at the same moment cannot both take
   the last seats.
 - Text starting with `= + - @` is stored with a leading `'` so it cannot run as a formula.
 
 ## Session times
 
-Generated in `lib/halloween-games.ts` from the owner's brief: open 17:00, close 22:30, 40 min of
-play + 10 min reset, so sessions start 17:00, 17:50, 18:40, 19:30, 20:20, 21:10 (the next one would
-finish after 22:30). Change `ESCAPE` there and the picker follows.
+Generated in `lib/halloween-games.ts` (`GAME_CFG`) from the owner's briefs; change them there and the
+pickers follow.
+
+- **Escape room:** 17:00 – 22:30, 40 min of play, a session every 50 min → 17:00, 17:50, 18:40, 19:30, 20:20, 21:10.
+- **Scavenger hunt:** 18:20 – 22:20, 30 min of play + 10 min set-up, a session every 40 min →
+  18:20, 19:00, 19:40, 20:20, 21:00, 21:40.
+
+## After changing the script
+
+Paste the new `halloween-sheet.gs`, run `setup` once, then **Deploy → Manage deployments → edit →
+New version → Deploy**. The first call rewrites the header row of the "Scavenger Hunt" tab if it still
+has the old 5-column layout (do this before the first real registration).
 
 ## Not handled (decide if needed)
 

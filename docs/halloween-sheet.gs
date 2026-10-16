@@ -4,9 +4,10 @@
  * (Extensions → Apps Script) and deploy it as a Web app. Steps: docs/halloween-registration.md
  *
  * POST (JSON body, sent as text/plain): writes one row to the "Escape Room" or
- *   "Scavenger Hunt" tab. Escape-room rows are refused with {ok:false,error:"full"}
- *   when the session would go over CAPACITY, so two people can never both take the last seats.
- * GET ?action=availability: {ok:true, taken:{"17:00":7, ...}} — seats already booked per session.
+ *   "Scavenger Hunt" tab. A row is refused with {ok:false,error:"full"} when its session would
+ *   go over that game's capacity, so two people can never both take the last seats.
+ * GET ?action=availability: {ok:true, takenBy:{escape:{"17:00":7,...}, hunt:{"18:20":12,...}},
+ *   taken:{...escape...}} — seats already booked per session.
  */
 
 // Leave "" when this script was opened from the Sheet (Extensions → Apps Script).
@@ -14,15 +15,16 @@
 // (the long part of its URL between /d/ and /edit).
 const SHEET_ID = "";
 
-const CAPACITY = 15;
+// Keep in step with lib/halloween-games.ts (GAME_CFG).
+const GAMES = {
+  escape: { capacity: 15, types: { solo: 1, team: 5, group: 15 } },
+  hunt: { capacity: 32, types: { solo: 1, team: 8 } }, // 4 teams of 8 a session
+};
 const TABS = { escape: "Escape Room", hunt: "Scavenger Hunt" };
-const TYPE_SIZE = { solo: 1, team: 5, group: 15 };
 const SLOT_RE = /^\d{2}:\d{2}$/;
 
-const HEADERS = {
-  escape: ["Thời gian gửi", "Ca", "Hình thức", "Số người", "Người đại diện", "Email", "MSSV", "SĐT", "Tên nhóm", "Thành viên"],
-  hunt: ["Thời gian gửi", "Người đăng ký", "Email", "MSSV", "SĐT"],
-};
+// both games book by session, so both tabs have the same columns
+const HEADERS = ["Thời gian gửi", "Ca", "Hình thức", "Số người", "Người đại diện", "Email", "MSSV", "SĐT", "Tên nhóm", "Thành viên"];
 
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
@@ -51,14 +53,14 @@ function tab_(game) {
   const ss = ss_();
   let sh = ss.getSheetByName(TABS[game]);
   if (!sh) sh = ss.insertSheet(TABS[game]);
-  if (sh.getLastRow() === 0) {
-    sh.appendRow(HEADERS[game]);
+  const head = sh.getRange(1, 1, 1, HEADERS.length);
+  if (head.getValues()[0].join("|") !== HEADERS.join("|")) {
+    // new tab, or an older layout (the hunt tab used to have 5 columns): (re)write the header row
+    head.setValues([HEADERS]).setFontWeight("bold");
     sh.setFrozenRows(1);
-    sh.getRange(1, 1, 1, HEADERS[game].length).setFontWeight("bold");
   }
   // keep these as text: Sheets would turn "17:50" into a time and drop the leading 0 of a phone number
-  const textCols = game === "escape" ? ["B:B", "G:G", "H:H"] : ["D:D", "E:E"];
-  textCols.forEach(function (c) {
+  ["B:B", "G:G", "H:H"].forEach(function (c) {
     sh.getRange(c).setNumberFormat("@");
   });
   return sh;
@@ -76,8 +78,8 @@ function slotKey_(display) {
 
 // seats taken per session, read from the sheet itself (column B = slot, D = headcount).
 // getDisplayValues so it works whether Sheets stored the slot as text or turned it into a time.
-function taken_() {
-  const sh = tab_("escape");
+function taken_(game) {
+  const sh = tab_(game);
   const out = {};
   const last = sh.getLastRow();
   if (last < 2) return out;
@@ -90,7 +92,8 @@ function taken_() {
 
 function doGet(e) {
   if (e && e.parameter && e.parameter.action === "availability") {
-    return json_({ ok: true, taken: taken_() });
+    const escape = taken_("escape");
+    return json_({ ok: true, taken: escape, takenBy: { escape: escape, hunt: taken_("hunt") } });
   }
   return json_({ ok: true });
 }
@@ -100,26 +103,20 @@ function doPost(e) {
   lock.waitLock(20000); // serialise writers so the capacity check is honest
   try {
     const d = JSON.parse(e.postData.contents);
-    if (!TABS[d.game]) return json_({ ok: false, error: "bad_game" });
+    const game = GAMES[d.game];
+    if (!game) return json_({ ok: false, error: "bad_game" });
     if (!d.name || !d.email || !d.studentId) return json_({ ok: false, error: "missing" });
 
-    const sh = tab_(d.game);
-    const now = new Date();
-
-    if (d.game === "hunt") {
-      sh.appendRow([now, safe_(d.name), safe_(d.email), safe_(d.studentId), safe_(d.phone)]);
-      return json_({ ok: true });
-    }
-
-    const size = TYPE_SIZE[d.type];
+    const size = game.types[d.type];
     if (!size || Number(d.headcount) !== size || !SLOT_RE.test(String(d.slot))) {
       return json_({ ok: false, error: "bad_request" });
     }
-    const booked = taken_()[d.slot] || 0;
-    if (booked + size > CAPACITY) return json_({ ok: false, error: "full" });
+    const sh = tab_(d.game);
+    const booked = taken_(d.game)[d.slot] || 0;
+    if (booked + size > game.capacity) return json_({ ok: false, error: "full" });
 
     sh.appendRow([
-      now,
+      new Date(),
       safe_(d.slot),
       safe_(d.type),
       size,

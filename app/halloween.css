@@ -310,6 +310,37 @@
 .hlw-girl-eyes i:first-child { left: 43%; }
 .hlw-girl-eyes i:last-child { left: 67%; }
 
+/* the room at the end of the tunnel: grass walls, warm light, an arch for a doorway, the carpet.
+   Fades in as the walk ends; opacity only, nothing here moves. */
+.hlw-arrival-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: clamp(0, calc((var(--p) - 0.62) / 0.3), 1);
+  background:
+    radial-gradient(55% 60% at 50% 55%, rgba(222, 210, 70, 0.3), rgba(130, 160, 24, 0.16) 48%, transparent 78%),
+    linear-gradient(to bottom, rgba(5, 8, 2, 0.84), rgba(5, 8, 2, 0.62) 55%, rgba(5, 8, 2, 0.8)),
+    url("/halloween/bg-co.webp") center / cover;
+}
+.hlw-arrival-arch {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: min(118vw, 150vh);
+  max-width: none;
+  transform: translate(-50%, -50%);
+  opacity: 0.6;
+}
+.hlw-arrival-floor {
+  position: absolute;
+  left: 50%;
+  bottom: -24%;
+  width: max(108vw, 820px);
+  max-width: none;
+  transform: translateX(-50%);
+  opacity: 0.5;
+}
+
 /* the event details, waiting at the end of the tunnel */
 .hlw-arrival {
   opacity: clamp(0, calc((var(--p) - 0.8) / 0.16), 1);

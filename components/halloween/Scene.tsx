@@ -331,6 +331,12 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <El d={2.6} box={[0.4, 0.59, 0.24, 0.27]} className="hlw-compass-beam" />
       </div>
 
+      {/* the room at the end of the tunnel: what the event details are lit against */}
+      <div className="hlw-arrival-bg" aria-hidden="true">
+        <img src={`${K}/arch.webp`} alt="" className="hlw-arrival-arch" draggable={false} />
+        <img src={`${K}/carpet.webp`} alt="" className="hlw-arrival-floor" draggable={false} />
+      </div>
+
       {children}
     </div>
   );

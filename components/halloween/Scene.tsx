@@ -317,11 +317,11 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <El d={0.65} box={[0.855, 0.02, 0.12, 0.215]} src="dog.webp" pixel className="hlw-sway-b" />
         <El d={0.6} box={[0, 0, 1.02, 0.71]} src="branches.webp" />
         {/* the event's name, lettered along the main branch where the RETHINK wordmark used to run */}
-        <El d={0.6} box={[-0.03, 0.225, 0.8, 0.15]} rot={-46} className="hlw-handbox">
+        <El d={0.6} box={[-0.02, 0.21, 0.8, 0.15]} rot={-40.4} className="hlw-handbox">
           <span className="hlw-handtext">Halloween 26</span>
         </El>
         {/* the co-host, lettered along the second branch */}
-        <El d={0.6} box={[0.45, 0.1936, 0.52, 0.0358]} src="lockup.webp" rot={-21} />
+        <El d={0.6} box={[0.47, 0.2148, 0.5, 0.0345]} src="lockup.webp" rot={-18.1} />
         <El d={0.55} box={[0.05, 0.93, 0.292, 0.058]} src="arm.webp" />
         <El d={0.6} box={[0.63, 0.842, 0.22, 0.063]} src="leg.webp" />
 

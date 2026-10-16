@@ -645,7 +645,7 @@ textarea.hlw-input { resize: vertical; min-height: 6rem; }
 .hlw-handbox { display: flex; align-items: center; justify-content: center; }
 .hlw-handtext {
   font-family: var(--font-hlw-hand), cursive;
-  font-size: calc(var(--S) * 0.077);
+  font-size: calc(var(--S) * 0.105);
   line-height: 1;
   white-space: nowrap;
   color: #cfc83a;

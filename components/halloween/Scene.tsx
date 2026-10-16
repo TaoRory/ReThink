@@ -278,7 +278,7 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
 
       <div className="hlw-scene" aria-hidden="true">
         {/* ---- deepest: the grass, the lit wall at the end, the floor ---- */}
-        <El d={3} box={[-0.02, -0.02, 1.04, 1.04]} src="../bg-co.webp" />
+        <El d={2.2} box={[-0.02, -0.02, 1.04, 1.04]} src="../bg-co.webp" />
         <El d={3.6} box={[0.405, 0.487, 0.2, 0.261]} src="inner.webp" />
         <El d={2.6} box={[-0.185, 0.735, 1.37, 0.407]} src="carpet.webp" className="hlw-carpet" />
 

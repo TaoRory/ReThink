@@ -199,12 +199,12 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to right, rgba(6, 9, 2, 0.93), rgba(6, 9, 2, 0.8) 50%, rgba(6, 9, 2, 0.93)),
+    linear-gradient(to right, rgba(6, 9, 2, 0.8), rgba(6, 9, 2, 0.62) 50%, rgba(6, 9, 2, 0.8)),
     url("/halloween/bg-co.webp") center / cover;
   /* rushes past with the walls: same vanishing point as the scene layers */
   transform-origin: 50.5% 68%;
-  transform: scale(calc(1 + var(--p) * 2));
-  opacity: calc(1 - var(--p) * 1.1);
+  transform: scale(calc(1 + var(--p) * 3.4));
+  opacity: calc(1 - var(--p) * 0.85);
 }
 
 /* the square the Avatar is laid out in, under the nav */

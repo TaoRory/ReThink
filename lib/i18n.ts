@@ -414,7 +414,6 @@ export const dict = {
       ctaJoin: "Đăng ký tham gia",
       ctaRooms: "Xem bốn mặt nạ",
       scrollHint: "Cuộn để bước vào",
-      coHost: "Đồng tổ chức cùng",
       tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "Rethink"],
 
       storyKicker: "Câu chuyện",
@@ -853,7 +852,6 @@ export const dict = {
       ctaJoin: "Reserve a place",
       ctaRooms: "Meet the four masks",
       scrollHint: "Scroll to walk in",
-      coHost: "Co-hosted with",
       tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "Rethink"],
 
       storyKicker: "The story",

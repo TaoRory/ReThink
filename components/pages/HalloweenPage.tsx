@@ -5,7 +5,6 @@ import { EyeTracker } from "@/components/halloween/EyeTracker";
 import {
   Branch,
   Eyeball,
-  HalloweenWordmark,
   Motes,
   TunnelStage,
 } from "@/components/halloween/Scene";
@@ -24,7 +23,7 @@ import { dict, localePath, type Locale } from "@/lib/i18n";
  * All copy is placeholder in dict.*.halloween.
  */
 
-/** Temporary stand-in for the KV's hand-drawn script (see HalloweenWordmark).
+/** Temporary stand-in for the KV's hand-drawn script (see Scene.tsx).
  *  Latin only — use it for ASCII/English strings, never Vietnamese. */
 const scriptFont = Mystery_Quest({
   weight: "400",
@@ -55,19 +54,40 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
               waiting at the end of the tunnel: they fade in as the picture fades out. */}
           <div className="hlw-arrival absolute inset-0 z-10 flex items-center justify-center px-5 pt-[65px]">
             <div className="mx-auto grid w-full max-w-5xl items-center gap-4 md:grid-cols-[0.8fr_1.2fr] md:gap-14">
-              <div className="mx-auto w-[24vw] max-w-[360px] md:w-full">
-                <HalloweenWordmark className="hidden w-full md:block" />
-                <div className="relative left-1/2 mt-2 flex w-[62vw] max-w-[300px] -translate-x-1/2 flex-col items-center gap-1.5 md:left-0 md:w-full md:translate-x-0">
-                  <p className="hlw-kicker whitespace-nowrap">{t.coHost}</p>
-                  <Image
-                    src="/halloween/kv/logo-sc.webp"
-                    alt="VinUniversity Student Council"
-                    width={1079}
-                    height={227}
-                    sizes="(max-width: 768px) 34vw, 260px"
-                    className="w-[85%] md:w-[78%]"
-                  />
-                </div>
+              {/* the two hosts, same width and same weight: neither is the "main" one */}
+              <div
+                className="mx-auto flex w-full max-w-[360px] items-center justify-center gap-3 md:flex-col md:gap-4"
+                role="group"
+                aria-label="ReThink × VinUniversity Student Council"
+              >
+                <Image
+                  src="/halloween/kv/rethink-script.webp"
+                  alt="ReThink"
+                  width={600}
+                  height={127}
+                  sizes="(max-width: 768px) 40vw, 340px"
+                  className="w-[40%] md:w-full"
+                />
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4 shrink-0 text-[color:var(--hlw-script)] md:h-6 md:w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.6"
+                  strokeLinecap="round"
+                >
+                  <path d="M4.5 4.2 C9 8.5 14.5 15.5 19.8 20.2" />
+                  <path d="M19.2 3.6 C14.5 8.8 9.5 14.8 4.2 20.4" />
+                </svg>
+                <Image
+                  src="/halloween/kv/logo-sc.webp"
+                  alt="VinUniversity Student Council"
+                  width={1079}
+                  height={227}
+                  sizes="(max-width: 768px) 40vw, 340px"
+                  className="w-[40%] md:w-full"
+                />
               </div>
               <div className="text-center md:text-left">
                 <p className="hlw-kicker">{t.kicker}</p>

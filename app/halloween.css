@@ -333,12 +333,13 @@
 }
 .hlw-arrival-floor {
   position: absolute;
-  left: 50%;
-  bottom: -24%;
-  width: max(108vw, 820px);
-  max-width: none;
-  transform: translateX(-50%);
-  opacity: 0.5;
+  inset: auto 0 0 0;
+  height: 34vh;
+  background: url("/halloween/kv/floor.webp") center bottom / auto 100% repeat-x;
+  opacity: 0.6;
+  /* fades into the wall at the top; static, never animated */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 38%);
+  mask-image: linear-gradient(to bottom, transparent, #000 38%);
 }
 
 /* the event details, waiting at the end of the tunnel */

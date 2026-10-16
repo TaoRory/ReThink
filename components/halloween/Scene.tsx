@@ -334,7 +334,7 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
       {/* the room at the end of the tunnel: what the event details are lit against */}
       <div className="hlw-arrival-bg" aria-hidden="true">
         <img src={`${K}/arch.webp`} alt="" className="hlw-arrival-arch" draggable={false} />
-        <img src={`${K}/carpet.webp`} alt="" className="hlw-arrival-floor" draggable={false} />
+        <div className="hlw-arrival-floor" />
       </div>
 
       {children}

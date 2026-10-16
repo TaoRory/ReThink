@@ -277,7 +277,7 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         {/* ---- deepest: the grass, the lit wall at the end, the floor ---- */}
         <El d={3} box={[-0.02, -0.02, 1.04, 1.04]} src="../bg-co.webp" />
         <El d={3.6} box={[0.405, 0.487, 0.2, 0.261]} src="inner.webp" />
-        <El d={1.6} box={[-0.185, 0.757, 1.37, 0.385]} src="carpet.webp" className="hlw-carpet" />
+        <El d={2.6} box={[-0.185, 0.735, 1.37, 0.407]} src="carpet.webp" className="hlw-carpet" />
 
         {/* ---- the girl, with a branch behind her ---- */}
         <Limb d={3.3} from={[0.41, 0.605]} to={[0.585, 0.665]} t={0.022} />
@@ -300,7 +300,7 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <Limb d={1.9} from={[0.64, 0.54]} to={[0.745, 0.545]} t={0.006} />
 
         {/* ---- the compass and the light it throws ---- */}
-        <El d={2.2} box={[0.474, 0.838, 0.086, 0.0447]} src="compass.webp">
+        <El d={2.6} box={[0.474, 0.838, 0.086, 0.0447]} src="compass.webp">
           <span className="hlw-compass-pool" />
         </El>
 
@@ -323,7 +323,7 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <div className="hlw-grade" />
 
         {/* ---- light sources, above the grade so it does not darken them ---- */}
-        <El d={2.2} box={[0.4, 0.59, 0.24, 0.27]} className="hlw-compass-beam" />
+        <El d={2.6} box={[0.4, 0.59, 0.24, 0.27]} className="hlw-compass-beam" />
       </div>
 
       {children}

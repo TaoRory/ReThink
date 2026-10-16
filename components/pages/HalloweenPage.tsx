@@ -210,11 +210,11 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
           <div className="relative mt-16">
             {/* a gash across the page with blood running down from it; the text sits on top */}
             <div className="pointer-events-none absolute inset-x-0 top-[1.7rem] hidden h-[15rem] lg:block" aria-hidden="true">
-              <Wound className="h-full w-full" />
+              <Wound uid="d" className="h-full w-full" />
             </div>
             {/* phone: the gash lies across the top of the stacked stops */}
             <div className="pointer-events-none relative -mx-2 -mb-8 -mt-6 h-[9rem] lg:hidden" aria-hidden="true">
-              <Wound className="h-full w-full" />
+              <Wound uid="m" className="h-full w-full" />
             </div>
 
             <ol className="relative z-10 grid gap-10 lg:grid-cols-4">

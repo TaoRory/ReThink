@@ -2,9 +2,10 @@
  * The timeline's spine: a gash cut across the page, blood welling in it and
  * running down in streaks. The stops' text sits on top of it.
  *
- * Static SVG. When the section arrives (data-reveal → .revealed) the cut opens
- * and the streaks run down (one-shot transforms); a few drops then keep
- * sliding off the streaks (transform + opacity only, see halloween.css).
+ * Static SVG. When the section arrives (data-reveal → .revealed) the cut is
+ * drawn left → right, and each streak starts running down the moment the cut
+ * reaches its x (--x × the cut's duration). A few drops then keep sliding off
+ * the streaks (transform + opacity only, see halloween.css).
  */
 
 const W = 1200;
@@ -27,10 +28,10 @@ const STREAKS: [number, number, number][] = [
 ];
 /** drops that keep leaving the long streaks: [x, streak length, seconds, delay] */
 const DROPS: [number, number, number, number][] = [
-  [150, 170, 7.5, 0],
-  [450, 118, 9, 2.2],
+  [150, 170, 7.5, 2.9],
+  [450, 118, 9, 3.7],
   [750, 196, 8, 4.4],
-  [1050, 142, 10, 1.1],
+  [1050, 142, 10, 5.1],
 ];
 
 function streak([x, len, w]: [number, number, number]) {
@@ -48,7 +49,8 @@ const TOP =
 const BOTTOM =
   `C1100,${Y + 10} 1000,${Y + 6} 900,${Y + 12} S700,${Y + 6} 600,${Y + 12} S400,${Y + 8} 300,${Y + 10} S120,${Y + 14} 20,${Y + 2} Z`;
 
-export function Wound({ className = "" }: { className?: string }) {
+export function Wound({ className = "", uid }: { className?: string; uid: string }) {
+  const clip = `hlw-wound-clip-${uid}`; // one per <svg>: a clipPath inside a display:none svg does not resolve
   return (
     <svg
       className={`hlw-wound ${className}`}
@@ -56,8 +58,15 @@ export function Wound({ className = "" }: { className?: string }) {
       preserveAspectRatio="none"
       aria-hidden="true"
     >
+      {/* the blade: this rect grows left → right and uncovers the cut */}
+      <defs>
+        <clipPath id={clip}>
+          <rect className="hlw-wound-blade" x="0" y="-40" width={W} height="120" />
+        </clipPath>
+      </defs>
+
       {/* the cut: swollen skin around it, a dark opening, a wet lower lip */}
-      <g className="hlw-wound-cut">
+      <g clipPath={`url(#${clip})`}>
         <path d={`${TOP} ${BOTTOM}`} fill="none" stroke="rgba(122,42,46,0.35)" strokeWidth="16" strokeLinejoin="round" />
         <path d={`${TOP} ${BOTTOM}`} fill="#140404" stroke="#7a2a2e" strokeWidth="2.5" strokeLinejoin="round" />
         <path
@@ -71,7 +80,7 @@ export function Wound({ className = "" }: { className?: string }) {
 
       {/* the streaks running down from it */}
       {STREAKS.map((s, i) => (
-        <g key={i} className="hlw-wound-streak" style={{ ["--i" as string]: i }}>
+        <g key={i} className="hlw-wound-streak" style={{ ["--x" as string]: (s[0] / W).toFixed(3) }}>
           <path d={streak(s)} fill="#7a1f26" />
           <path d={streak(s)} fill="none" stroke="#4d1015" strokeWidth="1.2" />
           <line

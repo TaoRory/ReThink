@@ -566,7 +566,7 @@ details[open] .hlw-q-mark { transform: rotate(45deg); }
     animation: none !important;
   }
   .hlw-eye, .hlw-card, .hlw-hands, .hlw-q-mark { transition: none !important; }
-  .hlw-splat, .hlw-trail, .hlw-stop, .hlw-wound-cut, .hlw-wound-streak { transform: none !important; opacity: 1 !important; transition: none !important; }
+  .hlw-splat, .hlw-trail, .hlw-stop, .hlw-wound-blade, .hlw-wound-streak { transform: none !important; opacity: 1 !important; transition: none !important; }
   .hlw-wound-drop { display: none; }
 }
 
@@ -660,22 +660,24 @@ textarea.hlw-input { resize: vertical; min-height: 6rem; }
    One-shot reveal when the section arrives, then a few drops slide off the
    streaks. Only transform and opacity ever change.
    ============================================================ */
-.hlw-wound { overflow: visible; }
-.hlw-wound-cut {
-  transform-box: fill-box;
-  transform-origin: 50% 50%;
+.hlw-wound { overflow: visible; --cut: 2.8s; }
+/* the blade: the cut is drawn from left to right in --cut seconds */
+.hlw-wound-blade {
+  transform-box: view-box;
+  transform-origin: 0 0;
   transform: scaleX(0);
-  transition: transform 1.3s cubic-bezier(0.5, 0.05, 0.2, 1);
+  transition: transform var(--cut) linear;
 }
+/* every streak starts running the moment the blade reaches its x (--x is 0…1) */
 .hlw-wound-streak {
   transform-box: fill-box;
   transform-origin: 50% 0;
   transform: scaleY(0);
-  transition: transform 2.6s cubic-bezier(0.3, 0.1, 0.25, 1);
-  transition-delay: calc(1.1s + var(--i) * 0.28s);
+  transition: transform 2.4s cubic-bezier(0.3, 0.1, 0.25, 1);
+  transition-delay: calc(var(--x) * var(--cut));
 }
 .hlw-wound-drop { opacity: 0; transform-box: fill-box; }
-[data-reveal].revealed .hlw-wound-cut { transform: scaleX(1); }
+[data-reveal].revealed .hlw-wound-blade { transform: scaleX(1); }
 [data-reveal].revealed .hlw-wound-streak { transform: scaleY(1); }
 [data-reveal].revealed .hlw-wound-drop { animation: hlw-wound-drop 8s ease-in infinite; }
 @keyframes hlw-wound-drop {

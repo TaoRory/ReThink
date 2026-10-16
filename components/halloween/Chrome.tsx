@@ -43,9 +43,19 @@ export function HalloweenBrand({ href }: { href: string }) {
   return (
     <Link href={href} className="flex items-center gap-2.5 sm:gap-3" aria-label="ReThink × VinUniversity Student Council">
       <Image src="/halloween/kv/rethink-script.webp" alt="" width={600} height={127} className="h-[20px] w-auto sm:h-[24px]" priority />
-      <span aria-hidden="true" className="md:max-lg:hidden text-sm font-bold text-[color:var(--hlw-script)] sm:text-base">
-        ×
-      </span>
+      {/* a hand-drawn ×: two brush strokes, the same weight and yellow as the lettering */}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-[15px] w-[15px] shrink-0 text-[color:var(--hlw-script)] sm:h-[18px] sm:w-[18px] md:max-lg:hidden"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      >
+        <path d="M4.5 4.2 C9 8.5 14.5 15.5 19.8 20.2" />
+        <path d="M19.2 3.6 C14.5 8.8 9.5 14.8 4.2 20.4" />
+      </svg>
       <Image src="/halloween/kv/logo-sc.webp" alt="" width={1079} height={227} className="h-[22px] w-auto sm:h-[26px] md:max-lg:hidden" priority />
     </Link>
   );

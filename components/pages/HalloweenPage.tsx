@@ -55,7 +55,20 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
               waiting at the end of the tunnel: they fade in as the picture fades out. */}
           <div className="hlw-arrival absolute inset-0 z-10 flex items-center justify-center px-5 pt-[65px]">
             <div className="mx-auto grid w-full max-w-5xl items-center gap-4 md:grid-cols-[0.8fr_1.2fr] md:gap-14">
-              <HalloweenWordmark className="mx-auto w-[34vw] max-w-[360px] md:w-full" />
+              <div className="mx-auto w-[24vw] max-w-[360px] md:w-full">
+                <HalloweenWordmark className="hidden w-full md:block" />
+                <div className="relative left-1/2 mt-2 flex w-[62vw] max-w-[300px] -translate-x-1/2 flex-col items-center gap-1.5 md:left-0 md:w-full md:translate-x-0">
+                  <p className="hlw-kicker whitespace-nowrap">{t.coHost}</p>
+                  <Image
+                    src="/halloween/kv/logo-sc.webp"
+                    alt="VinUniversity Student Council"
+                    width={1079}
+                    height={227}
+                    sizes="(max-width: 768px) 34vw, 260px"
+                    className="w-[85%] md:w-[78%]"
+                  />
+                </div>
+              </div>
               <div className="text-center md:text-left">
                 <p className="hlw-kicker">{t.kicker}</p>
                 <h1 className="hlw-title mt-3 text-[clamp(1.9rem,5vw,3.6rem)] leading-[1.02]">

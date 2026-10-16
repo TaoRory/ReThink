@@ -319,7 +319,7 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <El d={0.6} box={[0.0997, -0.128, 0.732, 0.677]} src="wordmark.webp" className="hlw-word" />
         {/* the co-host, lettered along the second branch */}
         <El d={0.6} box={[0.57, 0.182, 0.28, 0.059]} src="logo-sc.webp" rot={-21} />
-        <El d={0.55} box={[-0.005, 0.93, 0.292, 0.058]} src="arm.webp" />
+        <El d={0.55} box={[0.05, 0.93, 0.292, 0.058]} src="arm.webp" />
         <El d={0.6} box={[0.63, 0.842, 0.22, 0.063]} src="leg.webp" />
 
         {/* ---- the Avatar's grade: dark edges ---- */}

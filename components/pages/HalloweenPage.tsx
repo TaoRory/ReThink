@@ -241,8 +241,8 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
       {/* ================= house rules: hands behind the glass ================= */}
       <section className="hlw-faq relative overflow-hidden px-5 py-28">
         <div className="absolute inset-0" aria-hidden="true">
-          {/* fixed height, centred: opening a question grows the section but never resizes this image */}
-          <div className="absolute inset-x-0 top-1/2 h-[1000px] -translate-y-1/2">
+          {/* pinned to the top at a fixed size and kept on its own layer: opening a question grows the section but the picture never resizes, moves or repaints */}
+          <div className="hlw-hands-box absolute inset-x-0 top-0 h-[1300px]">
             <Image
               src="/halloween/bg-tay.webp"
               alt=""

@@ -10,6 +10,7 @@ import {
   TunnelStage,
 } from "@/components/halloween/Scene";
 import { TunnelProgress } from "@/components/halloween/TunnelProgress";
+import { Wound } from "@/components/halloween/Wound";
 import { dict, localePath, type Locale } from "@/lib/i18n";
 
 /**
@@ -207,18 +208,21 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
           </div>
 
           <div className="relative mt-16">
-            {/* a line of blood running out left to right when the section arrives */}
-            <div className="absolute left-[6%] right-[6%] top-[3.6rem] hidden lg:block" aria-hidden="true">
-              <div className="hlw-bloodline hlw-trail" />
+            {/* a gash across the page with blood running down from it; the text sits on top */}
+            <div className="pointer-events-none absolute inset-x-0 top-[1.7rem] hidden h-[15rem] lg:block" aria-hidden="true">
+              <Wound className="h-full w-full" />
+            </div>
+            {/* phone: the gash lies across the top of the stacked stops */}
+            <div className="pointer-events-none relative -mx-2 -mb-8 -mt-6 h-[9rem] lg:hidden" aria-hidden="true">
+              <Wound className="h-full w-full" />
             </div>
 
-            <ol className="relative grid gap-10 lg:grid-cols-4">
+            <ol className="relative z-10 grid gap-10 lg:grid-cols-4">
               {t.scheduleTitles.map((title, i) => (
                 <li key={title} className="hlw-stop relative pl-8 lg:pl-0 lg:text-center">
                   <span className="hlw-blood-drop absolute left-0 top-2 lg:hidden" aria-hidden="true" />
                   <p className="hlw-script text-4xl">{t.scheduleTimes[i]}</p>
-                  <span className="hlw-blood-drop mx-auto mt-3 hidden lg:block" aria-hidden="true" />
-                  <div className="lg:mt-6">
+                  <div className="hlw-stop-text lg:mt-[3.4rem]">
                     <h3 className="hlw-title mt-3 text-sm">{title}</h3>
                     <p className="mt-3 text-[13px] leading-relaxed text-[color:var(--hlw-bone)]/80">
                       {t.scheduleDescs[i]}

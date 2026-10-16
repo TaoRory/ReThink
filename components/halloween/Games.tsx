@@ -46,6 +46,7 @@ export type GamesCopy = {
     typeLegend: string;
     types: Record<EscapeType, { name: string; note: string }>;
     seatsLeft: string;
+    seatsLoading: string;
     full: string;
     noRoomForType: string;
     teamName: string;
@@ -92,6 +93,17 @@ export function HalloweenGames({
 }) {
   const [panel, setPanel] = useState<{ game: GameId; mode: "register" | "story" } | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const seats = useTaken();
+  const { load: loadSeats } = seats;
+
+  // fetch the counts as soon as the page is up, so the picker already has them when it opens
+  useEffect(() => {
+    void loadSeats();
+  }, [loadSeats]);
+  // and refresh them each time the escape-room form opens
+  useEffect(() => {
+    if (panel?.game === "escape" && panel.mode === "register") void loadSeats();
+  }, [panel, loadSeats]);
 
   useEffect(() => {
     const d = dialogRef.current;
@@ -172,7 +184,15 @@ export function HalloweenGames({
         }}
       >
         {panel?.mode === "register" && (
-          <RegisterForm key={panel.game} game={panel.game} copy={copy} onClose={() => setPanel(null)} />
+          <RegisterForm
+            key={panel.game}
+            game={panel.game}
+            copy={copy}
+            onClose={() => setPanel(null)}
+            taken={seats.taken}
+            loading={seats.loading}
+            reload={seats.load}
+          />
         )}
         {panel?.mode === "story" && (
           <StoryPanel
@@ -238,26 +258,41 @@ function StoryPanel({
 type Status = "idle" | "sending" | "done" | "error";
 type Taken = Record<string, number>;
 
-/** seats already booked per session, read from the sheet's script (null = unknown) */
-function useTaken(enabled: boolean) {
+/** seats already booked per session, read from the sheet's script (null = not known yet) */
+function useTaken() {
   const [taken, setTaken] = useState<Taken | null>(null);
+  const [loading, setLoading] = useState(false);
   const load = useCallback(async () => {
-    if (!enabled || !FORM_URL) return;
+    if (!FORM_URL) return;
+    setLoading(true);
     try {
       const res = await fetch(`${FORM_URL}${FORM_URL.includes("?") ? "&" : "?"}action=availability`);
       const json = await res.json();
       if (json?.ok && json.taken) setTaken(json.taken as Taken);
     } catch {
       /* no counts — the picker still works, the sheet script enforces the limit */
+    } finally {
+      setLoading(false);
     }
-  }, [enabled]);
-  useEffect(() => {
-    void load();
-  }, [load]);
-  return { taken, reload: load };
+  }, []);
+  return { taken, loading, load };
 }
 
-function RegisterForm({ game, copy, onClose }: { game: GameId; copy: GamesCopy; onClose: () => void }) {
+function RegisterForm({
+  game,
+  copy,
+  onClose,
+  taken,
+  loading,
+  reload,
+}: {
+  game: GameId;
+  copy: GamesCopy;
+  onClose: () => void;
+  taken: Taken | null;
+  loading: boolean;
+  reload: () => Promise<void>;
+}) {
   const g = copy[game];
   const f = copy.form;
   const uid = useId();
@@ -267,7 +302,6 @@ function RegisterForm({ game, copy, onClose }: { game: GameId; copy: GamesCopy; 
   const [slot, setSlot] = useState("");
   const [members, setMembers] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { taken, reload } = useTaken(isEscape);
 
   const size = ESCAPE_TYPES.find((t) => t.id === type)!.size;
   const left = (id: string) => (taken ? Math.max(0, ESCAPE.capacity - (taken[id] ?? 0)) : null);
@@ -393,10 +427,14 @@ function RegisterForm({ game, copy, onClose }: { game: GameId; copy: GamesCopy; 
                         />
                         <span>
                           {s.start} – {s.end}
-                          {l !== null && (
+                          {l !== null ? (
                             <small className="block text-[11px] font-normal opacity-80">
                               {l === 0 ? f.full : f.seatsLeft.replace("{n}", String(l))}
                             </small>
+                          ) : (
+                            loading && (
+                              <small className="block text-[11px] font-normal opacity-60">{f.seatsLoading}</small>
+                            )
                           )}
                         </span>
                       </label>

@@ -263,8 +263,16 @@
 /* light thrown upward from the compass */
 .hlw-compass-beam {
   mix-blend-mode: screen;
-  background: radial-gradient(34% 100% at 50% 100%, rgba(255, 176, 96, 0.62), rgba(224, 110, 52, 0.26) 38%, transparent 72%);
+  filter: blur(0.8vh); /* static: feathers the trapezoid's edges, never animated */
   animation: hlw-lamp-flicker 3.4s ease-in-out infinite;
+}
+/* a trapezoid: narrow at the compass, widening to the girl's head (owner-drawn frame) */
+.hlw-compass-beam::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(3% 0, 97% 0, 60% 100%, 32% 100%);
+  background: linear-gradient(to top, rgba(255, 176, 96, 0.5), rgba(236, 150, 70, 0.22) 50%, rgba(220, 190, 80, 0) 100%);
 }
 .hlw-compass-pool {
   position: absolute;

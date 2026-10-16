@@ -323,7 +323,7 @@ export function TunnelStage({ children }: { children?: ReactNode }) {
         <div className="hlw-grade" />
 
         {/* ---- light sources, above the grade so it does not darken them ---- */}
-        <El d={2.2} box={[0.41, 0.56, 0.19, 0.325]} className="hlw-compass-beam" />
+        <El d={2.2} box={[0.4, 0.59, 0.24, 0.27]} className="hlw-compass-beam" />
       </div>
 
       {children}

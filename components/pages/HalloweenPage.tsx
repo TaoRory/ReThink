@@ -280,13 +280,16 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
       {/* ================= house rules: hands behind the glass ================= */}
       <section className="hlw-faq relative overflow-hidden px-5 py-28">
         <div className="absolute inset-0" aria-hidden="true">
-          <Image
-            src="/halloween/bg-tay.webp"
-            alt=""
-            fill
-            sizes="100vw"
-            className="hlw-hands object-cover"
-          />
+          {/* fixed height, centred: opening a question grows the section but never resizes this image */}
+          <div className="absolute inset-x-0 top-1/2 h-[1000px] -translate-y-1/2">
+            <Image
+              src="/halloween/bg-tay.webp"
+              alt=""
+              fill
+              sizes="100vw"
+              className="hlw-hands object-cover"
+            />
+          </div>
           <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--hlw-ink),rgba(10,15,4,0.35)_30%,rgba(10,15,4,0.35)_70%,var(--hlw-ink))]" />
         </div>
 

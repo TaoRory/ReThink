@@ -2,6 +2,7 @@ import { Mystery_Quest } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { EyeTracker } from "@/components/halloween/EyeTracker";
+import { HalloweenGames } from "@/components/halloween/Games";
 import {
   Branch,
   Eyeball,
@@ -31,14 +32,6 @@ const scriptFont = Mystery_Quest({
   variable: "--font-hlw-script",
   display: "swap",
 });
-
-const MASKS = [
-  { src: "mask-meo.webp", w: 150, h: 189 },
-  { src: "mask-cho.webp", w: 142, h: 180 },
-  { src: "mask-cu.webp", w: 104, h: 163 },
-  null, // the fourth station is the eye
-] as const;
-const SWAYS = ["", "hlw-sway-b", "hlw-sway-c", "hlw-sway-b"];
 
 export function HalloweenPage({ locale }: { locale: Locale }) {
   const t = dict[locale].halloween;
@@ -109,10 +102,10 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
                   </div>
                 </dl>
                 <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
-                  <a href="#dang-ky" className="hlw-btn">
+                  <a href="#games" className="hlw-btn">
                     {t.ctaJoin}
                   </a>
-                  <a href="#rooms" className="hlw-btn hlw-btn-ghost">
+                  <a href="#schedule" className="hlw-btn hlw-btn-ghost">
                     {t.ctaRooms}
                   </a>
                 </div>
@@ -189,63 +182,16 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* ================= the four masks ================= */}
-      <section id="rooms" className="relative overflow-hidden px-5 pb-28 pt-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="hlw-kicker">
-                <span className="hlw-rule mr-3" />
-                {t.roomsKicker}
-              </p>
-              <h2 className="hlw-script mt-5 text-[clamp(2.4rem,6vw,4.4rem)]">{t.roomsHeading}</h2>
-            </div>
-            <p className="max-w-sm text-sm leading-relaxed text-[color:var(--hlw-bone)]/80">
-              {t.roomsLead}
-            </p>
-          </div>
-
-          {/* the branch the masks hang from */}
-          <div className="relative mt-16">
-            <Branch className="absolute -left-[8%] top-0 hidden h-6 w-[116%] -rotate-[1.2deg] lg:block" />
-
-            <div className="grid gap-x-6 gap-y-14 pt-4 sm:grid-cols-2 lg:grid-cols-4">
-              {t.roomNames.map((name, i) => {
-                const mask = MASKS[i];
-                return (
-                  <div key={name} className={`hlw-sway ${SWAYS[i]}`}>
-                    <span className="mx-auto hidden h-10 w-px bg-[rgba(222,217,196,0.45)] lg:block" />
-                    <article className="hlw-card px-5 pb-6 pt-7 text-center">
-                      <div className="flex h-[190px] items-center justify-center">
-                        {mask ? (
-                          <Image
-                            src={`/halloween/${mask.src}`}
-                            alt=""
-                            width={mask.w}
-                            height={mask.h}
-                            unoptimized
-                            className="hlw-pixel hlw-mask h-auto max-h-[180px] w-auto"
-                          />
-                        ) : (
-                          <Eyeball track size={150} />
-                        )}
-                      </div>
-                      <span className="hlw-plaque mt-5">{t.roomTags[i]}</span>
-                      <h3 className="hlw-title mt-4 text-base">{name}</h3>
-                      <p className="mt-3 text-[13px] leading-relaxed text-[color:var(--hlw-bone)]/75">
-                        {t.roomDescs[i]}
-                      </p>
-                    </article>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ================= the two games ================= */}
+      <HalloweenGames
+        kicker={t.gamesKicker}
+        heading={t.gamesHeading}
+        lead={t.gamesLead}
+        copy={t.games}
+      />
 
       {/* ================= the night, along a trail of blood ================= */}
-      <section className="hlw-grass relative overflow-hidden px-5 py-28" data-reveal>
+      <section id="schedule" className="hlw-grass relative overflow-hidden px-5 py-28" data-reveal>
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
             <p className="hlw-kicker">{t.scheduleKicker}</p>
@@ -357,9 +303,9 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
             {t.ctaLead}
           </p>
           <div className="mt-9 flex justify-center">
-            <Link href={localePath(locale, "/halloween")} className="hlw-btn">
+            <a href="#games" className="hlw-btn">
               {t.ctaBtn}
-            </Link>
+            </a>
           </div>
           <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
             {t.ctaNote}

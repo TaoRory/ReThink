@@ -398,7 +398,7 @@ export const dict = {
       meta: {
         title: "Halloween 2026",
         description:
-          "Halloween 2026 của ReThink tại VinUniversity — một đường hầm cỏ, bốn chiếc mặt nạ và một chiếc la bàn. (Nội dung mẫu.)",
+          "Halloween 2026 của ReThink tại VinUniversity — một đường hầm cỏ, hai trò chơi và một chiếc la bàn. (Nội dung mẫu.)",
       },
       draftNote: "Nội dung mẫu — đang chờ bản chính thức",
       kicker: "Halloween 2026 · VinUniversity",
@@ -406,13 +406,13 @@ export const dict = {
       tagline:
         "Đi hết đường hầm cỏ. Chiếc la bàn sẽ chỉ lối — nhưng chưa chắc đó là lối ra.",
       whenLabel: "Thời gian",
-      when: "Thứ Sáu, 30/10/2026 · 18:00 – 22:00",
+      when: "Thứ Sáu, 30/10/2026 · 17:00 – 22:30",
       dateShort: "30.10",
-      timeShort: "18:00 – 22:00",
+      timeShort: "17:00 – 22:30",
       whereLabel: "Địa điểm",
       where: "Sảnh chính — VinUniversity, Gia Lâm, Hà Nội",
       ctaJoin: "Đăng ký tham gia",
-      ctaRooms: "Xem bốn mặt nạ",
+      ctaRooms: "Xem trình tự đêm diễn",
       scrollHint: "Cuộn để bước vào",
       tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "Rethink"],
 
@@ -423,32 +423,60 @@ export const dict = {
       storyP2:
         "Hãy mang theo chiếc la bàn. Nó luôn chỉ đúng hướng, nhưng không bao giờ cho bạn biết điều gì đang chờ ở đó.",
 
-      roomsKicker: "Bốn trạm",
-      roomsHeading: "Four Masks",
-      roomsLead:
-        "Mỗi chiếc mặt nạ treo trên cành là một trạm trò chơi, có người dẫn và có vật chứng để mang đi. Đủ bốn vật chứng mới mở được vòm cuối cùng.",
-      roomNames: ["Mặt Nạ Mèo", "Mặt Nạ Chó", "Mặt Nạ Cú", "Con Mắt"],
-      roomDescs: [
-        "Chiếc mặt nạ treo trên cành cao nhất. Ai đeo nó sẽ thấy những thứ người khác bỏ sót.",
-        "Nó canh lối vào thứ hai. Muốn đi qua, phải trả lời đúng một câu hỏi.",
-        "Mặt nạ cú không bao giờ ngủ. Trạm này chơi trong bóng tối hoàn toàn.",
-        "Không có mặt nạ, chỉ có một con mắt dõi theo bạn suốt buổi tối. Tìm ra nó đang nhìn gì.",
-      ],
-      roomTags: ["Puzzle", "Workshop", "Live game", "Photo"],
+      gamesKicker: "Hai trò chơi",
+      gamesHeading: "Two Games",
+      gamesLead:
+        "Hai trò chơi chính của đêm Halloween. Cả hai đều đăng ký trước — bấm vào trò chơi bạn muốn để điền thông tin.",
+      games: {
+        hunt: {
+          tag: "Scavenger hunt",
+          name: "Săn Manh Mối",
+          desc: "Lần theo la bàn, gom manh mối rải khắp đường hầm. Chơi theo nhịp của riêng bạn.",
+          facts: ["Đăng ký trước qua biểu mẫu"],
+          cta: "Đăng ký săn manh mối",
+          formTitle: "Đăng ký Scavenger Hunt",
+        },
+        escape: {
+          tag: "Escape room",
+          name: "Căn Phòng Khoá Kín",
+          desc: "Một căn phòng khoá kín và bốn mươi phút để thoát ra. Chọn đúng ca chơi của bạn.",
+          facts: ["17:00 – 22:30", "Mỗi ca 40 phút chơi + 10 phút dọn lại phòng", "Tối đa 15 người mỗi ca"],
+          cta: "Chọn ca & đăng ký",
+          formTitle: "Đăng ký Escape Room",
+        },
+        form: {
+          name: "Họ và tên",
+          email: "Email VinUni",
+          studentId: "Mã số sinh viên",
+          phone: "Số điện thoại (không bắt buộc)",
+          slotLegend: "Chọn ca chơi",
+          slotNote: "Mỗi ca 40 phút chơi, tối đa 15 người. Giờ ca kế tiếp cách 50 phút.",
+          slotRequired: "Hãy chọn một ca chơi.",
+          required: "Vui lòng điền mục này.",
+          submit: "Gửi đăng ký",
+          sending: "Đang gửi…",
+          close: "Đóng",
+          successTitle: "Đã nhận đăng ký!",
+          successBody: "Chúng mình sẽ liên hệ qua email nếu cần xác nhận thêm.",
+          successSlot: "Ca của bạn:",
+          error: "Chưa gửi được. Bạn thử lại sau ít phút nhé.",
+          notOpen: "Biểu mẫu đăng ký sẽ được mở sớm — đường dẫn đang được cập nhật.",
+        },
+      },
 
       scheduleKicker: "Trình tự đêm diễn",
       scheduleHeading: "The Night",
-      scheduleTimes: ["18:00", "18:30", "20:45", "21:40"],
+      scheduleTimes: ["17:00", "17:00 – 21:50", "22:00", "22:30"],
       scheduleTitles: [
         "Mở cửa & nhận la bàn",
-        "Bốn mặt nạ thức dậy",
+        "Hai trò chơi cùng mở",
         "Vòm cuối cùng",
         "Đóng cửa",
       ],
       scheduleDescs: [
         "Nhận thẻ khách và chiếc la bàn. Trang phục hoá trang được khuyến khích, không bắt buộc.",
-        "Tự do di chuyển giữa bốn trạm, không cần theo thứ tự. Mỗi trạm khoảng 20 phút.",
-        "Chỉ mở cho những ai đã có đủ bốn vật chứng. Lời giải được công bố tại đây.",
+        "Săn manh mối chơi tự do; escape room chạy theo ca đã đăng ký, mỗi ca 40 phút.",
+        "Lời giải của đêm được công bố tại đây.",
         "Chụp ảnh tập thể trong đường hầm, trao giải cho ba bộ hoá trang được bình chọn nhiều nhất.",
       ],
 
@@ -460,14 +488,14 @@ export const dict = {
         "Sự kiện có đáng sợ không?",
       ],
       ruleAs: [
-        "Có. Mỗi khung giờ nhận số lượng khách có hạn để các trạm không quá tải. Đăng ký miễn phí qua đường dẫn ở cuối trang.",
+        "Có. Cả hai trò chơi đều đăng ký trước. Escape room phải chọn đúng ca chơi, mỗi ca tối đa 15 người.",
         "Không bắt buộc, nhưng đêm này sinh ra là để hoá trang. Ba bộ được bình chọn nhiều nhất sẽ có giải.",
         "Có máu giả và hình ảnh kinh dị, nhưng không có jumpscare hay diễn viên đuổi theo bạn. Hợp với người thích giải đố hơn người thích bị doạ.",
       ],
 
-      ctaHeading: "Cửa hầm mở lúc 18:00",
+      ctaHeading: "Cửa hầm mở lúc 17:00",
       ctaLead:
-        "Số chỗ mỗi khung giờ có hạn. Đăng ký trước để chắc chắn có một chỗ trong đường hầm.",
+        "Số chỗ mỗi ca có hạn. Đăng ký trước để chắc chắn có một chỗ trong đường hầm.",
       ctaBtn: "Đăng ký tham gia",
       ctaNote: "Đường dẫn đăng ký sẽ được cập nhật.",
     },
@@ -836,7 +864,7 @@ export const dict = {
       meta: {
         title: "Halloween 2026",
         description:
-          "ReThink's Halloween 2026 at VinUniversity — a tunnel of grass, four masks and a compass. (Placeholder copy.)",
+          "ReThink's Halloween 2026 at VinUniversity — a tunnel of grass, two games and a compass. (Placeholder copy.)",
       },
       draftNote: "Placeholder copy — final text to come",
       kicker: "Halloween 2026 · VinUniversity",
@@ -844,13 +872,13 @@ export const dict = {
       tagline:
         "Walk to the end of the grass tunnel. The compass will point the way — not necessarily the way out.",
       whenLabel: "When",
-      when: "Friday 30 October 2026 · 18:00 – 22:00",
+      when: "Friday 30 October 2026 · 17:00 – 22:30",
       dateShort: "30.10",
-      timeShort: "18:00 – 22:00",
+      timeShort: "17:00 – 22:30",
       whereLabel: "Where",
       where: "Main hall — VinUniversity, Gia Lam, Hanoi",
       ctaJoin: "Reserve a place",
-      ctaRooms: "Meet the four masks",
+      ctaRooms: "See the running order",
       scrollHint: "Scroll to walk in",
       tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "Rethink"],
 
@@ -861,32 +889,60 @@ export const dict = {
       storyP2:
         "Bring the compass. It always points the right way, but it never tells you what is waiting there.",
 
-      roomsKicker: "Four stations",
-      roomsHeading: "Four Masks",
-      roomsLead:
-        "Each mask hanging from the branches is a game station, with a host and a piece of evidence to carry away. Only four pieces of evidence open the last arch.",
-      roomNames: ["The Cat Mask", "The Hound Mask", "The Owl Mask", "The Eye"],
-      roomDescs: [
-        "It hangs from the highest branch. Whoever wears it sees what everyone else missed.",
-        "It guards the second entrance. To pass, answer one question correctly.",
-        "The owl never sleeps. This station is played in total darkness.",
-        "No mask — just one eye that follows you all evening. Find out what it is looking at.",
-      ],
-      roomTags: ["Puzzle", "Workshop", "Live game", "Photo"],
+      gamesKicker: "Two games",
+      gamesHeading: "Two Games",
+      gamesLead:
+        "The two main games of Halloween night. Both need a reservation — pick the one you want and fill in your details.",
+      games: {
+        hunt: {
+          tag: "Scavenger hunt",
+          name: "The Scavenger Hunt",
+          desc: "Follow the compass and gather the clues scattered through the tunnel. Play at your own pace.",
+          facts: ["Reserve ahead with a short form"],
+          cta: "Join the hunt",
+          formTitle: "Scavenger Hunt registration",
+        },
+        escape: {
+          tag: "Escape room",
+          name: "The Locked Room",
+          desc: "One locked room and forty minutes to get out. Pick the session that suits you.",
+          facts: ["17:00 – 22:30", "Each session: 40 min of play + 10 min to reset the room", "Up to 15 people per session"],
+          cta: "Pick a session & register",
+          formTitle: "Escape Room registration",
+        },
+        form: {
+          name: "Full name",
+          email: "VinUni email",
+          studentId: "Student ID",
+          phone: "Phone number (optional)",
+          slotLegend: "Choose your session",
+          slotNote: "Each session is 40 minutes of play for up to 15 people. A new session starts every 50 minutes.",
+          slotRequired: "Please choose a session.",
+          required: "Please fill this in.",
+          submit: "Send registration",
+          sending: "Sending…",
+          close: "Close",
+          successTitle: "Registration received!",
+          successBody: "We will email you if we need anything else.",
+          successSlot: "Your session:",
+          error: "Could not send. Please try again in a few minutes.",
+          notOpen: "Registration opens soon — the link is being set up.",
+        },
+      },
 
       scheduleKicker: "Running order",
       scheduleHeading: "The Night",
-      scheduleTimes: ["18:00", "18:30", "20:45", "21:40"],
+      scheduleTimes: ["17:00", "17:00 – 21:50", "22:00", "22:30"],
       scheduleTitles: [
         "Doors open & compasses issued",
-        "The four masks wake",
+        "Both games open",
         "The last arch",
         "Closing",
       ],
       scheduleDescs: [
         "Pick up your guest card and a compass. Costumes encouraged, never required.",
-        "Move between the four stations in any order. About 20 minutes each.",
-        "Opens only for guests holding all four pieces of evidence. The answer is given here.",
+        "The scavenger hunt is play-as-you-go; the escape room runs in the sessions you registered for, 40 minutes each.",
+        "The answer to the night is given here.",
         "Group photograph inside the tunnel, and prizes for the three most-voted costumes.",
       ],
 
@@ -898,14 +954,14 @@ export const dict = {
         "Is it actually scary?",
       ],
       ruleAs: [
-        "Yes. Each time slot takes a limited number of guests so the stations don't crowd. Registration is free, through the link at the bottom of this page.",
+        "Yes. Both games need a reservation. For the escape room you pick your session, with up to 15 people in each.",
         "Not compulsory — but this is the night for it. The three most-voted costumes win prizes.",
         "There is fake blood and horror imagery, but no jumpscares and no actors chasing anyone. Better suited to people who like puzzles than to people who like being startled.",
       ],
 
-      ctaHeading: "The tunnel opens at 18:00",
+      ctaHeading: "The tunnel opens at 17:00",
       ctaLead:
-        "Places per time slot are limited. Reserve ahead to be sure of a spot inside the tunnel.",
+        "Places per session are limited. Reserve ahead to be sure of a spot inside the tunnel.",
       ctaBtn: "Reserve a place",
       ctaNote: "Registration link to follow.",
     },

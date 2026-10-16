@@ -16,6 +16,8 @@ type Cfg = {
   capacity: number; // people per session
   /** how a person can register and how many seats it takes */
   types: readonly { id: RegType; size: number }[];
+  /** a bank-transfer proof (photo) must be uploaded with the registration */
+  proof: boolean;
 };
 
 export const GAME_CFG: Record<GameId, Cfg> = {
@@ -25,6 +27,7 @@ export const GAME_CFG: Record<GameId, Cfg> = {
     playMin: 40,
     stepMin: 50,
     capacity: 15,
+    proof: true,
     types: [
       { id: "solo", size: 1 },
       { id: "team", size: 5 },
@@ -37,6 +40,7 @@ export const GAME_CFG: Record<GameId, Cfg> = {
     playMin: 30,
     stepMin: 40,
     capacity: 32, // 4 teams × 8
+    proof: false,
     types: [
       { id: "solo", size: 1 },
       { id: "team", size: 8 }, // one full team

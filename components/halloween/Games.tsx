@@ -55,6 +55,17 @@ export type GamesCopy = {
     members: string;
     membersHint: string;
     membersCount: string;
+    membersEmail: string;
+    payTitle: string;
+    payLead: string;
+    payQrMissing: string;
+    proofLabel: string;
+    proofChoose: string;
+    proofChange: string;
+    proofRequired: string;
+    proofBad: string;
+    proofReading: string;
+    proofRejected: string;
     contactNote: string;
     slotFullNow: string;
     slotLegend: string;
@@ -278,6 +289,32 @@ function useTaken() {
   return { takenBy, loading, load };
 }
 
+/** shrink a photo to a small JPEG before it is sent: { dataUrl for the preview, base64 for the Sheet } */
+async function shrinkPhoto(file: File): Promise<{ preview: string; base64: string; mime: string } | null> {
+  if (!file.type.startsWith("image/")) return null;
+  try {
+    const bmp = await createImageBitmap(file);
+    const scale = Math.min(1, 1100 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement("canvas");
+    c.width = Math.round(bmp.width * scale);
+    c.height = Math.round(bmp.height * scale);
+    const ctx = c.getContext("2d");
+    if (!ctx) return null;
+    ctx.fillStyle = "#fff"; // transparent PNGs would turn black as JPEG
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(bmp, 0, 0, c.width, c.height);
+    let q = 0.8;
+    let url = c.toDataURL("image/jpeg", q);
+    while (url.length > 700_000 && q > 0.4) {
+      q -= 0.1;
+      url = c.toDataURL("image/jpeg", q);
+    }
+    return { preview: url, base64: url.split(",")[1] ?? "", mime: "image/jpeg" };
+  } catch {
+    return null;
+  }
+}
+
 function RegisterForm({
   game,
   copy,
@@ -302,6 +339,9 @@ function RegisterForm({
   const [type, setType] = useState<RegType>("solo");
   const [slot, setSlot] = useState("");
   const [members, setMembers] = useState("");
+  const [proof, setProof] = useState<{ preview: string; base64: string; mime: string; name: string } | null>(null);
+  const [reading, setReading] = useState(false);
+  const [qrOk, setQrOk] = useState(true);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const size = cfg.types.find((t) => t.id === type)!.size;
@@ -317,6 +357,23 @@ function RegisterForm({
     .map((l) => l.trim())
     .filter(Boolean).length;
 
+  async function onPick(file: File | undefined) {
+    if (!file) return;
+    setReading(true);
+    const out = await shrinkPhoto(file);
+    setReading(false);
+    if (!out) {
+      setProof(null);
+      setErrors((e) => ({ ...e, proof: f.proofBad }));
+      return;
+    }
+    setProof({ ...out, name: file.name });
+    setErrors((e) => {
+      const { proof: _p, ...rest } = e;
+      return rest;
+    });
+  }
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!FORM_URL || status === "sending") return;
@@ -326,7 +383,12 @@ function RegisterForm({
     for (const k of ["name", "email", "studentId"]) if (!v(k)) errs[k] = f.required;
     if (v("email") && !/^\S+@\S+\.\S+$/.test(v("email"))) errs.email = f.required;
     if (!slotOk) errs.slot = slot ? f.noRoomForType : f.slotRequired;
-    if (size > 1 && memberLines !== size) errs.members = f.membersCount.replace("{n}", String(size)).replace("{c}", String(memberLines));
+    if (size > 1) {
+      const lines = members.split("\n").map((l) => l.trim()).filter(Boolean);
+      if (lines.length !== size) errs.members = f.membersCount.replace("{n}", String(size)).replace("{c}", String(lines.length));
+      else if (lines.some((l) => !/\S+@\S+\.\S+/.test(l))) errs.members = f.membersEmail;
+    }
+    if (cfg.proof && !proof) errs.proof = f.proofRequired;
     setErrors(errs);
     if (Object.keys(errs).length) return;
 
@@ -346,12 +408,16 @@ function RegisterForm({
           phone: v("phone"),
           teamName: size > 1 ? v("teamName") : "",
           members: size > 1 ? members.trim() : "",
+          proof: cfg.proof && proof ? { mime: proof.mime, data: proof.base64, name: proof.name } : undefined,
           at: new Date().toISOString(),
         }),
       });
       const json = await res.json();
       if (json?.ok) {
         setStatus("done");
+      } else if (json?.error === "proof" || json?.error === "proof_big" || json?.error === "proof_type") {
+        setErrors({ proof: f.proofRejected });
+        setStatus("idle");
       } else if (json?.error === "full") {
         setErrors({ slot: f.slotFullNow });
         setSlot("");
@@ -473,6 +539,46 @@ function RegisterForm({
                 {errors.members && <p className="hlw-err mt-1">{errors.members}</p>}
               </div>
             </>
+          )}
+
+          {cfg.proof && (
+            <fieldset className="grid gap-3 rounded-lg border border-[rgba(222,217,196,0.2)] p-4">
+              <legend className="hlw-kicker px-1">{f.payTitle}</legend>
+              <p className="text-xs leading-relaxed text-[color:var(--hlw-bone)]/70">{f.payLead}</p>
+              {qrOk ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src="/halloween/payment-qr.png"
+                  alt=""
+                  onError={() => setQrOk(false)}
+                  className="mx-auto max-h-64 w-auto rounded-md bg-white p-2"
+                />
+              ) : (
+                <p className="text-xs text-[color:var(--hlw-script)]">{f.payQrMissing}</p>
+              )}
+              <div>
+                <label htmlFor={`${uid}-proof`} className="hlw-kicker mb-1.5 block">
+                  {f.proofLabel}
+                </label>
+                <input
+                  id={`${uid}-proof`}
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => void onPick(e.target.files?.[0])}
+                />
+                <div className="flex flex-wrap items-center gap-3">
+                  <label htmlFor={`${uid}-proof`} className="hlw-btn hlw-btn-ghost cursor-pointer">
+                    {reading ? f.proofReading : proof ? f.proofChange : f.proofChoose}
+                  </label>
+                  {proof && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={proof.preview} alt="" className="h-16 w-auto rounded border border-[rgba(222,217,196,0.3)]" />
+                  )}
+                </div>
+                {errors.proof && <p className="hlw-err mt-1.5">{errors.proof}</p>}
+              </div>
+            </fieldset>
           )}
 
           {!FORM_URL && <p className="text-xs leading-relaxed text-[color:var(--hlw-script)]">{f.notOpen}</p>}

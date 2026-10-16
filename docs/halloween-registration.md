@@ -30,11 +30,20 @@ forms show "registration opens soon" and cannot be submitted.
 If you change the script later: **Deploy → Manage deployments → edit → new version**
 (the URL stays the same).
 
+## Payment proof (escape room only)
+
+The escape-room form shows a payment QR and asks for a photo of the bank-transfer proof.
+- **QR:** put the bank QR image at `web/public/halloween/payment-qr.png`. Until that file exists the form says "the QR will be added soon".
+- **Photo:** the page shrinks it to a small JPEG (≈ 100–300 KB) in the browser and sends it with the registration.
+- **In the Sheet:** the "Escape Room" tab has two extra columns — **K** a link ("Mở ảnh") and **L** the picture itself inside the cell. The original is also saved in a private Drive folder **"Halloween 2026 — chứng minh CK"** (only the Google account that owns the script can open it).
+- Run `setup` once after pasting the new script: it adds the two columns and makes Google ask for **Drive permission** (needed to save the photos).
+- Members of a team are entered as `Name – VinUni email`, one per line, both games.
+
 ## What is written
 
 Both tabs ("Escape Room", "Scavenger Hunt") have the same columns: submitted at · session start
 (e.g. `17:50`) · type (`solo` / `team` / `group`) · number of people · contact person · email ·
-student ID · phone · team name · members (one per line).
+student ID · phone · team name · members + their VinUni email (one per line). The escape-room tab ends with the proof link and picture.
 
 ## Rules the script enforces (so the page cannot be tricked)
 

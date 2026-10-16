@@ -6,6 +6,9 @@
  * POST (JSON body, sent as text/plain): writes one row to the "Escape Room" or
  *   "Scavenger Hunt" tab. A row is refused with {ok:false,error:"full"} when its session would
  *   go over that game's capacity, so two people can never both take the last seats.
+ *   The escape room also takes a bank-transfer proof (a small JPEG): it is saved in a private Drive
+ *   folder ("Halloween 2026 — chứng minh CK"), and the row gets a link to it plus the picture itself
+ *   in the last column.
  * GET ?action=availability: {ok:true, takenBy:{escape:{"17:00":7,...}, hunt:{"18:20":12,...}},
  *   taken:{...escape...}} — seats already booked per session.
  */
@@ -17,14 +20,21 @@ const SHEET_ID = "";
 
 // Keep in step with lib/halloween-games.ts (GAME_CFG).
 const GAMES = {
-  escape: { capacity: 15, types: { solo: 1, team: 5, group: 15 } },
-  hunt: { capacity: 32, types: { solo: 1, team: 8 } }, // 4 teams of 8 a session
+  escape: { capacity: 15, proof: true, types: { solo: 1, team: 5, group: 15 } },
+  hunt: { capacity: 32, proof: false, types: { solo: 1, team: 8 } }, // 4 teams of 8 a session
 };
 const TABS = { escape: "Escape Room", hunt: "Scavenger Hunt" };
 const SLOT_RE = /^\d{2}:\d{2}$/;
 
-// both games book by session, so both tabs have the same columns
-const HEADERS = ["Thời gian gửi", "Ca", "Hình thức", "Số người", "Người đại diện", "Email", "MSSV", "SĐT", "Tên nhóm", "Thành viên"];
+const PROOF_FOLDER = "Halloween 2026 — chứng minh CK";
+const MAX_PROOF_B64 = 1500000; // the page sends ≈ 100–300 KB; this is a safety cap
+
+// both games book by session, so both tabs share these columns; the escape room adds the proof
+const BASE_HEADERS = ["Thời gian gửi", "Ca", "Hình thức", "Số người", "Người đại diện", "Email", "MSSV", "SĐT", "Tên nhóm", "Thành viên (+ email)"];
+const HEADERS = {
+  escape: BASE_HEADERS.concat(["Link chứng minh CK", "Ảnh chứng minh CK"]),
+  hunt: BASE_HEADERS,
+};
 
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
@@ -44,6 +54,7 @@ function ss_() {
 function setup() {
   tab_("escape");
   tab_("hunt");
+  proofFolder_(); // also makes Google ask for Drive permission now rather than on the first registration
   const ss = ss_();
   const blank = ss.getSheetByName("Sheet1");
   if (blank && blank.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(blank);
@@ -53,10 +64,11 @@ function tab_(game) {
   const ss = ss_();
   let sh = ss.getSheetByName(TABS[game]);
   if (!sh) sh = ss.insertSheet(TABS[game]);
-  const head = sh.getRange(1, 1, 1, HEADERS.length);
-  if (head.getValues()[0].join("|") !== HEADERS.join("|")) {
+  const cols = HEADERS[game];
+  const head = sh.getRange(1, 1, 1, cols.length);
+  if (head.getValues()[0].join("|") !== cols.join("|")) {
     // new tab, or an older layout (the hunt tab used to have 5 columns): (re)write the header row
-    head.setValues([HEADERS]).setFontWeight("bold");
+    head.setValues([cols]).setFontWeight("bold");
     sh.setFrozenRows(1);
   }
   // keep these as text: Sheets would turn "17:50" into a time and drop the leading 0 of a phone number
@@ -64,6 +76,11 @@ function tab_(game) {
     sh.getRange(c).setNumberFormat("@");
   });
   return sh;
+}
+
+function proofFolder_() {
+  const it = DriveApp.getFoldersByName(PROOF_FOLDER);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(PROOF_FOLDER); // private: only this account can open it
 }
 
 // "17:50", "17:50:00" or "5:50 PM" (whatever the cell displays) → "17:50"
@@ -111,11 +128,18 @@ function doPost(e) {
     if (!size || Number(d.headcount) !== size || !SLOT_RE.test(String(d.slot))) {
       return json_({ ok: false, error: "bad_request" });
     }
+    const proof = d.proof;
+    if (game.proof) {
+      if (!proof || !proof.data) return json_({ ok: false, error: "proof" });
+      if (String(proof.data).length > MAX_PROOF_B64) return json_({ ok: false, error: "proof_big" });
+      if (!/^image\/(jpeg|png|webp)$/.test(String(proof.mime))) return json_({ ok: false, error: "proof_type" });
+    }
+
     const sh = tab_(d.game);
     const booked = taken_(d.game)[d.slot] || 0;
     if (booked + size > game.capacity) return json_({ ok: false, error: "full" });
 
-    sh.appendRow([
+    const row = [
       new Date(),
       safe_(d.slot),
       safe_(d.type),
@@ -126,7 +150,33 @@ function doPost(e) {
       safe_(d.phone),
       safe_(d.teamName),
       safe_(d.members),
-    ]);
+    ];
+    let fileUrl = "";
+    if (game.proof) {
+      const stamp = Utilities.formatDate(new Date(), ss_().getSpreadsheetTimeZone(), "yyyyMMdd-HHmmss");
+      const who = String(d.name).replace(/[^\p{L}\p{N} _-]/gu, "").trim().slice(0, 40) || "khach";
+      const ext = proof.mime === "image/png" ? "png" : proof.mime === "image/webp" ? "webp" : "jpg";
+      const blob = Utilities.newBlob(Utilities.base64Decode(proof.data), proof.mime, d.slot.replace(":", "h") + " - " + who + " - " + stamp + "." + ext);
+      fileUrl = proofFolder_().createFile(blob).getUrl();
+      row.push("", ""); // filled in below, once the row exists
+    }
+    sh.appendRow(row);
+
+    if (game.proof) {
+      const r = sh.getLastRow();
+      sh.getRange(r, 11).setFormula('=HYPERLINK("' + fileUrl + '","Mở ảnh")');
+      try {
+        // the picture itself, inside the cell (a data: URL, so the Drive file can stay private)
+        const img = SpreadsheetApp.newCellImage()
+          .setSourceUrl("data:" + proof.mime + ";base64," + proof.data)
+          .setAltTextTitle("Chứng minh chuyển khoản")
+          .build();
+        sh.getRange(r, 12).setValue(img);
+        sh.setRowHeight(r, 140);
+      } catch (imgErr) {
+        /* the link in column K still works */
+      }
+    }
     return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: "server" });

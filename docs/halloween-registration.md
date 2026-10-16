@@ -6,10 +6,15 @@ forms show "registration opens soon" and cannot be submitted.
 
 ## One-time setup (≈5 minutes, needs the Google account that owns the Sheet)
 
-1. Create a new Google Sheet (name it e.g. "Halloween 2026 — đăng ký"). Leave it empty; the script
-   makes the two tabs ("Escape Room", "Scavenger Hunt") and their header rows itself.
+1. Create a new Google Sheet (name it e.g. "Halloween 2026 — đăng ký"). Leave it empty.
 2. In the Sheet: **Extensions → Apps Script**. Delete the sample code, paste all of
-   [`halloween-sheet.gs`](./halloween-sheet.gs), save.
+   [`halloween-sheet.gs`](./halloween-sheet.gs), save. If the script was created on its own at
+   script.google.com instead, put the Sheet's ID (the part of its URL between `/d/` and `/edit`)
+   in `SHEET_ID` at the top.
+   Then pick the function **`setup`** in the toolbar and press **Run** once (approve the permission
+   prompt): it creates the two tabs ("Escape Room", "Scavenger Hunt") with their header rows.
+   Pasting the code alone does nothing — the tabs only appear when `setup` runs (or on the first
+   submission).
 3. **Deploy → New deployment → type "Web app"**
    - Execute as: **Me**
    - Who has access: **Anyone**

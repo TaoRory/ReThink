@@ -9,6 +9,11 @@
  * GET ?action=availability: {ok:true, taken:{"17:00":7, ...}} — seats already booked per session.
  */
 
+// Leave "" when this script was opened from the Sheet (Extensions → Apps Script).
+// If it was created on script.google.com on its own, paste the Sheet's ID here
+// (the long part of its URL between /d/ and /edit).
+const SHEET_ID = "";
+
 const CAPACITY = 15;
 const TABS = { escape: "Escape Room", hunt: "Scavenger Hunt" };
 const TYPE_SIZE = { solo: 1, team: 5, group: 15 };
@@ -29,8 +34,21 @@ function safe_(v) {
   return /^[=+\-@]/.test(s) ? "'" + s : s;
 }
 
+function ss_() {
+  return SHEET_ID ? SpreadsheetApp.openById(SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+}
+
+/** Run this once from the editor (select "setup" → Run): creates both tabs and their headers. */
+function setup() {
+  tab_("escape");
+  tab_("hunt");
+  const ss = ss_();
+  const blank = ss.getSheetByName("Sheet1");
+  if (blank && blank.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(blank);
+}
+
 function tab_(game) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = ss_();
   let sh = ss.getSheetByName(TABS[game]);
   if (!sh) sh = ss.insertSheet(TABS[game]);
   if (sh.getLastRow() === 0) {

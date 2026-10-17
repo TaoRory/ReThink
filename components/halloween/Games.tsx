@@ -62,6 +62,8 @@ export type GamesCopy = {
     groupSizeLabel: string;
     conflictIntro: string;
     conflictLine: string;
+    conflictLineSame: string;
+    emailDomain: string;
     conflictOutro: string;
     dupMember: string;
     priceLabel: string;
@@ -100,6 +102,10 @@ export type GamesCopy = {
 
 /** ONE payment QR for every price: public/halloween/qr.* (the amount is typed in by whoever pays); first file that loads wins */
 const QR_FILES = ["qr.png", "qr.jpg", "qr.jpeg", "qr.webp", "qr67.png", "qr67.jpg", "qr67.jpeg", "qr67.webp"] as const;
+
+/** every email must be a VinUni one, which also stops one person using two addresses */
+const VINUNI_EMAIL = /^[^\s@,;|<>()]+@vinuni\.edu\.vn$/i;
+const EMAIL_IN_LINE = /[^\s,;|<>()]+@[^\s,;|<>()]+/;
 
 const FORM_URL = process.env.NEXT_PUBLIC_HLW_FORM_URL ?? "";
 const MASK: Record<GameId, { src: string; w: number; h: number }> = {
@@ -365,7 +371,7 @@ function RegisterForm({
   const [groupSize, setGroupSize] = useState(cfg.groupMin);
   const [qrTry, setQrTry] = useState(0); // which QR file we are on
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [clashes, setClashes] = useState<{ who: string; email: string; game: string; slot: string; end: string }[]>([]);
+  const [clashes, setClashes] = useState<{ who: string; email: string; game: string; slot: string; end: string; kind?: string }[]>([]);
 
   const size = type === "solo" ? 1 : groupSize;
   const pricing = cfg.pricing;
@@ -421,12 +427,12 @@ function RegisterForm({
     const errs: Record<string, string> = {};
     for (const k of ["name", "email", "studentId", "phone"]) if (!v(k)) errs[k] = f.required;
     if (size > 1 && !v("teamName")) errs.teamName = f.required;
-    if (v("email") && !/^\S+@\S+\.\S+$/.test(v("email"))) errs.email = f.required;
+    if (v("email") && !VINUNI_EMAIL.test(v("email"))) errs.email = f.emailDomain;
     if (!slotOk) errs.slot = slot ? f.noRoomForType : f.slotRequired;
     if (size > 1) {
       const lines = members.split("\n").map((l) => l.trim()).filter(Boolean);
       if (lines.length !== size) errs.members = f.membersCount.replace("{n}", String(size)).replace("{c}", String(lines.length));
-      else if (lines.some((l) => !/\S+@\S+\.\S+/.test(l))) errs.members = f.membersEmail;
+      else if (lines.some((l) => !VINUNI_EMAIL.test(l.match(EMAIL_IN_LINE)?.[0] ?? ""))) errs.members = f.membersEmail;
       else {
         const emails = lines.map((l) => (l.match(/[^\s,;|<>()]+@[^\s,;|<>()]+/)?.[0] ?? "").toLowerCase());
         if (new Set(emails).size !== emails.length) errs.members = f.dupMember;
@@ -478,6 +484,15 @@ function RegisterForm({
               ? [{ who: String(json.who ?? ""), email: "", game: json.game, slot: json.slot, end: json.end }]
               : [],
         );
+        setStatus("idle");
+      } else if (json?.error === "email_domain") {
+        setErrors({ email: f.emailDomain, members: size > 1 ? f.membersEmail : "" });
+        setStatus("idle");
+      } else if (json?.error === "dup_member") {
+        setErrors({ members: f.dupMember });
+        setStatus("idle");
+      } else if (json?.error === "members_count") {
+        setErrors({ members: f.membersCount.replace("{n}", String(size)).replace("{c}", "?") });
         setStatus("idle");
       } else if (json?.error === "promo") {
         setPromoOn(false);
@@ -789,7 +804,7 @@ function RegisterForm({
               <ul className="mt-1.5 list-disc pl-5">
                 {clashes.map((c, i) => (
                   <li key={i}>
-                    {f.conflictLine
+                    {(c.kind === "same_game" ? f.conflictLineSame : f.conflictLine)
                       .replace("{who}", c.who)
                       .replace(" ({email})", c.email ? ` (${c.email})` : "")
                       .replace("{game}", c.game === "hunt" ? "Scavenger Hunt" : "Escape Room")

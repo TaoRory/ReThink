@@ -67,12 +67,19 @@ escape-room tab). The next id is the highest one in the Sheet + 1, so deleting y
 - A registration that would take a session over its capacity is refused with `full`, and the page
   asks the person to pick another session. Capacities and group sizes live in `GAMES` at the top of the script and in
   `GAME_CFG` in `lib/halloween-games.ts` — change both together.
-- **No double-booking:** nobody may be in two sessions at overlapping play times (escape = 40 min, hunt =
-  30 min from the session start) — in the other game, or a second sign-up for the same session of the same
-  game. The contact person and every member of a group are checked against both tabs, matched by
-  **VinUni email only** (two people can share a name, never an email). A clash is refused with `conflict`; the
-  page shows a red box listing each clashing person (name, email, the game and its time). Rows already in
-  the Sheet are not re-checked, so delete test duplicates by hand.
+- **Who may register (all matched by VinUni email only — two people can share a name, never an email):**
+  1. every email — the contact person and each listed member — must end in **@vinuni.edu.vn**
+     (so one person cannot slip in with a second, personal address);
+  2. a group's member list must have exactly the head count, one email per line, no repeated email;
+  3. **one session per person per game**: an email that already has a session of the same game is refused,
+     whatever the time (switch off with `ONE_SESSION_PER_GAME = false` in the script);
+  4. **no two games at overlapping play times** (escape = 40 min, hunt = 30 min from the session start).
+     Back-to-back is fine (there is no travel buffer): escape 18:40–19:20 clashes with hunt 19:00–19:30
+     and 18:20–18:50, but not with hunt 19:40.
+  A clash is refused with `conflict`; the page shows a red box listing each person (name, email, the other
+  registration and why). Checks 1–2 run in the page and again in the script, so they cannot be skipped.
+- **Auditing rows already in the Sheet:** in the editor choose the function **`audit`** and Run. It marks
+  (red cell A + a note) every existing row that breaks these rules and lists them in the log. Nothing is deleted.
 - The check runs under a script lock, so two people submitting at the same moment cannot both take
   the last seats.
 - Text starting with `= + - @` is stored with a leading `'` so it cannot run as a formula.

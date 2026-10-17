@@ -11,11 +11,13 @@
  *   in the last column. The script works out the price itself (ticket × people, or the promo price
  *   when the right promo code is sent) and writes the code and the amount to collect on the row; a
  *   wrong code is refused with {ok:false,error:"promo"}.
- *   Nobody may be in two sessions at once — in the other game or in the same game (a second sign-up
- *   for the same session): the contact person and every listed member are checked against both games'
- *   rows, matched by VinUni EMAIL only (two people can share a name, never an email). Overlapping
- *   play times are refused with
- *   {ok:false,error:"conflict",conflicts:[{who,email,game,slot,end}, …]} naming each clashing person.
+ *   Who may register — all matched by VinUni EMAIL only (two people can share a name, never an email):
+ *     - every email (contact person + each listed member) must be @vinuni.edu.vn  → error "email_domain"
+ *     - a group's list must have exactly the head count, one email each, no repeats → "members_count" / "dup_member"
+ *     - ONE session per person per game (kind "same_game"), and nobody in two games at overlapping
+ *       play times (kind "overlap") → {ok:false,error:"conflict",conflicts:[{who,email,game,slot,end,kind}, …]}
+ *       naming each clashing person.
+ *   Run audit() from the editor to mark rows already in the Sheet that break these rules.
  *   Every registration gets a ticket id: hlw001, hlw002, … one running number across both games
  *   (the next one is the highest id in the Sheet + 1, so clearing test rows restarts the count). It is
  *   written in the last column ("Mã vé") and returned as {ok:true, ticket:"hlw001"}.
@@ -33,6 +35,8 @@ const GAMES = {
   escape: { playMin: 40, capacity: 15, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" }, groupMin: 2, groupMax: 6 },
   hunt: { playMin: 30, capacity: 32, proof: false, groupMin: 2, groupMax: 4 },
 };
+const ONE_SESSION_PER_GAME = true; // false = a person may take several different sessions of the same game
+const VINUNI_EMAIL = /^[^\s@,;|<>()]+@vinuni\.edu\.vn$/i;
 const TABS = { escape: "Escape Room", hunt: "Scavenger Hunt" };
 const SLOT_RE = /^\d{2}:\d{2}$/;
 
@@ -126,8 +130,29 @@ function personsOf_(name, email, members) {
   return out;
 }
 
-// everyone in this registration who is already booked at an overlapping time, in the other game or
-// in this same game (a second sign-up for the same session): [{who, email, game, slot, end}]
+// Checks the page can also make, repeated here so nobody can skip them: returns "" or an error code.
+function checkPeople_(d, size) {
+  if (!VINUNI_EMAIL.test(String(d.email || "").trim())) return "email_domain";
+  if (d.type !== "group") return "";
+  const lines = String(d.members || "").split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+  if (lines.length !== size) return "members_count";
+  const emails = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(EMAIL_RE);
+    if (!m || !VINUNI_EMAIL.test(m[0])) return "email_domain";
+    emails.push(m[0].toLowerCase());
+  }
+  const seen = {};
+  for (let j = 0; j < emails.length; j++) {
+    if (seen[emails[j]]) return "dup_member";
+    seen[emails[j]] = true;
+  }
+  return "";
+}
+
+// Everyone in this registration who may not take this session, as [{who, email, game, slot, end, kind}]:
+//  - kind "same_game": already has a session of THIS game (any time) — one session per person per game
+//  - kind "overlap":   already has a session of the OTHER game whose play time overlaps this one
 function findConflicts_(d) {
   const myStart = minutes_(d.slot);
   const myEnd = myStart + GAMES[d.game].playMin;
@@ -135,6 +160,8 @@ function findConflicts_(d) {
   const found = [];
   const other = d.game === "escape" ? "hunt" : "escape";
   [other, d.game].forEach(function (g) {
+    const same = g === d.game;
+    if (same && !ONE_SESSION_PER_GAME) return;
     const sh = tab_(g);
     const last = sh.getLastRow();
     if (last < 2) return;
@@ -142,16 +169,62 @@ function findConflicts_(d) {
       const s2 = minutes_(r[1]);
       if (s2 < 0) return;
       const e2 = s2 + GAMES[g].playMin;
-      if (!(myStart < e2 && s2 < myEnd)) return; // different times: fine
+      if (!same && !(myStart < e2 && s2 < myEnd)) return; // other game: only overlapping times clash
       const theirs = personsOf_(r[4], r[5], r[9]).map(function (p) { return p.email; });
       mine.forEach(function (p) {
         if (theirs.indexOf(p.email) < 0) return;
         const again = found.some(function (f) { return f.email === p.email && f.game === g && f.slot === hhmm_(s2); });
-        if (!again) found.push({ who: p.label, email: p.email, game: g, slot: hhmm_(s2), end: hhmm_(e2) });
+        if (!again) found.push({ who: p.label, email: p.email, game: g, slot: hhmm_(s2), end: hhmm_(e2), kind: same ? "same_game" : "overlap" });
       });
     });
   });
   return found;
+}
+
+/**
+ * Run from the editor (select "audit" → Run): marks rows ALREADY in the Sheet that break the rules
+ * (same email twice in one game, or in both games at overlapping times, or a non-vinuni.edu.vn email).
+ * Marked rows get a red "Thời gian gửi" cell with a note; the log lists them. Nothing is deleted.
+ */
+function audit() {
+  const regs = [];
+  ["escape", "hunt"].forEach(function (g) {
+    const sh = tab_(g);
+    const last = sh.getLastRow();
+    if (last < 2) return;
+    sh.getRange(2, 1, last - 1, 10).getDisplayValues().forEach(function (r, i) {
+      regs.push({ game: g, sh: sh, row: i + 2, s: minutes_(r[1]), emails: personsOf_(r[4], r[5], r[9]).map(function (p) { return p.email; }) });
+    });
+  });
+  const problems = {};
+  const flag = function (reg, why) {
+    const k = reg.game + ":" + reg.row;
+    problems[k] = problems[k] || { reg: reg, why: [] };
+    problems[k].why.push(why);
+  };
+  regs.forEach(function (a, i) {
+    a.emails.forEach(function (e) {
+      if (!VINUNI_EMAIL.test(e)) flag(a, "email ngoài @vinuni.edu.vn: " + e);
+    });
+    regs.forEach(function (b, j) {
+      if (i === j) return;
+      const shared = a.emails.filter(function (e) { return b.emails.indexOf(e) >= 0; });
+      if (!shared.length) return;
+      if (a.game === b.game) {
+        flag(a, "cùng email " + shared[0] + " với " + b.game + " dòng " + b.row);
+      } else if (a.s < b.s + GAMES[b.game].playMin && b.s < a.s + GAMES[a.game].playMin) {
+        flag(a, "trùng giờ với " + b.game + " dòng " + b.row + " (" + shared[0] + ")");
+      }
+    });
+  });
+  const keys = Object.keys(problems);
+  keys.forEach(function (k) {
+    const p = problems[k];
+    const cell = p.reg.sh.getRange(p.reg.row, 1);
+    cell.setBackground("#f4cccc").setNote(p.why.join("\n"));
+    Logger.log(TABS[p.reg.game] + " dòng " + p.reg.row + ": " + p.why.join("; "));
+  });
+  Logger.log(keys.length ? keys.length + " dòng có vấn đề (đã tô đỏ ô A)." : "Không có dòng nào vi phạm.");
 }
 
 // the next ticket id: highest hlwNNN already in either tab, plus one ("hlw001" for the first)
@@ -218,6 +291,8 @@ function doPost(e) {
     if (!sizeOk || Number(d.headcount) !== size || !SLOT_RE.test(String(d.slot))) {
       return json_({ ok: false, error: "bad_request" });
     }
+    const peopleErr = checkPeople_(d, size);
+    if (peopleErr) return json_({ ok: false, error: peopleErr });
     const proof = d.proof;
     if (game.proof) {
       if (!proof || !proof.data) return json_({ ok: false, error: "proof" });

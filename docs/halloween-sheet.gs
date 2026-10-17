@@ -189,7 +189,8 @@ function doPost(e) {
     const d = JSON.parse(e.postData.contents);
     const game = GAMES[d.game];
     if (!game) return json_({ ok: false, error: "bad_game" });
-    if (!d.name || !d.email || !d.studentId) return json_({ ok: false, error: "missing" });
+    if (!d.name || !d.email || !d.studentId || !d.phone) return json_({ ok: false, error: "missing" });
+    if (d.type === "group" && !String(d.teamName || "").trim()) return json_({ ok: false, error: "missing" }); // a group needs a team name
 
     // alone = 1 person; a group = groupMin…groupMax people (the page sends the headcount, we check it)
     const size = d.type === "solo" ? 1 : d.type === "group" ? Number(d.headcount) : 0;

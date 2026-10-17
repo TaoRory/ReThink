@@ -416,7 +416,8 @@ function RegisterForm({
     const data = new FormData(e.currentTarget);
     const v = (k: string) => String(data.get(k) ?? "").trim();
     const errs: Record<string, string> = {};
-    for (const k of ["name", "email", "studentId"]) if (!v(k)) errs[k] = f.required;
+    for (const k of ["name", "email", "studentId", "phone"]) if (!v(k)) errs[k] = f.required;
+    if (size > 1 && !v("teamName")) errs.teamName = f.required;
     if (v("email") && !/^\S+@\S+\.\S+$/.test(v("email"))) errs.email = f.required;
     if (!slotOk) errs.slot = slot ? f.noRoomForType : f.slotRequired;
     if (size > 1) {
@@ -602,11 +603,11 @@ function RegisterForm({
           <Field id={`${uid}-name`} name="name" label={f.name} error={errors.name} autoComplete="name" />
           <Field id={`${uid}-email`} name="email" label={f.email} error={errors.email} type="email" autoComplete="email" />
           <Field id={`${uid}-sid`} name="studentId" label={f.studentId} error={errors.studentId} />
-          <Field id={`${uid}-phone`} name="phone" label={f.phone} type="tel" autoComplete="tel" />
+          <Field id={`${uid}-phone`} name="phone" label={f.phone} error={errors.phone} type="tel" autoComplete="tel" />
 
           {size > 1 && (
             <>
-              <Field id={`${uid}-team`} name="teamName" label={f.teamName} />
+              <Field id={`${uid}-team`} name="teamName" label={f.teamName} error={errors.teamName} />
               <div>
                 <label htmlFor={`${uid}-members`} className="hlw-kicker mb-1.5 block">
                   {f.members} ({memberLines}/{size})

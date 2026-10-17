@@ -54,6 +54,7 @@ student ID · phone · team name · members + their VinUni email (one per line).
 
 ## Rules the script enforces (so the page cannot be tricked)
 
+- **Required fields:** name, VinUni email, student ID and phone for everyone; a group also needs a team name and the full member list. The script refuses a registration with any of them empty.
 - **Escape room:** 15 people per session. Register alone (1 seat) or as a group of **2–6** people (that many seats).
 - **Scavenger hunt:** 32 people per session. Register alone (1 seat) or as a group of **2–4** people.
 - A registration that would take a session over its capacity is refused with `full`, and the page

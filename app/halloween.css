@@ -696,3 +696,13 @@ textarea.hlw-input { resize: vertical; min-height: 6rem; }
 }
 .hlw-step:hover:not(:disabled) { background: rgba(209, 201, 30, 0.15); }
 .hlw-step:disabled { opacity: 0.35; cursor: not-allowed; }
+.hlw-conflict {
+  padding: 0.75rem 0.95rem;
+  border: 1px solid #e0432f;
+  border-radius: 8px;
+  background: rgba(224, 67, 47, 0.16);
+  color: #ff8a78;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}

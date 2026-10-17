@@ -60,6 +60,8 @@ export type GamesCopy = {
     payLead: string;
     payQrMissing: string;
     groupSizeLabel: string;
+    conflict: string;
+    dupMember: string;
     priceLabel: string;
     perPerson: string;
     peopleCount: string;
@@ -418,6 +420,10 @@ function RegisterForm({
       const lines = members.split("\n").map((l) => l.trim()).filter(Boolean);
       if (lines.length !== size) errs.members = f.membersCount.replace("{n}", String(size)).replace("{c}", String(lines.length));
       else if (lines.some((l) => !/\S+@\S+\.\S+/.test(l))) errs.members = f.membersEmail;
+      else {
+        const emails = lines.map((l) => (l.match(/[^\s,;|<>()]+@[^\s,;|<>()]+/)?.[0] ?? "").toLowerCase());
+        if (new Set(emails).size !== emails.length) errs.members = f.dupMember;
+      }
     }
     if (cfg.proof && !proof) errs.proof = f.proofRequired;
     setErrors(errs);
@@ -447,6 +453,15 @@ function RegisterForm({
       const json = await res.json();
       if (json?.ok) {
         setStatus("done");
+      } else if (json?.error === "conflict") {
+        const other = json.game === "hunt" ? "Scavenger Hunt" : "Escape Room";
+        setErrors({
+          conflict: f.conflict
+            .replace("{who}", String(json.who ?? ""))
+            .replace("{game}", other)
+            .replace("{time}", `${json.slot} – ${json.end}`),
+        });
+        setStatus("idle");
       } else if (json?.error === "promo") {
         setPromoOn(false);
         setErrors({ promo: f.promoBad });
@@ -706,6 +721,11 @@ function RegisterForm({
           )}
 
           {!FORM_URL && <p className="text-xs leading-relaxed text-[color:var(--hlw-script)]">{f.notOpen}</p>}
+          {errors.conflict && (
+            <p className="hlw-conflict" role="alert">
+              {errors.conflict}
+            </p>
+          )}
           {status === "error" && <p className="hlw-err">{f.error}</p>}
 
           <button type="submit" className="hlw-btn mt-2 justify-self-start" disabled={!FORM_URL || status === "sending"}>

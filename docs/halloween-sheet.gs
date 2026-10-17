@@ -22,8 +22,8 @@ const SHEET_ID = "";
 
 // Keep in step with lib/halloween-games.ts (GAME_CFG).
 const GAMES = {
-  escape: { capacity: 15, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" }, types: { solo: 1, team: 5, group: 15 } },
-  hunt: { capacity: 32, proof: false, types: { solo: 1, team: 8 } }, // 4 teams of 8 a session
+  escape: { capacity: 15, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" }, groupMin: 2, groupMax: 6 },
+  hunt: { capacity: 32, proof: false, groupMin: 2, groupMax: 4 },
 };
 const TABS = { escape: "Escape Room", hunt: "Scavenger Hunt" };
 const SLOT_RE = /^\d{2}:\d{2}$/;
@@ -126,8 +126,10 @@ function doPost(e) {
     if (!game) return json_({ ok: false, error: "bad_game" });
     if (!d.name || !d.email || !d.studentId) return json_({ ok: false, error: "missing" });
 
-    const size = game.types[d.type];
-    if (!size || Number(d.headcount) !== size || !SLOT_RE.test(String(d.slot))) {
+    // alone = 1 person; a group = groupMin…groupMax people (the page sends the headcount, we check it)
+    const size = d.type === "solo" ? 1 : d.type === "group" ? Number(d.headcount) : 0;
+    const sizeOk = d.type === "solo" ? size === 1 : size === Math.floor(size) && size >= game.groupMin && size <= game.groupMax;
+    if (!sizeOk || Number(d.headcount) !== size || !SLOT_RE.test(String(d.slot))) {
       return json_({ ok: false, error: "bad_request" });
     }
     const proof = d.proof;

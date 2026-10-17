@@ -33,13 +33,12 @@ If you change the script later: **Deploy → Manage deployments → edit → new
 ## Payment (escape room only)
 
 - **Price:** 67.000đ per person; with the promo code `ilovehlw` it drops 25% to 50.000đ (struck-through
-  price shown). A team of 5 pays 5 × the price, a group of 15 pays 15 ×. The form shows the total to
-  transfer. Prices and code live in `ESCAPE_PRICING` (`lib/halloween-games.ts`) **and** `GAMES.escape.pricing`
-  in the script — change both together. The script recomputes the price itself and rejects a wrong code.
-- **QR codes:** two images in `web/public/halloween/`: **`qr67`** (full price) and **`qr50`** (promo).
-  `.png`, `.jpg`, `.jpeg` or `.webp` all work. Until a file exists the form says "the QR will be added soon".
-  (If the QR carries a fixed amount, remember teams pay a multiple — a plain account QR where the amount
-  is typed in is safer.)
+  price shown). The form multiplies by the number of people (alone ×1, group ×2–6) and shows **Tổng cần chuyển**.
+  Prices and code live in `ESCAPE_PRICING` (`lib/halloween-games.ts`) **and** `GAMES.escape.pricing` in the script —
+  change both together. The script recomputes the price itself and rejects a wrong code.
+- **QR code:** ONE QR for every price and group size — a plain account QR with **no amount** in it; whoever pays
+  types the amount shown as "Tổng cần chuyển". Put the image at `web/public/halloween/qr.png` (`.jpg`, `.jpeg`,
+  `.webp` also work; `qr67.*` is accepted as a fallback name). Until a file exists the form says "the QR will be added soon".
 - **Photo:** the page shrinks the proof to a small JPEG (≈ 100–300 KB) in the browser and sends it with the registration.
 - **In the Sheet:** the "Escape Room" tab has, after the usual columns, **K** a link ("Mở ảnh"), **L** the
   picture inside the cell, **M** the promo code used and **N** the amount to collect. The original photo is
@@ -50,15 +49,15 @@ If you change the script later: **Deploy → Manage deployments → edit → new
 ## What is written
 
 Both tabs ("Escape Room", "Scavenger Hunt") have the same columns: submitted at · session start
-(e.g. `17:50`) · type (`solo` / `team` / `group`) · number of people · contact person · email ·
+(e.g. `17:50`) · type (`solo` / `group`) · number of people · contact person · email ·
 student ID · phone · team name · members + their VinUni email (one per line). The escape-room tab ends with the proof link, the picture, the promo code and the amount to collect.
 
 ## Rules the script enforces (so the page cannot be tricked)
 
-- **Escape room:** 15 people per session. Individual = 1 seat, team of 5 = 5 seats, group of 15 = a whole session.
-- **Scavenger hunt:** 32 people per session (4 teams × 8). Individual = 1 seat, full team = 8 seats.
+- **Escape room:** 15 people per session. Register alone (1 seat) or as a group of **2–6** people (that many seats).
+- **Scavenger hunt:** 32 people per session. Register alone (1 seat) or as a group of **2–4** people.
 - A registration that would take a session over its capacity is refused with `full`, and the page
-  asks the person to pick another session. Capacities live in `GAMES` at the top of the script and in
+  asks the person to pick another session. Capacities and group sizes live in `GAMES` at the top of the script and in
   `GAME_CFG` in `lib/halloween-games.ts` — change both together.
 - The check runs under a script lock, so two people submitting at the same moment cannot both take
   the last seats.

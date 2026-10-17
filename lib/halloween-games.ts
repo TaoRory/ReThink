@@ -6,7 +6,7 @@
  * hunt   — owner's brief 16/10: 18:20 → 22:20, 30 min of play + 10 min set-up, 4 teams of 8 a session.
  */
 export type GameId = "hunt" | "escape";
-export type RegType = "solo" | "team" | "group";
+export type RegType = "solo" | "group";
 
 /** escape-room ticket: per person, with a promo code. Keep in step with PRICING in docs/halloween-sheet.gs. */
 export const ESCAPE_PRICING = { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" } as const;
@@ -22,8 +22,9 @@ type Cfg = {
   playMin: number;
   stepMin: number; // play + set-up: how far apart sessions start
   capacity: number; // people per session
-  /** how a person can register and how many seats it takes */
-  types: readonly { id: RegType; size: number }[];
+  /** a group registers 2…groupMax people at once; alone is always 1 */
+  groupMin: number;
+  groupMax: number;
   /** a bank-transfer proof (photo) must be uploaded with the registration */
   proof: boolean;
   /** per-person ticket price (and promo); absent = free */
@@ -39,11 +40,8 @@ export const GAME_CFG: Record<GameId, Cfg> = {
     capacity: 15,
     proof: true,
     pricing: ESCAPE_PRICING,
-    types: [
-      { id: "solo", size: 1 },
-      { id: "team", size: 5 },
-      { id: "group", size: 15 }, // a whole session
-    ],
+    groupMin: 2,
+    groupMax: 6,
   },
   hunt: {
     open: 18 * 60 + 20,
@@ -52,10 +50,8 @@ export const GAME_CFG: Record<GameId, Cfg> = {
     stepMin: 40,
     capacity: 32, // 4 teams × 8
     proof: false,
-    types: [
-      { id: "solo", size: 1 },
-      { id: "team", size: 8 }, // one full team
-    ],
+    groupMin: 2,
+    groupMax: 4,
   },
 };
 

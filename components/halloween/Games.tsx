@@ -33,7 +33,7 @@ type GameCopy = {
   storyCta: string;
   formTitle: string;
   /** the ways to register for this game (ids from GAME_CFG[game].types) */
-  types: Partial<Record<RegType, { name: string; note: string }>>;
+  types: Record<RegType, { name: string; note: string }>;
   slotNote: string;
   story: StoryCopy;
 };
@@ -59,6 +59,7 @@ export type GamesCopy = {
     payTitle: string;
     payLead: string;
     payQrMissing: string;
+    groupSizeLabel: string;
     priceLabel: string;
     perPerson: string;
     peopleCount: string;
@@ -91,8 +92,8 @@ export type GamesCopy = {
   };
 };
 
-/** the QR images are dropped into public/halloween/ as qr67.* (full price) and qr50.* (promo); first extension that loads wins */
-const QR_EXT = [".png", ".jpg", ".jpeg", ".webp"] as const;
+/** ONE payment QR for every price: public/halloween/qr.* (the amount is typed in by whoever pays); first file that loads wins */
+const QR_FILES = ["qr.png", "qr.jpg", "qr.jpeg", "qr.webp", "qr67.png", "qr67.jpg", "qr67.jpeg", "qr67.webp"] as const;
 
 const FORM_URL = process.env.NEXT_PUBLIC_HLW_FORM_URL ?? "";
 const MASK: Record<GameId, { src: string; w: number; h: number }> = {
@@ -354,10 +355,11 @@ function RegisterForm({
   const [reading, setReading] = useState(false);
   const [promoInput, setPromoInput] = useState("");
   const [promoOn, setPromoOn] = useState(false);
-  const [qrTry, setQrTry] = useState(0); // which file extension of the QR we are on
+  const [groupSize, setGroupSize] = useState(cfg.groupMin);
+  const [qrTry, setQrTry] = useState(0); // which QR file we are on
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const size = cfg.types.find((t) => t.id === type)!.size;
+  const size = type === "solo" ? 1 : groupSize;
   const pricing = cfg.pricing;
   const unit = pricing ? (promoOn ? pricing.promoPrice : pricing.price) : 0;
   const total = unit * size;
@@ -376,14 +378,12 @@ function RegisterForm({
   function applyPromo() {
     if (promoMatches(promoInput)) {
       setPromoOn(true);
-      setQrTry(0);
       setErrors((e) => {
         const { promo: _p, ...rest } = e;
         return rest;
       });
     } else {
       setPromoOn(false);
-      setQrTry(0);
       setErrors((e) => ({ ...e, promo: f.promoBad }));
     }
   }
@@ -497,17 +497,45 @@ function RegisterForm({
             <>
               <fieldset className="grid gap-2">
                 <legend className="hlw-kicker mb-2">{f.typeLegend}</legend>
-                <div className="grid gap-2 sm:grid-cols-3" role="radiogroup">
-                  {cfg.types.map((t) => (
-                    <label key={t.id} className="hlw-slot">
-                      <input type="radio" name="type" value={t.id} checked={type === t.id} onChange={() => setType(t.id)} />
+                <div className="grid gap-2 sm:grid-cols-2" role="radiogroup">
+                  {((["solo", "group"]) as RegType[]).map((t) => (
+                    <label key={t} className="hlw-slot">
+                      <input type="radio" name="type" value={t} checked={type === t} onChange={() => setType(t)} />
                       <span>
-                        <b className="block text-[13px]">{g.types[t.id]?.name}</b>
-                        <small className="block text-[11px] font-normal opacity-80">{g.types[t.id]?.note}</small>
+                        <b className="block text-[13px]">{g.types[t].name}</b>
+                        <small className="block text-[11px] font-normal opacity-80">{g.types[t].note}</small>
                       </span>
                     </label>
                   ))}
                 </div>
+                {type === "group" && (
+                  <div className="mt-1 flex items-center justify-between gap-3 rounded-lg border border-[rgba(222,217,196,0.2)] px-4 py-2.5">
+                    <span className="hlw-kicker">{f.groupSizeLabel}</span>
+                    <span className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        className="hlw-step"
+                        onClick={() => setGroupSize((n) => Math.max(cfg.groupMin, n - 1))}
+                        disabled={groupSize <= cfg.groupMin}
+                        aria-label="−"
+                      >
+                        −
+                      </button>
+                      <b className="min-w-6 text-center text-lg" aria-live="polite">
+                        {groupSize}
+                      </b>
+                      <button
+                        type="button"
+                        className="hlw-step"
+                        onClick={() => setGroupSize((n) => Math.min(cfg.groupMax, n + 1))}
+                        disabled={groupSize >= cfg.groupMax}
+                        aria-label="+"
+                      >
+                        +
+                      </button>
+                    </span>
+                  </div>
+                )}
               </fieldset>
 
               <fieldset className="grid gap-2">
@@ -615,10 +643,7 @@ function RegisterForm({
                         value={promoInput}
                         onChange={(e) => {
                           setPromoInput(e.target.value);
-                          if (promoOn) {
-                            setPromoOn(false);
-                            setQrTry(0);
-                          }
+                          if (promoOn) setPromoOn(false);
                         }}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -643,11 +668,11 @@ function RegisterForm({
               )}
 
               <p className="text-xs leading-relaxed text-[color:var(--hlw-bone)]/70">{f.payLead}</p>
-              {qrTry < QR_EXT.length ? (
+              {qrTry < QR_FILES.length ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  key={`${promoOn}-${qrTry}`}
-                  src={`/halloween/${promoOn ? "qr50" : "qr67"}${QR_EXT[qrTry]}`}
+                  key={qrTry}
+                  src={`/halloween/${QR_FILES[qrTry]}`}
                   alt=""
                   onError={() => setQrTry((i) => i + 1)}
                   className="mx-auto max-h-64 w-auto rounded-md bg-white p-2"

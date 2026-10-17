@@ -685,3 +685,14 @@ textarea.hlw-input { resize: vertical; min-height: 6rem; }
 }
 /* the text is a layer over the blood */
 .hlw-stop-text h3, .hlw-stop-text p { text-shadow: 0 1px 8px rgba(0, 0, 0, 0.75); }
+.hlw-step {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid rgba(222, 217, 196, 0.4);
+  border-radius: 50%;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--hlw-script);
+}
+.hlw-step:hover:not(:disabled) { background: rgba(209, 201, 30, 0.15); }
+.hlw-step:disabled { opacity: 0.35; cursor: not-allowed; }

@@ -59,12 +59,12 @@ student ID · phone · team name · members + their VinUni email (one per line).
 - A registration that would take a session over its capacity is refused with `full`, and the page
   asks the person to pick another session. Capacities and group sizes live in `GAMES` at the top of the script and in
   `GAME_CFG` in `lib/halloween-games.ts` — change both together.
-- **No double-booking across games:** nobody may be in the escape room and the scavenger hunt at overlapping
-  play times (escape = 40 min, hunt = 30 min from the session start). The contact person and every member
-  of a group are checked against the *other* game's rows, matched by **VinUni email only** (two people can
-  share a name, never an email). A clash is refused with `conflict`; the page shows a red box listing each
-  clashing person (name, email, the other game and its time). Registering the same person twice *within*
-  one game is not blocked.
+- **No double-booking:** nobody may be in two sessions at overlapping play times (escape = 40 min, hunt =
+  30 min from the session start) — in the other game, or a second sign-up for the same session of the same
+  game. The contact person and every member of a group are checked against both tabs, matched by
+  **VinUni email only** (two people can share a name, never an email). A clash is refused with `conflict`; the
+  page shows a red box listing each clashing person (name, email, the game and its time). Rows already in
+  the Sheet are not re-checked, so delete test duplicates by hand.
 - The check runs under a script lock, so two people submitting at the same moment cannot both take
   the last seats.
 - Text starting with `= + - @` is stored with a leading `'` so it cannot run as a formula.

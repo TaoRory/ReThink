@@ -458,7 +458,14 @@ function RegisterForm({
       if (json?.ok) {
         setStatus("done");
       } else if (json?.error === "conflict") {
-        setClashes(Array.isArray(json.conflicts) ? json.conflicts : []);
+        // an older script answered with a single {who, game, slot, end}; keep that readable too
+        setClashes(
+          Array.isArray(json.conflicts)
+            ? json.conflicts
+            : json.slot
+              ? [{ who: String(json.who ?? ""), email: "", game: json.game, slot: json.slot, end: json.end }]
+              : [],
+        );
         setStatus("idle");
       } else if (json?.error === "promo") {
         setPromoOn(false);
@@ -727,7 +734,7 @@ function RegisterForm({
                   <li key={i}>
                     {f.conflictLine
                       .replace("{who}", c.who)
-                      .replace("{email}", c.email)
+                      .replace(" ({email})", c.email ? ` (${c.email})` : "")
                       .replace("{game}", c.game === "hunt" ? "Scavenger Hunt" : "Escape Room")
                       .replace("{time}", `${c.slot} – ${c.end}`)}
                   </li>

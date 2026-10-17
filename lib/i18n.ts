@@ -483,7 +483,7 @@ export const dict = {
           story: {
             kicker: "Căn phòng khoá kín",
             heading: "Sắp được hé lộ",
-            blocks: [{ paras: ["Câu chuyện của căn phòng sẽ sớm được hé lộ. Hãy chờ nhé."] }],
+            blocks: [{ paras: ["Câu chuyện của căn phòng sẽ sớm được hé lộ. Bạn hãy đón chờ qua Fanpage và Website nhé!"] }],
             outro: "",
           },
         },
@@ -1029,7 +1029,7 @@ export const dict = {
           story: {
             kicker: "The locked room",
             heading: "Coming soon",
-            blocks: [{ paras: ["The room's story will be revealed soon. Stay tuned."] }],
+            blocks: [{ paras: ["The room's story will be revealed soon. Stay tuned on our Fanpage and Website!"] }],
             outro: "",
           },
         },

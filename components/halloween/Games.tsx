@@ -359,7 +359,7 @@ function RegisterForm({
   const [members, setMembers] = useState("");
   const [proof, setProof] = useState<{ preview: string; base64: string; mime: string; name: string } | null>(null);
   const [reading, setReading] = useState(false);
-  const [receipt, setReceipt] = useState<{ ticket: string; name: string; team: string; size: number; slot: string } | null>(null);
+  const [receipt, setReceipt] = useState<{ ticket: string; name: string; team: string; size: number; slot: string; members: string[] } | null>(null);
   const [promoInput, setPromoInput] = useState("");
   const [promoOn, setPromoOn] = useState(false);
   const [groupSize, setGroupSize] = useState(cfg.groupMin);
@@ -466,6 +466,7 @@ function RegisterForm({
           team: size > 1 ? v("teamName") : "",
           size,
           slot,
+          members: size > 1 ? members.split("\n").map((l) => l.trim()).filter(Boolean) : [],
         });
         setStatus("done");
       } else if (json?.error === "conflict") {
@@ -547,6 +548,19 @@ function RegisterForm({
                 <dd className="text-right font-semibold">{receipt?.size}</dd>
               </div>
             </dl>
+            {receipt && receipt.members.length > 0 && (
+              <div className="mt-3 border-t border-dashed border-[rgba(209,201,30,0.35)] pt-3">
+                <p className="hlw-kicker">{f.members}</p>
+                <ol className="mt-2 grid gap-1 text-sm">
+                  {receipt.members.map((m, i) => (
+                    <li key={i} className="flex gap-2">
+                      <span className="w-5 shrink-0 text-[color:var(--hlw-bone)]/50">{i + 1}.</span>
+                      <span className="break-all">{m}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
           </div>
 
           <p className="mt-3 text-xs leading-relaxed text-[color:var(--hlw-bone)]/60">{f.successBody}</p>

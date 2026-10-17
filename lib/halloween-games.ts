@@ -8,6 +8,14 @@
 export type GameId = "hunt" | "escape";
 export type RegType = "solo" | "team" | "group";
 
+/** escape-room ticket: per person, with a promo code. Keep in step with PRICING in docs/halloween-sheet.gs. */
+export const ESCAPE_PRICING = { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" } as const;
+
+/** 67000 → "67.000đ" */
+export const money = (n: number) => `${String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`;
+
+export const promoMatches = (s: string) => s.trim().toLowerCase() === ESCAPE_PRICING.promoCode;
+
 type Cfg = {
   open: number; // minutes from midnight
   close: number;
@@ -18,6 +26,8 @@ type Cfg = {
   types: readonly { id: RegType; size: number }[];
   /** a bank-transfer proof (photo) must be uploaded with the registration */
   proof: boolean;
+  /** per-person ticket price (and promo); absent = free */
+  pricing?: typeof ESCAPE_PRICING;
 };
 
 export const GAME_CFG: Record<GameId, Cfg> = {
@@ -28,6 +38,7 @@ export const GAME_CFG: Record<GameId, Cfg> = {
     stepMin: 50,
     capacity: 15,
     proof: true,
+    pricing: ESCAPE_PRICING,
     types: [
       { id: "solo", size: 1 },
       { id: "team", size: 5 },

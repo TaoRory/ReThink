@@ -30,20 +30,28 @@ forms show "registration opens soon" and cannot be submitted.
 If you change the script later: **Deploy → Manage deployments → edit → new version**
 (the URL stays the same).
 
-## Payment proof (escape room only)
+## Payment (escape room only)
 
-The escape-room form shows a payment QR and asks for a photo of the bank-transfer proof.
-- **QR:** put the bank QR image at `web/public/halloween/payment-qr.png`. Until that file exists the form says "the QR will be added soon".
-- **Photo:** the page shrinks it to a small JPEG (≈ 100–300 KB) in the browser and sends it with the registration.
-- **In the Sheet:** the "Escape Room" tab has two extra columns — **K** a link ("Mở ảnh") and **L** the picture itself inside the cell. The original is also saved in a private Drive folder **"Halloween 2026 — chứng minh CK"** (only the Google account that owns the script can open it).
-- Run `setup` once after pasting the new script: it adds the two columns and makes Google ask for **Drive permission** (needed to save the photos).
+- **Price:** 67.000đ per person; with the promo code `ilovehlw` it drops 25% to 50.000đ (struck-through
+  price shown). A team of 5 pays 5 × the price, a group of 15 pays 15 ×. The form shows the total to
+  transfer. Prices and code live in `ESCAPE_PRICING` (`lib/halloween-games.ts`) **and** `GAMES.escape.pricing`
+  in the script — change both together. The script recomputes the price itself and rejects a wrong code.
+- **QR codes:** two images in `web/public/halloween/`: **`qr67`** (full price) and **`qr50`** (promo).
+  `.png`, `.jpg`, `.jpeg` or `.webp` all work. Until a file exists the form says "the QR will be added soon".
+  (If the QR carries a fixed amount, remember teams pay a multiple — a plain account QR where the amount
+  is typed in is safer.)
+- **Photo:** the page shrinks the proof to a small JPEG (≈ 100–300 KB) in the browser and sends it with the registration.
+- **In the Sheet:** the "Escape Room" tab has, after the usual columns, **K** a link ("Mở ảnh"), **L** the
+  picture inside the cell, **M** the promo code used and **N** the amount to collect. The original photo is
+  also saved in a private Drive folder **"Halloween 2026 — chứng minh CK"** (only the script's Google account can open it).
+- Run `setup` once after pasting a new script (adds the columns; the first time it also makes Google ask for **Drive permission**).
 - Members of a team are entered as `Name – VinUni email`, one per line, both games.
 
 ## What is written
 
 Both tabs ("Escape Room", "Scavenger Hunt") have the same columns: submitted at · session start
 (e.g. `17:50`) · type (`solo` / `team` / `group`) · number of people · contact person · email ·
-student ID · phone · team name · members + their VinUni email (one per line). The escape-room tab ends with the proof link and picture.
+student ID · phone · team name · members + their VinUni email (one per line). The escape-room tab ends with the proof link, the picture, the promo code and the amount to collect.
 
 ## Rules the script enforces (so the page cannot be tricked)
 

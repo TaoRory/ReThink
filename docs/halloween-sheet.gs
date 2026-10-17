@@ -8,7 +8,9 @@
  *   go over that game's capacity, so two people can never both take the last seats.
  *   The escape room also takes a bank-transfer proof (a small JPEG): it is saved in a private Drive
  *   folder ("Halloween 2026 — chứng minh CK"), and the row gets a link to it plus the picture itself
- *   in the last column.
+ *   in the last column. The script works out the price itself (ticket × people, or the promo price
+ *   when the right promo code is sent) and writes the code and the amount to collect on the row; a
+ *   wrong code is refused with {ok:false,error:"promo"}.
  * GET ?action=availability: {ok:true, takenBy:{escape:{"17:00":7,...}, hunt:{"18:20":12,...}},
  *   taken:{...escape...}} — seats already booked per session.
  */
@@ -20,7 +22,7 @@ const SHEET_ID = "";
 
 // Keep in step with lib/halloween-games.ts (GAME_CFG).
 const GAMES = {
-  escape: { capacity: 15, proof: true, types: { solo: 1, team: 5, group: 15 } },
+  escape: { capacity: 15, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" }, types: { solo: 1, team: 5, group: 15 } },
   hunt: { capacity: 32, proof: false, types: { solo: 1, team: 8 } }, // 4 teams of 8 a session
 };
 const TABS = { escape: "Escape Room", hunt: "Scavenger Hunt" };
@@ -32,7 +34,7 @@ const MAX_PROOF_B64 = 1500000; // the page sends ≈ 100–300 KB; this is a saf
 // both games book by session, so both tabs share these columns; the escape room adds the proof
 const BASE_HEADERS = ["Thời gian gửi", "Ca", "Hình thức", "Số người", "Người đại diện", "Email", "MSSV", "SĐT", "Tên nhóm", "Thành viên (+ email)"];
 const HEADERS = {
-  escape: BASE_HEADERS.concat(["Link chứng minh CK", "Ảnh chứng minh CK"]),
+  escape: BASE_HEADERS.concat(["Link chứng minh CK", "Ảnh chứng minh CK", "Mã giảm giá", "Số tiền cần thu (đ)"]),
   hunt: BASE_HEADERS,
 };
 
@@ -135,6 +137,19 @@ function doPost(e) {
       if (!/^image\/(jpeg|png|webp)$/.test(String(proof.mime))) return json_({ ok: false, error: "proof_type" });
     }
 
+    // price: worked out here, never taken from the page
+    let promo = "";
+    let amount = "";
+    if (game.pricing) {
+      let unit = game.pricing.price;
+      if (d.promo) {
+        if (String(d.promo).trim().toLowerCase() !== game.pricing.promoCode) return json_({ ok: false, error: "promo" });
+        promo = game.pricing.promoCode;
+        unit = game.pricing.promoPrice;
+      }
+      amount = unit * size;
+    }
+
     const sh = tab_(d.game);
     const booked = taken_(d.game)[d.slot] || 0;
     if (booked + size > game.capacity) return json_({ ok: false, error: "full" });
@@ -158,7 +173,7 @@ function doPost(e) {
       const ext = proof.mime === "image/png" ? "png" : proof.mime === "image/webp" ? "webp" : "jpg";
       const blob = Utilities.newBlob(Utilities.base64Decode(proof.data), proof.mime, d.slot.replace(":", "h") + " - " + who + " - " + stamp + "." + ext);
       fileUrl = proofFolder_().createFile(blob).getUrl();
-      row.push("", ""); // filled in below, once the row exists
+      row.push("", "", promo, amount); // the first two are filled in below, once the row exists
     }
     sh.appendRow(row);
 

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { GAME_CFG, slotsFor, type GameId, type RegType } from "@/lib/halloween-games";
+import { ESCAPE_PRICING, GAME_CFG, money, promoMatches, slotsFor, type GameId, type RegType } from "@/lib/halloween-games";
 import { Branch } from "./Scene";
 
 /**
@@ -59,6 +59,14 @@ export type GamesCopy = {
     payTitle: string;
     payLead: string;
     payQrMissing: string;
+    priceLabel: string;
+    perPerson: string;
+    peopleCount: string;
+    totalLabel: string;
+    promoLabel: string;
+    promoApply: string;
+    promoOk: string;
+    promoBad: string;
     proofLabel: string;
     proofChoose: string;
     proofChange: string;
@@ -82,6 +90,9 @@ export type GamesCopy = {
     notOpen: string;
   };
 };
+
+/** the QR images are dropped into public/halloween/ as qr67.* (full price) and qr50.* (promo); first extension that loads wins */
+const QR_EXT = [".png", ".jpg", ".jpeg", ".webp"] as const;
 
 const FORM_URL = process.env.NEXT_PUBLIC_HLW_FORM_URL ?? "";
 const MASK: Record<GameId, { src: string; w: number; h: number }> = {
@@ -341,10 +352,15 @@ function RegisterForm({
   const [members, setMembers] = useState("");
   const [proof, setProof] = useState<{ preview: string; base64: string; mime: string; name: string } | null>(null);
   const [reading, setReading] = useState(false);
-  const [qrOk, setQrOk] = useState(true);
+  const [promoInput, setPromoInput] = useState("");
+  const [promoOn, setPromoOn] = useState(false);
+  const [qrTry, setQrTry] = useState(0); // which file extension of the QR we are on
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const size = cfg.types.find((t) => t.id === type)!.size;
+  const pricing = cfg.pricing;
+  const unit = pricing ? (promoOn ? pricing.promoPrice : pricing.price) : 0;
+  const total = unit * size;
   const left = (id: string) => (taken ? Math.max(0, cfg.capacity - (taken[id] ?? 0)) : null);
   const fits = (id: string) => {
     const l = left(id);
@@ -356,6 +372,21 @@ function RegisterForm({
     .split("\n")
     .map((l) => l.trim())
     .filter(Boolean).length;
+
+  function applyPromo() {
+    if (promoMatches(promoInput)) {
+      setPromoOn(true);
+      setQrTry(0);
+      setErrors((e) => {
+        const { promo: _p, ...rest } = e;
+        return rest;
+      });
+    } else {
+      setPromoOn(false);
+      setQrTry(0);
+      setErrors((e) => ({ ...e, promo: f.promoBad }));
+    }
+  }
 
   async function onPick(file: File | undefined) {
     if (!file) return;
@@ -408,6 +439,7 @@ function RegisterForm({
           phone: v("phone"),
           teamName: size > 1 ? v("teamName") : "",
           members: size > 1 ? members.trim() : "",
+          promo: pricing && promoOn ? ESCAPE_PRICING.promoCode : undefined,
           proof: cfg.proof && proof ? { mime: proof.mime, data: proof.base64, name: proof.name } : undefined,
           at: new Date().toISOString(),
         }),
@@ -415,6 +447,10 @@ function RegisterForm({
       const json = await res.json();
       if (json?.ok) {
         setStatus("done");
+      } else if (json?.error === "promo") {
+        setPromoOn(false);
+        setErrors({ promo: f.promoBad });
+        setStatus("idle");
       } else if (json?.error === "proof" || json?.error === "proof_big" || json?.error === "proof_type") {
         setErrors({ proof: f.proofRejected });
         setStatus("idle");
@@ -544,13 +580,76 @@ function RegisterForm({
           {cfg.proof && (
             <fieldset className="grid gap-3 rounded-lg border border-[rgba(222,217,196,0.2)] p-4">
               <legend className="hlw-kicker px-1">{f.payTitle}</legend>
+
+              {pricing && (
+                <>
+                  <dl className="grid gap-1.5 text-sm">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <dt className="text-[color:var(--hlw-bone)]/70">{f.priceLabel}</dt>
+                      <dd className="flex items-baseline gap-2">
+                        {promoOn && (
+                          <s className="text-[13px] text-[color:var(--hlw-bone)]/55">{money(pricing.price)}</s>
+                        )}
+                        <b className={promoOn ? "text-[color:var(--hlw-script)]" : ""}>
+                          {money(unit)} <span className="text-[11px] font-normal opacity-70">{f.perPerson}</span>
+                        </b>
+                      </dd>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-3">
+                      <dt className="text-[color:var(--hlw-bone)]/70">{f.peopleCount}</dt>
+                      <dd>× {size}</dd>
+                    </div>
+                    <div className="mt-1 flex items-baseline justify-between gap-3 border-t border-[rgba(222,217,196,0.18)] pt-2">
+                      <dt className="hlw-kicker">{f.totalLabel}</dt>
+                      <dd className="text-lg font-bold text-[color:var(--hlw-script)]">{money(total)}</dd>
+                    </div>
+                  </dl>
+
+                  <div>
+                    <label htmlFor={`${uid}-promo`} className="hlw-kicker mb-1.5 block">
+                      {f.promoLabel}
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        id={`${uid}-promo`}
+                        value={promoInput}
+                        onChange={(e) => {
+                          setPromoInput(e.target.value);
+                          if (promoOn) {
+                            setPromoOn(false);
+                            setQrTry(0);
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault(); // Enter applies the code, it must not submit the form
+                            applyPromo();
+                          }
+                        }}
+                        autoComplete="off"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                        className="hlw-input"
+                        aria-invalid={errors.promo ? true : undefined}
+                      />
+                      <button type="button" className="hlw-btn hlw-btn-ghost shrink-0" onClick={applyPromo} disabled={!promoInput.trim()}>
+                        {f.promoApply}
+                      </button>
+                    </div>
+                    {promoOn && <p className="mt-1.5 text-xs text-[color:var(--hlw-script)]">{f.promoOk}</p>}
+                    {errors.promo && <p className="hlw-err mt-1.5">{errors.promo}</p>}
+                  </div>
+                </>
+              )}
+
               <p className="text-xs leading-relaxed text-[color:var(--hlw-bone)]/70">{f.payLead}</p>
-              {qrOk ? (
+              {qrTry < QR_EXT.length ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src="/halloween/payment-qr.png"
+                  key={`${promoOn}-${qrTry}`}
+                  src={`/halloween/${promoOn ? "qr50" : "qr67"}${QR_EXT[qrTry]}`}
                   alt=""
-                  onError={() => setQrOk(false)}
+                  onError={() => setQrTry((i) => i + 1)}
                   className="mx-auto max-h-64 w-auto rounded-md bg-white p-2"
                 />
               ) : (

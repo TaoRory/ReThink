@@ -60,7 +60,9 @@ export type GamesCopy = {
     payLead: string;
     payQrMissing: string;
     groupSizeLabel: string;
-    conflict: string;
+    conflictIntro: string;
+    conflictLine: string;
+    conflictOutro: string;
     dupMember: string;
     priceLabel: string;
     perPerson: string;
@@ -360,6 +362,7 @@ function RegisterForm({
   const [groupSize, setGroupSize] = useState(cfg.groupMin);
   const [qrTry, setQrTry] = useState(0); // which QR file we are on
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [clashes, setClashes] = useState<{ who: string; email: string; game: string; slot: string; end: string }[]>([]);
 
   const size = type === "solo" ? 1 : groupSize;
   const pricing = cfg.pricing;
@@ -427,6 +430,7 @@ function RegisterForm({
     }
     if (cfg.proof && !proof) errs.proof = f.proofRequired;
     setErrors(errs);
+    setClashes([]);
     if (Object.keys(errs).length) return;
 
     setStatus("sending");
@@ -454,13 +458,7 @@ function RegisterForm({
       if (json?.ok) {
         setStatus("done");
       } else if (json?.error === "conflict") {
-        const other = json.game === "hunt" ? "Scavenger Hunt" : "Escape Room";
-        setErrors({
-          conflict: f.conflict
-            .replace("{who}", String(json.who ?? ""))
-            .replace("{game}", other)
-            .replace("{time}", `${json.slot} – ${json.end}`),
-        });
+        setClashes(Array.isArray(json.conflicts) ? json.conflicts : []);
         setStatus("idle");
       } else if (json?.error === "promo") {
         setPromoOn(false);
@@ -721,10 +719,22 @@ function RegisterForm({
           )}
 
           {!FORM_URL && <p className="text-xs leading-relaxed text-[color:var(--hlw-script)]">{f.notOpen}</p>}
-          {errors.conflict && (
-            <p className="hlw-conflict" role="alert">
-              {errors.conflict}
-            </p>
+          {clashes.length > 0 && (
+            <div className="hlw-conflict" role="alert">
+              <p>{f.conflictIntro}</p>
+              <ul className="mt-1.5 list-disc pl-5">
+                {clashes.map((c, i) => (
+                  <li key={i}>
+                    {f.conflictLine
+                      .replace("{who}", c.who)
+                      .replace("{email}", c.email)
+                      .replace("{game}", c.game === "hunt" ? "Scavenger Hunt" : "Escape Room")
+                      .replace("{time}", `${c.slot} – ${c.end}`)}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-1.5">{f.conflictOutro}</p>
+            </div>
           )}
           {status === "error" && <p className="hlw-err">{f.error}</p>}
 

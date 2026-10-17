@@ -12,8 +12,9 @@
  *   when the right promo code is sent) and writes the code and the amount to collect on the row; a
  *   wrong code is refused with {ok:false,error:"promo"}.
  *   Nobody may be in the escape room and the scavenger hunt at the same time: the contact person and
- *   every listed member (matched by name, VinUni email or student ID) are checked against the OTHER
- *   game's rows, and overlapping play times are refused with {ok:false,error:"conflict",who,game,slot,end}.
+ *   every listed member are checked against the OTHER game's rows, matched by VinUni EMAIL only (two
+ *   people can share a name, never an email). Overlapping play times are refused with
+ *   {ok:false,error:"conflict",conflicts:[{who,email,game,slot,end}, …]} naming each clashing person.
  * GET ?action=availability: {ok:true, takenBy:{escape:{"17:00":7,...}, hunt:{"18:20":12,...}},
  *   taken:{...escape...}} — seats already booked per session.
  */
@@ -90,18 +91,6 @@ function proofFolder_() {
 
 // ---- the same person in both games at overlapping times ---------------------------------------
 
-// "Nguyễn Văn Đạt " → "nguyen van dat"
-function norm_(s) {
-  return String(s == null ? "" : s)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/[^a-z0-9 ]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 function minutes_(slot) {
   const m = String(slot).match(/(\d{1,2}):(\d{2})/);
   return m ? Number(m[1]) * 60 + Number(m[2]) : -1;
@@ -111,56 +100,52 @@ function hhmm_(mins) {
   return ("0" + Math.floor(mins / 60)).slice(-2) + ":" + ("0" + (mins % 60)).slice(-2);
 }
 
+const EMAIL_RE = /[^\s,;|<>()]+@[^\s,;|<>()]+/;
+
 // everyone a registration covers: the contact person plus each "Name – email" line of the member list.
-// Each person gets keys (name / email / student ID); two people are the same if any key is shared.
-function personsOf_(name, email, sid, members) {
+// A person is identified by their (lower-cased) email.
+function personsOf_(name, email, members) {
   const out = [];
-  const add = function (n, e, s) {
-    const keys = [];
-    const nn = norm_(n);
-    if (nn.length >= 3) keys.push("n:" + nn);
-    if (e) keys.push("e:" + String(e).trim().toLowerCase());
-    if (s) keys.push("s:" + String(s).trim().toUpperCase());
-    if (keys.length) out.push({ label: String(n || e).trim(), keys: keys });
+  const add = function (n, e) {
+    const em = String(e || "").trim().toLowerCase();
+    if (em) out.push({ label: String(n || "").trim() || em, email: em });
   };
-  add(name, email, sid);
+  add(name, email);
   String(members || "")
     .split(/\r?\n/)
     .forEach(function (line) {
-      const em = line.match(/[^\s,;|<>()]+@[^\s,;|<>()]+/);
-      const nm = line.replace(em ? em[0] : "", "").replace(/[–—|:;,<>()]|\s-\s/g, " ").trim();
-      add(nm, em ? em[0] : "", "");
+      const m = line.match(EMAIL_RE);
+      if (!m) return;
+      add(line.replace(m[0], "").replace(/[–—|:;,<>()]|\s-\s/g, " ").trim(), m[0]);
     });
   return out;
 }
 
-// returns {who, game, slot, end} when someone in this registration is already booked in the other
-// game at an overlapping time, else null
-function findConflict_(d) {
+// everyone in this registration who is already booked in the OTHER game at an overlapping time:
+// [{who, email, game, slot, end}] (empty = no clash)
+function findConflicts_(d) {
   const other = d.game === "escape" ? "hunt" : "escape";
   const myStart = minutes_(d.slot);
   const myEnd = myStart + GAMES[d.game].playMin;
-  const mine = personsOf_(d.name, d.email, d.studentId, d.members);
+  const mine = personsOf_(d.name, d.email, d.members);
+  const found = [];
   const sh = tab_(other);
   const last = sh.getLastRow();
-  if (last < 2) return null;
+  if (last < 2) return found;
   const rows = sh.getRange(2, 1, last - 1, 10).getDisplayValues();
-  for (let i = 0; i < rows.length; i++) {
-    const r = rows[i];
+  rows.forEach(function (r) {
     const s2 = minutes_(r[1]);
-    if (s2 < 0) continue;
+    if (s2 < 0) return;
     const e2 = s2 + GAMES[other].playMin;
-    if (!(myStart < e2 && s2 < myEnd)) continue; // different times: fine
-    const theirs = personsOf_(r[4], r[5], r[6], r[9]);
-    for (let a = 0; a < mine.length; a++) {
-      for (let b = 0; b < theirs.length; b++) {
-        if (mine[a].keys.some(function (k) { return theirs[b].keys.indexOf(k) >= 0; })) {
-          return { who: mine[a].label, game: other, slot: hhmm_(s2), end: hhmm_(e2) };
-        }
-      }
-    }
-  }
-  return null;
+    if (!(myStart < e2 && s2 < myEnd)) return; // different times: fine
+    const theirs = personsOf_(r[4], r[5], r[9]).map(function (p) { return p.email; });
+    mine.forEach(function (p) {
+      if (theirs.indexOf(p.email) < 0) return;
+      const again = found.some(function (f) { return f.email === p.email && f.slot === hhmm_(s2); });
+      if (!again) found.push({ who: p.label, email: p.email, game: other, slot: hhmm_(s2), end: hhmm_(e2) });
+    });
+  });
+  return found;
 }
 
 // "17:50", "17:50:00" or "5:50 PM" (whatever the cell displays) → "17:50"
@@ -230,8 +215,8 @@ function doPost(e) {
       amount = unit * size;
     }
 
-    const clash = findConflict_(d);
-    if (clash) return json_({ ok: false, error: "conflict", who: clash.who, game: clash.game, slot: clash.slot, end: clash.end });
+    const clashes = findConflicts_(d);
+    if (clashes.length) return json_({ ok: false, error: "conflict", conflicts: clashes });
 
     const sh = tab_(d.game);
     const booked = taken_(d.game)[d.slot] || 0;

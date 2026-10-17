@@ -91,6 +91,8 @@ export type GamesCopy = {
     successTitle: string;
     successBody: string;
     successSlot: string;
+    ticketLabel: string;
+    gameLabel: string;
     error: string;
     notOpen: string;
   };
@@ -357,6 +359,7 @@ function RegisterForm({
   const [members, setMembers] = useState("");
   const [proof, setProof] = useState<{ preview: string; base64: string; mime: string; name: string } | null>(null);
   const [reading, setReading] = useState(false);
+  const [receipt, setReceipt] = useState<{ ticket: string; name: string; team: string; size: number; slot: string } | null>(null);
   const [promoInput, setPromoInput] = useState("");
   const [promoOn, setPromoOn] = useState(false);
   const [groupSize, setGroupSize] = useState(cfg.groupMin);
@@ -457,6 +460,13 @@ function RegisterForm({
       });
       const json = await res.json();
       if (json?.ok) {
+        setReceipt({
+          ticket: String(json.ticket ?? ""),
+          name: v("name"),
+          team: size > 1 ? v("teamName") : "",
+          size,
+          slot,
+        });
         setStatus("done");
       } else if (json?.error === "conflict") {
         // an older script answered with a single {who, game, slot, end}; keep that readable too
@@ -501,14 +511,46 @@ function RegisterForm({
       {status === "done" ? (
         <div className="mt-6" role="status">
           <p className="hlw-title text-lg">{f.successTitle}</p>
-          <p className="mt-3 text-sm leading-relaxed text-[color:var(--hlw-bone)]/80">{f.successBody}</p>
-          {slotInfo && (
-            <p className="mt-4 text-sm">
-              <span className="hlw-kicker mr-2">{f.successSlot}</span>
-              {slotInfo.start} – {slotInfo.end}{typeInfo ? ` · ${typeInfo.name}` : ""}
-            </p>
-          )}
-          <button type="button" className="hlw-btn hlw-btn-ghost mt-7" onClick={onClose}>
+
+          <div className="hlw-ticket mt-4">
+            {receipt?.ticket && (
+              <>
+                <p className="hlw-kicker">{f.ticketLabel}</p>
+                <p className="hlw-ticket-id">{receipt.ticket}</p>
+              </>
+            )}
+            <dl className="mt-3 grid gap-2 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-[color:var(--hlw-bone)]/65">{f.name}</dt>
+                <dd className="text-right font-semibold">{receipt?.name}</dd>
+              </div>
+              {receipt?.team && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-[color:var(--hlw-bone)]/65">{f.teamName}</dt>
+                  <dd className="text-right font-semibold">{receipt.team}</dd>
+                </div>
+              )}
+              <div className="flex justify-between gap-4">
+                <dt className="text-[color:var(--hlw-bone)]/65">{f.gameLabel}</dt>
+                <dd className="text-right font-semibold">{game === "hunt" ? "Scavenger Hunt" : "Escape Room"}</dd>
+              </div>
+              {slotInfo && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-[color:var(--hlw-bone)]/65">{f.successSlot}</dt>
+                  <dd className="text-right font-semibold">
+                    {slotInfo.start} – {slotInfo.end}
+                  </dd>
+                </div>
+              )}
+              <div className="flex justify-between gap-4">
+                <dt className="text-[color:var(--hlw-bone)]/65">{f.peopleCount}</dt>
+                <dd className="text-right font-semibold">{receipt?.size}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <p className="mt-3 text-xs leading-relaxed text-[color:var(--hlw-bone)]/60">{f.successBody}</p>
+          <button type="button" className="hlw-btn hlw-btn-ghost mt-6" onClick={onClose}>
             {f.close}
           </button>
         </div>

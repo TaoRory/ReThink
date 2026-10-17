@@ -706,3 +706,17 @@ textarea.hlw-input { resize: vertical; min-height: 6rem; }
   font-weight: 600;
   line-height: 1.5;
 }
+.hlw-ticket {
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px dashed rgba(209, 201, 30, 0.6);
+  border-radius: 12px;
+  background: rgba(209, 201, 30, 0.07);
+}
+.hlw-ticket-id {
+  margin-top: 0.15rem;
+  font-family: var(--font-hlw-script), cursive;
+  font-size: 2.6rem;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: var(--hlw-script);
+}

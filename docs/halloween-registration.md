@@ -52,6 +52,13 @@ Both tabs ("Escape Room", "Scavenger Hunt") have the same columns: submitted at 
 (e.g. `17:50`) · type (`solo` / `group`) · number of people · contact person · email ·
 student ID · phone · team name · members + their VinUni email (one per line). The escape-room tab ends with the proof link, the picture, the promo code and the amount to collect.
 
+## Ticket id
+
+Every successful registration gets an id `hlw001`, `hlw002`, … (one running number across both games). The
+page shows it in a "Đăng ký thành công" box with the name, game, session and head count, and asks the person
+to screenshot it. It is also written in the last column of each tab (**"Mã vé"**: K on the hunt tab, O on the
+escape-room tab). The next id is the highest one in the Sheet + 1, so deleting your test rows restarts the count.
+
 ## Rules the script enforces (so the page cannot be tricked)
 
 - **Required fields:** name, VinUni email, student ID and phone for everyone; a group also needs a team name and the full member list. The script refuses a registration with any of them empty.

@@ -16,6 +16,9 @@
  *   rows, matched by VinUni EMAIL only (two people can share a name, never an email). Overlapping
  *   play times are refused with
  *   {ok:false,error:"conflict",conflicts:[{who,email,game,slot,end}, …]} naming each clashing person.
+ *   Every registration gets a ticket id: hlw001, hlw002, … one running number across both games
+ *   (the next one is the highest id in the Sheet + 1, so clearing test rows restarts the count). It is
+ *   written in the last column ("Mã vé") and returned as {ok:true, ticket:"hlw001"}.
  * GET ?action=availability: {ok:true, takenBy:{escape:{"17:00":7,...}, hunt:{"18:20":12,...}},
  *   taken:{...escape...}} — seats already booked per session.
  */
@@ -39,9 +42,10 @@ const MAX_PROOF_B64 = 1500000; // the page sends ≈ 100–300 KB; this is a saf
 // both games book by session, so both tabs share these columns; the escape room adds the proof
 const BASE_HEADERS = ["Thời gian gửi", "Ca", "Hình thức", "Số người", "Người đại diện", "Email", "MSSV", "SĐT", "Tên nhóm", "Thành viên (+ email)"];
 const HEADERS = {
-  escape: BASE_HEADERS.concat(["Link chứng minh CK", "Ảnh chứng minh CK", "Mã giảm giá", "Số tiền cần thu (đ)"]),
-  hunt: BASE_HEADERS,
+  escape: BASE_HEADERS.concat(["Link chứng minh CK", "Ảnh chứng minh CK", "Mã giảm giá", "Số tiền cần thu (đ)", "Mã vé"]),
+  hunt: BASE_HEADERS.concat(["Mã vé"]),
 };
+const TICKET_COL = { escape: 15, hunt: 11 }; // the "Mã vé" column of each tab
 
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
@@ -150,6 +154,22 @@ function findConflicts_(d) {
   return found;
 }
 
+// the next ticket id: highest hlwNNN already in either tab, plus one ("hlw001" for the first)
+function nextTicket_() {
+  let max = 0;
+  ["escape", "hunt"].forEach(function (g) {
+    const sh = tab_(g);
+    const last = sh.getLastRow();
+    if (last < 2) return;
+    sh.getRange(2, TICKET_COL[g], last - 1, 1).getDisplayValues().forEach(function (r) {
+      const m = String(r[0]).match(/hlw(\d+)/i);
+      if (m) max = Math.max(max, Number(m[1]));
+    });
+  });
+  const n = String(max + 1);
+  return "hlw" + (n.length < 3 ? ("00" + n).slice(-3) : n);
+}
+
 // "17:50", "17:50:00" or "5:50 PM" (whatever the cell displays) → "17:50"
 function slotKey_(display) {
   const m = String(display).match(/(\d{1,2}):(\d{2})/);
@@ -237,6 +257,7 @@ function doPost(e) {
       safe_(d.teamName),
       safe_(d.members),
     ];
+    const ticket = nextTicket_();
     let fileUrl = "";
     if (game.proof) {
       const stamp = Utilities.formatDate(new Date(), ss_().getSpreadsheetTimeZone(), "yyyyMMdd-HHmmss");
@@ -246,6 +267,7 @@ function doPost(e) {
       fileUrl = proofFolder_().createFile(blob).getUrl();
       row.push("", "", promo, amount); // the first two are filled in below, once the row exists
     }
+    row.push(ticket);
     sh.appendRow(row);
 
     if (game.proof) {
@@ -263,7 +285,7 @@ function doPost(e) {
         /* the link in column K still works */
       }
     }
-    return json_({ ok: true });
+    return json_({ ok: true, ticket: ticket });
   } catch (err) {
     return json_({ ok: false, error: "server" });
   } finally {

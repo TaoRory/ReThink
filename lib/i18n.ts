@@ -553,8 +553,8 @@ export const dict = {
       scheduleDescs: [
         "Escape Room chính thức mở cửa, đón người chơi theo các ca đã đăng ký.",
         "Scavenger Hunt (18:20–22:20) và Escape Room (17:00–22:50) diễn ra song song theo các ca đã đăng ký.",
-        "Bí mật bị chôn vùi suốt 30 năm cuối cùng được hé lộ. Điều gì thực sự đã xảy ra với Ellie tại Pinewood?",
-        "Khép lại đêm hội với bức ảnh tập thể và lễ trao giải cho ba bộ trang phục được bình chọn nhiều nhất.",
+        "Bí mật bị chôn vùi suốt 30 năm cuối cùng được hé lộ. Điều gì thực sự đã xảy ra với Ellie tại Pinewood 1996?",
+        "Khép lại đêm hội bằng bức ảnh tập thể, lưu giữ những khoảnh khắc đáng nhớ trong đêm cuối cùng tại Pinewood.",
       ],
 
       rulesKicker: "Trước khi vào",
@@ -1098,8 +1098,8 @@ export const dict = {
       scheduleDescs: [
         "The Escape Room officially opens its doors, welcoming players in the sessions they registered for.",
         "The Scavenger Hunt (18:20–22:20) and the Escape Room (17:00–22:50) run side by side in the sessions you registered for.",
-        "The secret buried for 30 years is finally revealed. What really happened to Ellie at Pinewood?",
-        "The night closes with the group photograph and the prize ceremony for the three most-voted costumes.",
+        "The secret buried for 30 years is finally revealed. What really happened to Ellie at Pinewood 1996?",
+        "The night closes with a group photograph, keeping the memorable moments of the final night at Pinewood.",
       ],
 
       rulesKicker: "Before you come",

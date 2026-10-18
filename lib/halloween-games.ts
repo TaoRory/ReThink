@@ -15,7 +15,8 @@ export const ESCAPE_PRICING = { price: 67000, promoPrice: 50000, promoCode: "ELL
 /** 67000 → "67.000đ" */
 export const money = (n: number) => `${String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`;
 
-export const promoMatches = (s: string) => s.trim().toLowerCase() === ESCAPE_PRICING.promoCode.toLowerCase();
+/** the code is case-sensitive: only the exact capitals are accepted (surrounding spaces are ignored) */
+export const promoMatches = (s: string) => s.trim() === ESCAPE_PRICING.promoCode;
 
 type Cfg = {
   open: number; // minutes from midnight

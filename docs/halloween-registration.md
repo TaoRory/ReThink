@@ -32,7 +32,7 @@ If you change the script later: **Deploy → Manage deployments → edit → new
 
 ## Payment (escape room only)
 
-- **Price:** 67.000đ per person; with the promo code `ELLIE1996` (not case-sensitive) it drops 25% to 50.000đ (struck-through
+- **Price:** 67.000đ per person; with the promo code `ELLIE1996` (capitals only — a lower-case version is refused) it drops 25% to 50.000đ (struck-through
   price shown). The form multiplies by the number of people (alone ×1, group ×2–6) and shows **Tổng cần chuyển**.
   Prices and code live in `ESCAPE_PRICING` (`lib/halloween-games.ts`) **and** `GAMES.escape.pricing` in the script —
   change both together. The script recomputes the price itself and rejects a wrong code.

@@ -343,7 +343,7 @@ function doPost(e) {
     if (game.pricing) {
       let unit = game.pricing.price;
       if (d.promo) {
-        if (String(d.promo).trim().toLowerCase() !== String(game.pricing.promoCode).toLowerCase()) return json_({ ok: false, error: "promo" }); // not case-sensitive
+        if (String(d.promo).trim() !== game.pricing.promoCode) return json_({ ok: false, error: "promo" }); // case-sensitive: capitals only
         promo = game.pricing.promoCode;
         unit = game.pricing.promoPrice;
       }

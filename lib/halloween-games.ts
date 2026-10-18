@@ -10,12 +10,12 @@ export type GameId = "hunt" | "escape";
 export type RegType = "solo" | "group";
 
 /** escape-room ticket: per person, with a promo code. Keep in step with PRICING in docs/halloween-sheet.gs. */
-export const ESCAPE_PRICING = { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" } as const;
+export const ESCAPE_PRICING = { price: 67000, promoPrice: 50000, promoCode: "ELLIE1996" } as const;
 
 /** 67000 → "67.000đ" */
 export const money = (n: number) => `${String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`;
 
-export const promoMatches = (s: string) => s.trim().toLowerCase() === ESCAPE_PRICING.promoCode;
+export const promoMatches = (s: string) => s.trim().toLowerCase() === ESCAPE_PRICING.promoCode.toLowerCase();
 
 type Cfg = {
   open: number; // minutes from midnight

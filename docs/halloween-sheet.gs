@@ -35,7 +35,7 @@ const SHEET_ID = "";
 // Keep in step with lib/halloween-games.ts (GAME_CFG). slotMin = the whole session window (play + reset),
 // which is what the page shows and what the clash check compares.
 const GAMES = {
-  escape: { slotMin: 50, capacity: 12, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" }, groupMin: 2, groupMax: 6 },
+  escape: { slotMin: 50, capacity: 12, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ELLIE1996" }, groupMin: 2, groupMax: 6 },
   hunt: { slotMin: 40, capacity: 32, proof: false, groupMin: 2, groupMax: 4 },
 };
 const ONE_SESSION_PER_GAME = true; // false = a person may take several different sessions of the same game
@@ -343,7 +343,7 @@ function doPost(e) {
     if (game.pricing) {
       let unit = game.pricing.price;
       if (d.promo) {
-        if (String(d.promo).trim().toLowerCase() !== game.pricing.promoCode) return json_({ ok: false, error: "promo" });
+        if (String(d.promo).trim().toLowerCase() !== String(game.pricing.promoCode).toLowerCase()) return json_({ ok: false, error: "promo" }); // not case-sensitive
         promo = game.pricing.promoCode;
         unit = game.pricing.promoPrice;
       }

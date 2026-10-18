@@ -398,7 +398,7 @@ export const dict = {
       meta: {
         title: "Halloween 2026",
         description:
-          "Halloween 2026 của ReThink tại VinUniversity — một đường hầm cỏ, hai trò chơi và một chiếc la bàn. (Nội dung mẫu.)",
+          "Halloween 2026 của ReThink tại VinUniversity — một đường hầm cỏ, hai trò chơi và một chiếc la bàn.",
       },
       kicker: "Halloween 2026 · VinUniversity",
       eventName: "Halloween 2026",
@@ -942,7 +942,7 @@ export const dict = {
       meta: {
         title: "Halloween 2026",
         description:
-          "ReThink's Halloween 2026 at VinUniversity — a tunnel of grass, two games and a compass. (Placeholder copy.)",
+          "ReThink's Halloween 2026 at VinUniversity — a tunnel of grass, two games and a compass.",
       },
       kicker: "Halloween 2026 · VinUniversity",
       eventName: "Halloween 2026",

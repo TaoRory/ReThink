@@ -70,12 +70,14 @@ export function SiteNav() {
         {hlw ? <HalloweenBrand href={localePath(locale, "/")} /> : <Logo chrome className="text-lg" />}
 
         <nav className="hidden items-center gap-7 md:flex">
-          <Link
-            href={localePath(locale, "/about")}
-            className={linkCls(bare.startsWith("/about"))}
-          >
-            {t.about}
-          </Link>
+          {!hlw && (
+            <Link
+              href={localePath(locale, "/about")}
+              className={linkCls(bare.startsWith("/about"))}
+            >
+              {t.about}
+            </Link>
+          )}
 
           <Link
             href={localePath(locale, "/halloween")}
@@ -84,56 +86,62 @@ export function SiteNav() {
             {t.halloween}
           </Link>
 
-          {/* TEDx dropdown */}
-          <div className="group relative">
-            <Link
-              href={localePath(locale, "/tedx")}
-              className={`${linkCls(bare.startsWith("/tedx"))} inline-flex items-center gap-1.5`}
-            >
-              {t.tedx}
-              <span className="text-[9px] text-cyan-400 transition-transform duration-300 group-hover:rotate-180">
-                &#9660;
-              </span>
-            </Link>
-            <div className="invisible absolute left-1/2 top-full -translate-x-1/2 pt-4 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100">
-              <div className="w-72 rounded-xl border border-white/10 bg-ink-900/95 p-2 shadow-2xl shadow-ink-950 backdrop-blur-xl">
-                {tedxSeasons.map((s) =>
-                  s.external ? (
-                    <a
-                      key={s.title}
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block rounded-lg px-4 py-3 transition hover:bg-white/5"
-                    >
-                      <p className="font-display text-[15px] font-semibold text-pearl-100">
-                        <span className="text-neon-red">TEDx</span> {s.title}
-                      </p>
-                      <p className="mt-0.5 text-xs text-pearl-100/55">{s.desc}</p>
-                    </a>
-                  ) : (
-                    <Link
-                      key={s.title}
-                      href={s.href}
-                      className="block rounded-lg px-4 py-3 transition hover:bg-white/5"
-                    >
-                      <p className="font-display text-[15px] font-semibold text-pearl-100">
-                        <span className="text-neon-red">TEDx</span> {s.title}
-                      </p>
-                      <p className="mt-0.5 text-xs text-pearl-100/55">{s.desc}</p>
-                    </Link>
-                  )
-                )}
+          {/* on the event page only the Halloween link and the language switch remain */}
+          {!hlw && (
+            <>
+              {/* TEDx dropdown */}
+              <div className="group relative">
+                <Link
+                  href={localePath(locale, "/tedx")}
+                  className={`${linkCls(bare.startsWith("/tedx"))} inline-flex items-center gap-1.5`}
+                >
+                  {t.tedx}
+                  <span className="text-[9px] text-cyan-400 transition-transform duration-300 group-hover:rotate-180">
+                    &#9660;
+                  </span>
+                </Link>
+                <div className="invisible absolute left-1/2 top-full -translate-x-1/2 pt-4 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100">
+                  <div className="w-72 rounded-xl border border-white/10 bg-ink-900/95 p-2 shadow-2xl shadow-ink-950 backdrop-blur-xl">
+                    {tedxSeasons.map((s) =>
+                      s.external ? (
+                        <a
+                          key={s.title}
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block rounded-lg px-4 py-3 transition hover:bg-white/5"
+                        >
+                          <p className="font-display text-[15px] font-semibold text-pearl-100">
+                            <span className="text-neon-red">TEDx</span> {s.title}
+                          </p>
+                          <p className="mt-0.5 text-xs text-pearl-100/55">{s.desc}</p>
+                        </a>
+                      ) : (
+                        <Link
+                          key={s.title}
+                          href={s.href}
+                          className="block rounded-lg px-4 py-3 transition hover:bg-white/5"
+                        >
+                          <p className="font-display text-[15px] font-semibold text-pearl-100">
+                            <span className="text-neon-red">TEDx</span> {s.title}
+                          </p>
+                          <p className="mt-0.5 text-xs text-pearl-100/55">{s.desc}</p>
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <Link
-            href={localePath(locale, "/join")}
-            className="btn-lux btn-lux-primary !px-5 !py-2 !text-[11px]"
-          >
-            {t.join} &#9642;
-          </Link>
+              <Link
+                href={localePath(locale, "/join")}
+                className="btn-lux btn-lux-primary !px-5 !py-2 !text-[11px]"
+              >
+                {t.join} &#9642;
+              </Link>
+
+            </>
+          )}
 
           <LangToggle />
         </nav>
@@ -141,18 +149,20 @@ export function SiteNav() {
         {/* mobile: language stays reachable next to the menu button */}
         <div className="flex items-center gap-3 md:hidden">
           <LangToggle />
-          <button
-            className="text-pearl-100 text-2xl leading-none"
-            onClick={() => setOpen(!open)}
-            aria-label={t.menu}
-            aria-expanded={open}
-          >
-            {open ? "\u2715" : "\u2630"}
-          </button>
+          {!hlw && (
+            <button
+              className="text-pearl-100 text-2xl leading-none"
+              onClick={() => setOpen(!open)}
+              aria-label={t.menu}
+              aria-expanded={open}
+            >
+              {open ? "\u2715" : "\u2630"}
+            </button>
+          )}
         </div>
       </div>
 
-      {open && (
+      {open && !hlw && (
         <nav className="border-t border-white/8 bg-ink-950/95 px-5 py-4 md:hidden">
           <Link
             href={localePath(locale, "/about")}

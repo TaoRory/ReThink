@@ -406,13 +406,13 @@ export const dict = {
       tagline:
         "Đi hết đường hầm cỏ. Chiếc la bàn sẽ chỉ lối — nhưng chưa chắc đó là lối ra.",
       whenLabel: "Thời gian",
-      when: "Thứ Sáu, 30/10/2026 · 17:00 – 22:30",
+      when: "Thứ Sáu, 30/10/2026 · 17:00 – 22:50",
       dateShort: "30.10",
-      timeShort: "17:00 – 22:30",
+      timeShort: "17:00 – 22:50",
       whereLabel: "Địa điểm",
       where: "Sảnh chính — VinUniversity, Gia Lâm, Hà Nội",
       ctaJoin: "Đăng ký tham gia",
-      ctaRooms: "Xem trình tự đêm diễn",
+      ctaRooms: "Xem đêm sự kiện",
       scrollHint: "Cuộn để bước vào",
       tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "ReThink", "Student Council"],
 
@@ -471,14 +471,14 @@ export const dict = {
           tag: "Escape room",
           name: "Căn Phòng Khoá Kín",
           desc: "Một căn phòng khoá kín và bốn mươi phút để thoát ra. Chọn đúng ca chơi của bạn.",
-          facts: ["17:00 – 22:30", "Tối đa 15 người mỗi ca", "Vé 67.000đ / người", "Đăng ký lẻ hoặc nhóm 2 – 6 người"],
+          facts: ["17:00 – 22:50", "Mỗi ca 40 phút chơi", "Tối đa 12 người mỗi ca", "Vé 67.000đ / người", "Đăng ký lẻ hoặc nhóm 2 – 6 người"],
           cta: "Chọn ca & đăng ký",
           formTitle: "Đăng ký Escape Room",
           types: {
             solo: { name: "Đăng ký lẻ", note: "1 người" },
             group: { name: "Đăng ký nhóm", note: "2 – 6 người" },
           },
-          slotNote: "Mỗi ca 40 phút chơi, tối đa 15 người. Giờ ca kế tiếp cách 50 phút.",
+          slotNote: "Mỗi ca 40 phút chơi, tối đa 12 người. Giờ ca kế tiếp cách 50 phút.",
           storyCta: "Cốt truyện",
           story: {
             kicker: "Căn phòng khoá kín",
@@ -546,9 +546,9 @@ export const dict = {
         },
       },
 
-      scheduleKicker: "Trình tự đêm diễn",
+      scheduleKicker: "Đêm sự kiện",
       scheduleHeading: "The Night",
-      scheduleTimes: ["17:00", "17:00 – 21:50", "22:00", "22:30"],
+      scheduleTimes: ["17:00", "17:00 – 22:50", "22:20", "22:50"],
       scheduleTitles: [
         "Mở cửa & nhận la bàn",
         "Hai trò chơi cùng mở",
@@ -557,7 +557,7 @@ export const dict = {
       ],
       scheduleDescs: [
         "Nhận thẻ khách và chiếc la bàn. Trang phục hoá trang được khuyến khích, không bắt buộc.",
-        "Săn manh mối chơi tự do; escape room chạy theo ca đã đăng ký, mỗi ca 40 phút.",
+        "Scavenger Hunt chạy từ 18:20 đến 22:20, Escape Room từ 17:00 đến 22:50. Cả hai chơi theo ca đã đăng ký.",
         "Lời giải của đêm được công bố tại đây.",
         "Chụp ảnh tập thể trong đường hầm, trao giải cho ba bộ hoá trang được bình chọn nhiều nhất.",
       ],
@@ -570,7 +570,7 @@ export const dict = {
         "Sự kiện có đáng sợ không?",
       ],
       ruleAs: [
-        "Có. Cả hai trò chơi đều đăng ký trước. Escape room phải chọn đúng ca chơi, mỗi ca tối đa 15 người.",
+        "Có. Cả hai trò chơi đều đăng ký trước. Escape room phải chọn đúng ca chơi, mỗi ca tối đa 12 người.",
         "Không bắt buộc, nhưng đêm này sinh ra là để hoá trang. Ba bộ được bình chọn nhiều nhất sẽ có giải.",
         "Có máu giả và hình ảnh kinh dị, nhưng không có jumpscare hay diễn viên đuổi theo bạn. Hợp với người thích giải đố hơn người thích bị doạ.",
       ],
@@ -954,13 +954,13 @@ export const dict = {
       tagline:
         "Walk to the end of the grass tunnel. The compass will point the way — not necessarily the way out.",
       whenLabel: "When",
-      when: "Friday 30 October 2026 · 17:00 – 22:30",
+      when: "Friday 30 October 2026 · 17:00 – 22:50",
       dateShort: "30.10",
-      timeShort: "17:00 – 22:30",
+      timeShort: "17:00 – 22:50",
       whereLabel: "Where",
       where: "Main hall — VinUniversity, Gia Lam, Hanoi",
       ctaJoin: "Reserve a place",
-      ctaRooms: "See the running order",
+      ctaRooms: "See the event night",
       scrollHint: "Scroll to walk in",
       tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "ReThink", "Student Council"],
 
@@ -1019,14 +1019,14 @@ export const dict = {
           tag: "Escape room",
           name: "The Locked Room",
           desc: "One locked room and forty minutes to get out. Pick the session that suits you.",
-          facts: ["17:00 – 22:30", "Up to 15 people per session", "Ticket 67,000đ / person", "Register alone or as a group of 2 – 6"],
+          facts: ["17:00 – 22:50", "40 minutes of play per session", "Up to 12 people per session", "Ticket 67,000đ / person", "Register alone or as a group of 2 – 6"],
           cta: "Pick a session & register",
           formTitle: "Escape Room registration",
           types: {
             solo: { name: "Individual", note: "1 person" },
             group: { name: "Group", note: "2 – 6 people" },
           },
-          slotNote: "Each session is 40 minutes of play for up to 15 people. A new session starts every 50 minutes.",
+          slotNote: "Each session is 40 minutes of play for up to 12 people. A new session starts every 50 minutes.",
           storyCta: "The story",
           story: {
             kicker: "The locked room",
@@ -1094,9 +1094,9 @@ export const dict = {
         },
       },
 
-      scheduleKicker: "Running order",
+      scheduleKicker: "The event night",
       scheduleHeading: "The Night",
-      scheduleTimes: ["17:00", "17:00 – 21:50", "22:00", "22:30"],
+      scheduleTimes: ["17:00", "17:00 – 22:50", "22:20", "22:50"],
       scheduleTitles: [
         "Doors open & compasses issued",
         "Both games open",
@@ -1105,7 +1105,7 @@ export const dict = {
       ],
       scheduleDescs: [
         "Pick up your guest card and a compass. Costumes encouraged, never required.",
-        "The scavenger hunt is play-as-you-go; the escape room runs in the sessions you registered for, 40 minutes each.",
+        "The Scavenger Hunt runs 18:20 to 22:20 and the Escape Room 17:00 to 22:50. Both are played in the session you registered for.",
         "The answer to the night is given here.",
         "Group photograph inside the tunnel, and prizes for the three most-voted costumes.",
       ],
@@ -1118,7 +1118,7 @@ export const dict = {
         "Is it actually scary?",
       ],
       ruleAs: [
-        "Yes. Both games need a reservation. For the escape room you pick your session, with up to 15 people in each.",
+        "Yes. Both games need a reservation. For the escape room you pick your session, with up to 12 people in each.",
         "Not compulsory — but this is the night for it. The three most-voted costumes win prizes.",
         "There is fake blood and horror imagery, but no jumpscares and no actors chasing anyone. Better suited to people who like puzzles than to people who like being startled.",
       ],

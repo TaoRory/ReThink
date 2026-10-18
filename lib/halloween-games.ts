@@ -2,8 +2,9 @@
  * Halloween game schedule — change the numbers here and the slot pickers follow.
  * (Keep docs/halloween-sheet.gs `GAMES` in step: it enforces the same limits on the Sheet side.)
  *
- * escape — owner's brief 16/10: 17:00 → 22:30, 40 min of play + 10 min reset, 15 people a session.
- * hunt   — owner's brief 16/10: 18:20 → 22:20, 30 min of play + 10 min set-up, 4 teams of 8 a session.
+ * escape — owner's brief 18/10: 17:00 → 22:50, sessions of 50 min (40 min of play + 10 min reset), 12 people a session.
+ * hunt   — owner's brief 18/10: 18:20 → 22:20, sessions of 40 min (30 min of play + 10 min set-up), 32 people a session.
+ * A session is shown, and clash-checked, as its whole window (stepMin); playMin is only the play time quoted to guests.
  */
 export type GameId = "hunt" | "escape";
 export type RegType = "solo" | "group";
@@ -19,8 +20,8 @@ export const promoMatches = (s: string) => s.trim().toLowerCase() === ESCAPE_PRI
 type Cfg = {
   open: number; // minutes from midnight
   close: number;
-  playMin: number;
-  stepMin: number; // play + set-up: how far apart sessions start
+  playMin: number; // time of actual play, quoted on the cards
+  stepMin: number; // play + reset/set-up = the whole session window: sessions start this far apart
   capacity: number; // people per session
   /** a group registers 2…groupMax people at once; alone is always 1 */
   groupMin: number;
@@ -34,10 +35,10 @@ type Cfg = {
 export const GAME_CFG: Record<GameId, Cfg> = {
   escape: {
     open: 17 * 60,
-    close: 22 * 60 + 30,
+    close: 22 * 60 + 50,
     playMin: 40,
     stepMin: 50,
-    capacity: 15,
+    capacity: 12,
     proof: true,
     pricing: ESCAPE_PRICING,
     groupMin: 2,
@@ -60,12 +61,12 @@ const hhmm = (m: number) =>
 
 export type Slot = { id: string; start: string; end: string };
 
-/** every session whose play time fits before closing */
+/** every session whose whole window fits before closing */
 export function slotsFor(game: GameId): Slot[] {
   const c = GAME_CFG[game];
   const out: Slot[] = [];
-  for (let s = c.open; s + c.playMin <= c.close; s += c.stepMin) {
-    out.push({ id: hhmm(s), start: hhmm(s), end: hhmm(s + c.playMin) });
+  for (let s = c.open; s + c.stepMin <= c.close; s += c.stepMin) {
+    out.push({ id: hhmm(s), start: hhmm(s), end: hhmm(s + c.stepMin) });
   }
   return out;
 }

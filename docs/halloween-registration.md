@@ -62,7 +62,7 @@ escape-room tab). The next id is the highest one in the Sheet + 1, so deleting y
 ## Rules the script enforces (so the page cannot be tricked)
 
 - **Required fields:** name, VinUni email, student ID and phone for everyone; a group also needs a team name and the full member list. The script refuses a registration with any of them empty.
-- **Escape room:** 15 people per session. Register alone (1 seat) or as a group of **2–6** people (that many seats).
+- **Escape room:** 12 people per session. Register alone (1 seat) or as a group of **2–6** people (that many seats).
 - **Scavenger hunt:** 32 people per session. Register alone (1 seat) or as a group of **2–4** people.
 - A registration that would take a session over its capacity is refused with `full`, and the page
   asks the person to pick another session. Capacities and group sizes live in `GAMES` at the top of the script and in
@@ -73,9 +73,9 @@ escape-room tab). The next id is the highest one in the Sheet + 1, so deleting y
   2. a group's member list must have exactly the head count, one email per line, no repeated email;
   3. **one session per person per game**: an email that already has a session of the same game is refused,
      whatever the time (switch off with `ONE_SESSION_PER_GAME = false` in the script);
-  4. **no two games at overlapping play times** (escape = 40 min, hunt = 30 min from the session start).
-     Back-to-back is fine (there is no travel buffer): escape 18:40–19:20 clashes with hunt 19:00–19:30
-     and 18:20–18:50, but not with hunt 19:40.
+  4. **no two games at overlapping session times**, compared as the whole windows the page shows
+     (escape 50 min, hunt 40 min from the session start). Back-to-back is fine (there is no travel buffer):
+     escape 18:40–19:30 clashes with hunt 18:20–19:00 and 19:00–19:40, but not with hunt 19:40–20:20.
   A clash is refused with `conflict`; the page shows a red box listing each person (name, email, the other
   registration and why). Checks 1–2 run in the page and again in the script, so they cannot be skipped.
 - **Auditing rows already in the Sheet:** in the editor choose the function **`audit`** and Run. It marks
@@ -89,9 +89,10 @@ escape-room tab). The next id is the highest one in the Sheet + 1, so deleting y
 Generated in `lib/halloween-games.ts` (`GAME_CFG`) from the owner's briefs; change them there and the
 pickers follow.
 
-- **Escape room:** 17:00 – 22:30, 40 min of play, a session every 50 min → 17:00, 17:50, 18:40, 19:30, 20:20, 21:10.
-- **Scavenger hunt:** 18:20 – 22:20, 30 min of play + 10 min set-up, a session every 40 min →
-  18:20, 19:00, 19:40, 20:20, 21:00, 21:40.
+- **Escape room:** 17:00 – 22:50, sessions of 50 min (40 of play + 10 to reset), 12 people each →
+  17:00–17:50, 17:50–18:40, 18:40–19:30, 19:30–20:20, 20:20–21:10, 21:10–22:00, 22:00–22:50.
+- **Scavenger hunt:** 18:20 – 22:20, sessions of 40 min (30 of play + 10 to set up), 32 people each →
+  18:20–19:00, 19:00–19:40, 19:40–20:20, 20:20–21:00, 21:00–21:40, 21:40–22:20.
 
 ## After changing the script
 

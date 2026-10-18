@@ -15,7 +15,7 @@
  *     - every email (contact person + each listed member) must be @vinuni.edu.vn  → error "email_domain"
  *     - a group's list must have exactly the head count, one email each, no repeats → "members_count" / "dup_member"
  *     - ONE session per person per game (kind "same_game"), and nobody in two games at overlapping
- *       play times (kind "overlap") → {ok:false,error:"conflict",conflicts:[{who,email,game,slot,end,kind}, …]}
+ *       session times (kind "overlap") → {ok:false,error:"conflict",conflicts:[{who,email,game,slot,end,kind}, …]}
  *       naming each clashing person.
  *   Run audit() from the editor to mark rows already in the Sheet that break these rules.
  *   Every registration gets a ticket id: hlw001, hlw002, … one running number across both games
@@ -30,10 +30,11 @@
 // (the long part of its URL between /d/ and /edit).
 const SHEET_ID = "";
 
-// Keep in step with lib/halloween-games.ts (GAME_CFG).
+// Keep in step with lib/halloween-games.ts (GAME_CFG). slotMin = the whole session window (play + reset),
+// which is what the page shows and what the clash check compares.
 const GAMES = {
-  escape: { playMin: 40, capacity: 15, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" }, groupMin: 2, groupMax: 6 },
-  hunt: { playMin: 30, capacity: 32, proof: false, groupMin: 2, groupMax: 4 },
+  escape: { slotMin: 50, capacity: 12, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ilovehlw" }, groupMin: 2, groupMax: 6 },
+  hunt: { slotMin: 40, capacity: 32, proof: false, groupMin: 2, groupMax: 4 },
 };
 const ONE_SESSION_PER_GAME = true; // false = a person may take several different sessions of the same game
 const VINUNI_EMAIL = /^[^\s@,;|<>()]+@vinuni\.edu\.vn$/i;
@@ -155,7 +156,7 @@ function checkPeople_(d, size) {
 //  - kind "overlap":   already has a session of the OTHER game whose play time overlaps this one
 function findConflicts_(d) {
   const myStart = minutes_(d.slot);
-  const myEnd = myStart + GAMES[d.game].playMin;
+  const myEnd = myStart + GAMES[d.game].slotMin;
   const mine = personsOf_(d.name, d.email, d.members);
   const found = [];
   const other = d.game === "escape" ? "hunt" : "escape";
@@ -168,7 +169,7 @@ function findConflicts_(d) {
     sh.getRange(2, 1, last - 1, 10).getDisplayValues().forEach(function (r) {
       const s2 = minutes_(r[1]);
       if (s2 < 0) return;
-      const e2 = s2 + GAMES[g].playMin;
+      const e2 = s2 + GAMES[g].slotMin;
       if (!same && !(myStart < e2 && s2 < myEnd)) return; // other game: only overlapping times clash
       const theirs = personsOf_(r[4], r[5], r[9]).map(function (p) { return p.email; });
       mine.forEach(function (p) {
@@ -212,7 +213,7 @@ function audit() {
       if (!shared.length) return;
       if (a.game === b.game) {
         flag(a, "cùng email " + shared[0] + " với " + b.game + " dòng " + b.row);
-      } else if (a.s < b.s + GAMES[b.game].playMin && b.s < a.s + GAMES[a.game].playMin) {
+      } else if (a.s < b.s + GAMES[b.game].slotMin && b.s < a.s + GAMES[a.game].slotMin) {
         flag(a, "trùng giờ với " + b.game + " dòng " + b.row + " (" + shared[0] + ")");
       }
     });

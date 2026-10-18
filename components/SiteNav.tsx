@@ -66,10 +66,16 @@ export function SiteNav() {
     >
       {hlw && <HalloweenNavDecor />}
 
-      <div className="relative z-10 mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+      <div
+        className={`relative z-10 mx-auto flex h-16 max-w-6xl items-center justify-between px-5 ${
+          hlw ? "lg:grid lg:grid-cols-[1fr_auto_1fr]" : ""
+        }`}
+      >
+        {/* event page, desktop: the brand sits in the middle, the nav on the right */}
+        {hlw && <span aria-hidden="true" className="hidden lg:block" />}
         {hlw ? <HalloweenBrand href={localePath(locale, "/")} /> : <Logo chrome className="text-lg" />}
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className={`hidden items-center gap-7 md:flex ${hlw ? "lg:justify-self-end" : ""}`}>
           {!hlw && (
             <Link
               href={localePath(locale, "/about")}

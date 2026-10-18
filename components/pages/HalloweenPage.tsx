@@ -121,9 +121,6 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
                     {t.ctaRooms}
                   </a>
                 </div>
-                <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--hlw-bone)]/55">
-                  {t.draftNote}
-                </p>
               </div>
             </div>
           </div>
@@ -220,7 +217,7 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
               <Wound uid="m" className="h-full w-full" />
             </div>
 
-            <ol className="relative z-10 grid gap-10 lg:grid-cols-4">
+            <ol className="relative z-10 grid gap-10 lg:grid-cols-3">
               {t.scheduleTitles.map((title, i) => (
                 <li key={title} className="hlw-stop relative pl-8 lg:pl-0 lg:text-center">
                   <span className="hlw-blood-drop absolute left-0 top-2 lg:hidden" aria-hidden="true" />

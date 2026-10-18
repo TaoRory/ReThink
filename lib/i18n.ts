@@ -400,7 +400,6 @@ export const dict = {
         description:
           "Halloween 2026 của ReThink tại VinUniversity — một đường hầm cỏ, hai trò chơi và một chiếc la bàn. (Nội dung mẫu.)",
       },
-      draftNote: "Nội dung mẫu — đang chờ bản chính thức",
       kicker: "Halloween 2026 · VinUniversity",
       eventName: "Halloween 2026",
       tagline: "Có những mùa hè đã kết thúc, nhưng cơn ác mộng thì chưa bao giờ.",
@@ -549,18 +548,12 @@ export const dict = {
 
       scheduleKicker: "Đêm sự kiện",
       scheduleHeading: "The Night",
-      scheduleTimes: ["17:00", "17:00 – 22:50", "22:20", "22:50"],
-      scheduleTitles: [
-        "Mở cửa & nhận la bàn",
-        "Hai trò chơi cùng mở",
-        "Vòm cuối cùng",
-        "Đóng cửa",
-      ],
+      scheduleTimes: ["17:00", "17:00 – 22:50", "22:50"],
+      scheduleTitles: ["Mở cửa", "Hai trò chơi chính", "Đóng cửa"],
       scheduleDescs: [
-        "Nhận thẻ khách và chiếc la bàn. Trang phục hoá trang được khuyến khích, không bắt buộc.",
+        "Trang phục hoá trang được khuyến khích, không bắt buộc.",
         "Scavenger Hunt chạy từ 18:20 đến 22:20, Escape Room từ 17:00 đến 22:50. Cả hai chơi theo ca đã đăng ký.",
-        "Lời giải của đêm được công bố tại đây.",
-        "Chụp ảnh tập thể trong đường hầm, trao giải cho ba bộ hoá trang được bình chọn nhiều nhất.",
+        "Chụp ảnh tập thể",
       ],
 
       rulesKicker: "Trước khi vào",
@@ -951,7 +944,6 @@ export const dict = {
         description:
           "ReThink's Halloween 2026 at VinUniversity — a tunnel of grass, two games and a compass. (Placeholder copy.)",
       },
-      draftNote: "Placeholder copy — final text to come",
       kicker: "Halloween 2026 · VinUniversity",
       eventName: "Halloween 2026",
       tagline: "Some summers have ended, but the nightmare never has.",
@@ -1100,18 +1092,12 @@ export const dict = {
 
       scheduleKicker: "The event night",
       scheduleHeading: "The Night",
-      scheduleTimes: ["17:00", "17:00 – 22:50", "22:20", "22:50"],
-      scheduleTitles: [
-        "Doors open & compasses issued",
-        "Both games open",
-        "The last arch",
-        "Closing",
-      ],
+      scheduleTimes: ["17:00", "17:00 – 22:50", "22:50"],
+      scheduleTitles: ["Doors open", "The two main games", "Closing"],
       scheduleDescs: [
-        "Pick up your guest card and a compass. Costumes encouraged, never required.",
+        "Costumes are encouraged, never required.",
         "The Scavenger Hunt runs 18:20 to 22:20 and the Escape Room 17:00 to 22:50. Both are played in the session you registered for.",
-        "The answer to the night is given here.",
-        "Group photograph inside the tunnel, and prizes for the three most-voted costumes.",
+        "Group photograph",
       ],
 
       rulesKicker: "Before you come",

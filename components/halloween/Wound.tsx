@@ -11,27 +11,25 @@
 const W = 1200;
 const Y = 34; // the cut's centre line
 
-/** [x, length, width] — the four big ones sit under the four timeline stops */
+/** [x, length, width] — the three big ones sit under the three timeline stops (centres of thirds) */
 const STREAKS: [number, number, number][] = [
-  [150, 170, 9],
-  [450, 118, 8],
-  [750, 196, 10],
-  [1050, 142, 8],
-  [62, 74, 5],
-  [226, 64, 4],
-  [300, 96, 5],
-  [560, 82, 4],
-  [648, 128, 5],
-  [902, 104, 5],
-  [1000, 66, 4],
-  [1132, 86, 5],
+  [200, 170, 9],
+  [600, 142, 9],
+  [1000, 196, 10],
+  [70, 74, 5],
+  [340, 96, 5],
+  [430, 64, 4],
+  [520, 112, 5],
+  [760, 128, 5],
+  [860, 82, 4],
+  [1110, 86, 5],
+  [1160, 62, 4],
 ];
 /** drops that keep leaving the long streaks: [x, streak length, seconds, delay] */
 const DROPS: [number, number, number, number][] = [
-  [150, 170, 7.5, 2.7],
-  [450, 118, 9, 3.2],
-  [750, 196, 8, 3.6],
-  [1050, 142, 10, 4.1],
+  [200, 170, 7.5, 2.7],
+  [600, 142, 9, 3.2],
+  [1000, 196, 8, 3.6],
 ];
 
 function streak([x, len, w]: [number, number, number]) {

@@ -37,8 +37,8 @@ If you change the script later: **Deploy → Manage deployments → edit → new
   Prices and code live in `ESCAPE_PRICING` (`lib/halloween-games.ts`) **and** `GAMES.escape.pricing` in the script —
   change both together. The script recomputes the price itself and rejects a wrong code.
 - **QR code:** ONE QR for every price and group size — a plain account QR with **no amount** in it; whoever pays
-  types the amount shown as "Tổng cần chuyển". Put the image at `web/public/halloween/qr.png` (`.jpg`, `.jpeg`,
-  `.webp` also work; `qr67.*` is accepted as a fallback name). Until a file exists the form says "the QR will be added soon".
+  types the amount shown as "Tổng cần chuyển". The image is `web/public/halloween/qr.jpg` (MB Bank, VietQR). To change it, replace that file
+  (`qr.png`, `.jpeg`, `.webp` also work). If no file loads the form says "the QR will be added soon".
 - **Photo:** the page shrinks the proof to a small JPEG (≈ 100–300 KB) in the browser and sends it with the registration.
 - **In the Sheet:** the "Escape Room" tab has, after the usual columns, **K** a link ("Mở ảnh"), **L** the
   picture inside the cell, **M** the promo code used and **N** the amount to collect. The original photo is

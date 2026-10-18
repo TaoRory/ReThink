@@ -103,7 +103,7 @@ export type GamesCopy = {
 };
 
 /** ONE payment QR for every price: public/halloween/qr.* (the amount is typed in by whoever pays); first file that loads wins */
-const QR_FILES = ["qr.png", "qr.jpg", "qr.jpeg", "qr.webp", "qr67.png", "qr67.jpg", "qr67.jpeg", "qr67.webp"] as const;
+const QR_FILES = ["qr.jpg", "qr.png", "qr.jpeg", "qr.webp", "qr67.png", "qr67.jpg", "qr67.jpeg", "qr67.webp"] as const;
 
 /** every email must be a VinUni one, which also stops one person using two addresses */
 const VINUNI_EMAIL = /^[^\s@,;|<>()]+@vinuni\.edu\.vn$/i;
@@ -778,7 +778,7 @@ function RegisterForm({
                   src={`/halloween/${QR_FILES[qrTry]}`}
                   alt=""
                   onError={() => setQrTry((i) => i + 1)}
-                  className="mx-auto max-h-64 w-auto rounded-md bg-white p-2"
+                  className="mx-auto max-h-[26rem] w-auto max-w-full rounded-md bg-white p-2"
                 />
               ) : (
                 <p className="text-xs text-[color:var(--hlw-script)]">{f.payQrMissing}</p>

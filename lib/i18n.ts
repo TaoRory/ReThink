@@ -548,12 +548,13 @@ export const dict = {
 
       scheduleKicker: "Đêm sự kiện",
       scheduleHeading: "The Night",
-      scheduleTimes: ["17:00", "17:00 – 22:50", "22:50"],
-      scheduleTitles: ["Mở cửa", "Hai trò chơi chính", "Đóng cửa"],
+      scheduleTimes: ["17:00", "17:00 – 22:50", "22:20", "22:50"],
+      scheduleTitles: ["THE DOORS OPEN", "THE INVESTIGATION BEGINS", "THE TRUTH UNMASKED", "THE FINAL FAREWELL"],
       scheduleDescs: [
-        "Trang phục hoá trang được khuyến khích, không bắt buộc.",
-        "Scavenger Hunt chạy từ 18:20 đến 22:20, Escape Room từ 17:00 đến 22:50. Cả hai chơi theo ca đã đăng ký.",
-        "Chụp ảnh tập thể",
+        "Escape Room chính thức mở cửa, đón người chơi theo các ca đã đăng ký.",
+        "Scavenger Hunt (18:20–22:20) và Escape Room (17:00–22:50) diễn ra song song theo các ca đã đăng ký.",
+        "Bí mật bị chôn vùi suốt 30 năm cuối cùng được hé lộ. Điều gì thực sự đã xảy ra với Ellie tại Pinewood?",
+        "Khép lại đêm hội với bức ảnh tập thể và lễ trao giải cho ba bộ trang phục được bình chọn nhiều nhất.",
       ],
 
       rulesKicker: "Trước khi vào",
@@ -1092,12 +1093,13 @@ export const dict = {
 
       scheduleKicker: "The event night",
       scheduleHeading: "The Night",
-      scheduleTimes: ["17:00", "17:00 – 22:50", "22:50"],
-      scheduleTitles: ["Doors open", "The two main games", "Closing"],
+      scheduleTimes: ["17:00", "17:00 – 22:50", "22:20", "22:50"],
+      scheduleTitles: ["THE DOORS OPEN", "THE INVESTIGATION BEGINS", "THE TRUTH UNMASKED", "THE FINAL FAREWELL"],
       scheduleDescs: [
-        "Costumes are encouraged, never required.",
-        "The Scavenger Hunt runs 18:20 to 22:20 and the Escape Room 17:00 to 22:50. Both are played in the session you registered for.",
-        "Group photograph",
+        "The Escape Room officially opens its doors, welcoming players in the sessions they registered for.",
+        "The Scavenger Hunt (18:20–22:20) and the Escape Room (17:00–22:50) run side by side in the sessions you registered for.",
+        "The secret buried for 30 years is finally revealed. What really happened to Ellie at Pinewood?",
+        "The night closes with the group photograph and the prize ceremony for the three most-voted costumes.",
       ],
 
       rulesKicker: "Before you come",

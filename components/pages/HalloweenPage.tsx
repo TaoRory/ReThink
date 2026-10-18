@@ -217,7 +217,7 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
               <Wound uid="m" className="h-full w-full" />
             </div>
 
-            <ol className="relative z-10 grid gap-10 lg:grid-cols-3">
+            <ol className="relative z-10 grid gap-10 lg:grid-cols-4">
               {t.scheduleTitles.map((title, i) => (
                 <li key={title} className="hlw-stop relative pl-8 lg:pl-0 lg:text-center">
                   <span className="hlw-blood-drop absolute left-0 top-2 lg:hidden" aria-hidden="true" />

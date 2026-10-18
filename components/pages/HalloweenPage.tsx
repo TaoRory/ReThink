@@ -268,7 +268,7 @@ export function HalloweenPage({ locale }: { locale: Locale }) {
                   <span className="hlw-title text-sm">{q}</span>
                   <span className="hlw-q-mark text-2xl leading-none text-[color:var(--hlw-script)]">+</span>
                 </summary>
-                <p className="px-6 pb-6 text-sm leading-relaxed text-[color:var(--hlw-bone)]/85">
+                <p className="whitespace-pre-line px-6 pb-6 text-sm leading-relaxed text-[color:var(--hlw-bone)]/85">
                   {t.ruleAs[i]}
                 </p>
               </details>

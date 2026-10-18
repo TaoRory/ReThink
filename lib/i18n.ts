@@ -403,8 +403,7 @@ export const dict = {
       draftNote: "Nội dung mẫu — đang chờ bản chính thức",
       kicker: "Halloween 2026 · VinUniversity",
       eventName: "Halloween 2026",
-      tagline:
-        "Đi hết đường hầm cỏ. Chiếc la bàn sẽ chỉ lối — nhưng chưa chắc đó là lối ra.",
+      tagline: "Có những mùa hè đã kết thúc, nhưng cơn ác mộng thì chưa bao giờ.",
       whenLabel: "Thời gian",
       when: "Thứ Sáu, 30/10/2026 · 17:00 – 22:50",
       dateShort: "30.10",
@@ -417,11 +416,11 @@ export const dict = {
       tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "ReThink", "Student Council"],
 
       storyKicker: "Câu chuyện",
-      storyHeading: "Into the Tunnel",
+      storyHeading: "The Last Summer Camp",
       storyP1:
-        "Cuối khuôn viên có một đường hầm bằng cỏ mà ban ngày không ai nhìn thấy. Đêm 30/10, những vòm cỏ ấy mở ra — vòm sau nhỏ hơn vòm trước, và ở tận cùng có một người đang đứng đợi.",
+        "Lấy cảm hứng từ những trại hè thập niên 90, Halloween 2026: ELLIE tái hiện một không gian hoài cổ nhưng nhuốm màu u ám, nơi những kỷ niệm mùa hè tươi đẹp dần bị bao phủ bởi những bí mật đáng sợ.",
       storyP2:
-        "Hãy mang theo chiếc la bàn. Nó luôn chỉ đúng hướng, nhưng không bao giờ cho bạn biết điều gì đang chờ ở đó.",
+        "Ẩn sau những căn nhà gỗ cũ kỹ, khu rừng tăm tối và ánh lửa trại lập lòe là những dấu vết của một quá khứ chưa từng được làm sáng tỏ. Kết hợp giữa không khí trại hè hoài niệm, yếu tố kinh dị tâm lý và bí ẩn án mạng, Halloween năm nay mở ra một thế giới đầy rùng rợn và hoài nghi, nơi ranh giới giữa sự thật và những lời đồn ngày càng trở nên mong manh.",
 
       gamesKicker: "Hai trò chơi",
       gamesHeading: "Two Games",
@@ -499,7 +498,9 @@ export const dict = {
           noRoomForType: "Ca này không đủ chỗ cho hình thức bạn chọn.",
           teamName: "Tên nhóm",
           members: "Danh sách thành viên + Email VinUni",
-          membersHint: "Mỗi dòng một người, gồm cả bạn, theo dạng: Họ tên – email VinUni.",
+          membersHint: "Mỗi dòng một người, theo dạng: Họ tên – email VinUni. Bắt buộc ghi cả người đại diện, đúng họ tên và email đã điền ở trên.",
+          membersLeader: "Danh sách phải có cả người đại diện: thêm một dòng đúng họ tên và email VinUni đã điền ở trên (ví dụ: {name} – {email}).",
+          phoneInvalid: "Số điện thoại không hợp lệ. Nhập số di động Việt Nam 10 chữ số, ví dụ 0912345678.",
           membersEmail: "Mỗi dòng cần có email VinUni của thành viên, dạng …@vinuni.edu.vn.",
           emailDomain: "Vui lòng dùng email VinUni, dạng …@vinuni.edu.vn.",
           payTitle: "Thanh toán",
@@ -565,14 +566,14 @@ export const dict = {
       rulesKicker: "Trước khi vào",
       rulesHeading: "House Rules",
       ruleQs: [
-        "Có cần đăng ký trước không?",
-        "Có bắt buộc hoá trang không?",
+        "Cần đăng ký trước không?",
         "Sự kiện có đáng sợ không?",
+        "Có bắt buộc hoá trang không?",
       ],
       ruleAs: [
-        "Có. Cả hai trò chơi đều đăng ký trước. Escape room phải chọn đúng ca chơi, mỗi ca tối đa 12 người.",
-        "Không bắt buộc, nhưng đêm này sinh ra là để hoá trang. Ba bộ được bình chọn nhiều nhất sẽ có giải.",
-        "Có máu giả và hình ảnh kinh dị, nhưng không có jumpscare hay diễn viên đuổi theo bạn. Hợp với người thích giải đố hơn người thích bị doạ.",
+        "Bạn sẽ cần đăng ký trước cho cả hai hoạt động Scavenger Hunt và Escape Room. Scavenger Hunt sẽ chơi theo một team 8 người (mỗi ca chơi sẽ có 4 team), Escape Room sẽ chơi theo một team 12 người (mỗi ca chơi chỉ có 1 team). BTC sẽ hỗ trợ xếp team nên bạn cứ thoải mái đăng ký theo số lượng nhóm của mình nhé!\n\nLưu ý: Escape Room là hoạt động có tính phí, hợp tác cùng HiEscape.",
+        "Mang tinh thần Halloween nên sự kiện sẽ có đáng sợ và có thể sẽ có NPC rượt đuổi bạn. Nhưng bạn yên tâm, BTC cũng rất nhân đạo và biết giữ chừng mực!!",
+        "Hoàn toàn không bắt buộc. Nếu bạn hoá trang, chắc chắn sẽ có những tấm ảnh xinh đẹp mang về! Tuy nhiên, nếu bạn chơi Scavenger Hunt hay Escape Room thì hãy lưu ý chọn những trang phục thoải mái nhé!",
       ],
 
       ctaHeading: "Cửa hầm mở lúc 17:00",
@@ -951,8 +952,7 @@ export const dict = {
       draftNote: "Placeholder copy — final text to come",
       kicker: "Halloween 2026 · VinUniversity",
       eventName: "Halloween 2026",
-      tagline:
-        "Walk to the end of the grass tunnel. The compass will point the way — not necessarily the way out.",
+      tagline: "Some summers have ended, but the nightmare never has.",
       whenLabel: "When",
       when: "Friday 30 October 2026 · 17:00 – 22:50",
       dateShort: "30.10",
@@ -965,11 +965,11 @@ export const dict = {
       tickerWords: ["Halloween 2026", "30 · 10 · 2026", "VinUniversity", "ReThink", "Student Council"],
 
       storyKicker: "The story",
-      storyHeading: "Into the Tunnel",
+      storyHeading: "The Last Summer Camp",
       storyP1:
-        "At the far end of campus there is a tunnel of grass nobody sees by day. On the night of 30 October its arches open — each one smaller than the last, and at the very end someone is waiting.",
+        "Inspired by the summer camps of the 1990s, Halloween 2026: ELLIE recreates a nostalgic space tinged with gloom, where happy summer memories are slowly covered by frightening secrets.",
       storyP2:
-        "Bring the compass. It always points the right way, but it never tells you what is waiting there.",
+        "Hidden behind the old wooden cabins, the dark forest and the flickering campfire are the traces of a past that has never been brought to light. Blending a nostalgic summer-camp atmosphere, psychological horror and murder mystery, this year's Halloween opens a world full of chills and doubt, where the line between truth and rumour grows ever thinner.",
 
       gamesKicker: "Two games",
       gamesHeading: "Two Games",
@@ -1047,7 +1047,9 @@ export const dict = {
           noRoomForType: "This session does not have room for the option you chose.",
           teamName: "Team name",
           members: "Member list + VinUni email",
-          membersHint: "One person per line, including you, as: Full name – VinUni email.",
+          membersHint: "One person per line, as: Full name – VinUni email. The contact person must be on the list too, with the same name and email as above.",
+          membersLeader: "The list must include the contact person: add a line with exactly the name and VinUni email entered above (for example: {name} – {email}).",
+          phoneInvalid: "Invalid phone number. Enter a 10-digit Vietnamese mobile number, for example 0912345678.",
           membersEmail: "Each line needs the member's VinUni email, as …@vinuni.edu.vn.",
           emailDomain: "Please use your VinUni email, as …@vinuni.edu.vn.",
           payTitle: "Payment",
@@ -1113,14 +1115,14 @@ export const dict = {
       rulesKicker: "Before you come",
       rulesHeading: "House Rules",
       ruleQs: [
-        "Do I need to register?",
-        "Are costumes compulsory?",
+        "Do I need to register in advance?",
         "Is it actually scary?",
+        "Are costumes compulsory?",
       ],
       ruleAs: [
-        "Yes. Both games need a reservation. For the escape room you pick your session, with up to 12 people in each.",
-        "Not compulsory — but this is the night for it. The three most-voted costumes win prizes.",
-        "There is fake blood and horror imagery, but no jumpscares and no actors chasing anyone. Better suited to people who like puzzles than to people who like being startled.",
+        "You need to register in advance for both the Scavenger Hunt and the Escape Room. The Scavenger Hunt is played in teams of 8 (4 teams per session); the Escape Room is played by one team of 12 (only 1 team per session). The organisers will help arrange the teams, so feel free to register with however many people are in your group!\n\nNote: the Escape Room is a paid activity, in partnership with HiEscape.",
+        "In the Halloween spirit, yes — the event will be scary, and there may be NPCs chasing you. But don't worry: the organisers are humane and know where to stop!!",
+        "Not at all. If you dress up, you will surely take home some beautiful photos! But if you play the Scavenger Hunt or the Escape Room, please choose comfortable clothes.",
       ],
 
       ctaHeading: "The tunnel opens at 17:00",

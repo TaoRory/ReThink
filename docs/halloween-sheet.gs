@@ -13,7 +13,9 @@
  *   wrong code is refused with {ok:false,error:"promo"}.
  *   Who may register — all matched by VinUni EMAIL only (two people can share a name, never an email):
  *     - every email (contact person + each listed member) must be @vinuni.edu.vn  → error "email_domain"
- *     - a group's list must have exactly the head count, one email each, no repeats → "members_count" / "dup_member"
+ *     - a group's list must have exactly the head count, one email each, no repeats → "members_count" / "dup_member",
+ *       and it must include the contact person (same name AND email as in the form) → "leader_missing"
+ *     - the phone must be a Vietnamese mobile number (10 digits; +84 / 84 / 0084 accepted) → "phone"
  *     - ONE session per person per game (kind "same_game"), and nobody in two games at overlapping
  *       session times (kind "overlap") → {ok:false,error:"conflict",conflicts:[{who,email,game,slot,end,kind}, …]}
  *       naming each clashing person.
@@ -112,6 +114,30 @@ function hhmm_(mins) {
 
 const EMAIL_RE = /[^\s,;|<>()]+@[^\s,;|<>()]+/;
 
+// a Vietnamese MOBILE number → 10 digits starting with 0, or "" if it is not one (keep in step with normalizePhone in lib/halloween-games.ts)
+function normalizePhone_(raw) {
+  let d = String(raw == null ? "" : raw).replace(/[\s.\-()]/g, "");
+  if (d.indexOf("+84") === 0) d = "0" + d.slice(3);
+  else if (d.indexOf("0084") === 0) d = "0" + d.slice(4);
+  else if (d.indexOf("84") === 0 && d.length === 11) d = "0" + d.slice(2);
+  return /^0(3[2-9]|5[25689]|7[06-9]|8[1-9]|9[0-46-9])\d{7}$/.test(d) ? d : "";
+}
+
+// "Nguyễn  Văn Đạt" and "dat van nguyen" → the same key (accents, case, spacing and word order ignored)
+function nameKey_(s) {
+  return String(s == null ? "" : s)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .split(" ")
+    .filter(Boolean)
+    .sort()
+    .join(" ");
+}
+
 // everyone a registration covers: the contact person plus each "Name – email" line of the member list.
 // A person is identified by their (lower-cased) email.
 function personsOf_(name, email, members) {
@@ -126,7 +152,7 @@ function personsOf_(name, email, members) {
     .forEach(function (line) {
       const m = line.match(EMAIL_RE);
       if (!m) return;
-      add(line.replace(m[0], "").replace(/[–—|:;,<>()]|\s-\s/g, " ").trim(), m[0]);
+      add(line.replace(m[0], "").replace(/[–—|:;,<>()+]|\s-\s/g, " ").trim(), m[0]);
     });
   return out;
 }
@@ -143,6 +169,14 @@ function checkPeople_(d, size) {
     if (!m || !VINUNI_EMAIL.test(m[0])) return "email_domain";
     emails.push(m[0].toLowerCase());
   }
+  // the contact person must be on the list, with the same name AND email as in the form
+  const leaderEmail = String(d.email).trim().toLowerCase();
+  const leaderName = nameKey_(d.name);
+  const hasLeader = lines.some(function (l) {
+    const m = l.match(EMAIL_RE);
+    return m && m[0].toLowerCase() === leaderEmail && nameKey_(l.replace(m[0], " ")) === leaderName;
+  });
+  if (!hasLeader) return "leader_missing";
   const seen = {};
   for (let j = 0; j < emails.length; j++) {
     if (seen[emails[j]]) return "dup_member";
@@ -292,6 +326,8 @@ function doPost(e) {
     if (!sizeOk || Number(d.headcount) !== size || !SLOT_RE.test(String(d.slot))) {
       return json_({ ok: false, error: "bad_request" });
     }
+    const phone = normalizePhone_(d.phone);
+    if (!phone) return json_({ ok: false, error: "phone" });
     const peopleErr = checkPeople_(d, size);
     if (peopleErr) return json_({ ok: false, error: peopleErr });
     const proof = d.proof;
@@ -329,7 +365,7 @@ function doPost(e) {
       safe_(d.name),
       safe_(d.email),
       safe_(d.studentId),
-      safe_(d.phone),
+      phone,
       safe_(d.teamName),
       safe_(d.members),
     ];

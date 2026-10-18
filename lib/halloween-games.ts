@@ -70,3 +70,49 @@ export function slotsFor(game: GameId): Slot[] {
   }
   return out;
 }
+
+/**
+ * A Vietnamese MOBILE number → its 10-digit form starting with 0, or null if it is not one.
+ * Accepts 0912 345 678, 0912.345.678, +84 912 345 678, 84912345678, 0084912345678.
+ * Valid prefixes (2019 plan): 03[2-9] Viettel · 05[2,5,6,8,9] · 07[0,6-9] · 08[1-9] · 09[0-4,6-9].
+ * Keep in step with normalizePhone_ in docs/halloween-sheet.gs.
+ */
+export function normalizePhone(raw: string): string | null {
+  let d = raw.replace(/[\s.\-()]/g, "");
+  if (d.startsWith("+84")) d = "0" + d.slice(3);
+  else if (d.startsWith("0084")) d = "0" + d.slice(4);
+  else if (d.startsWith("84") && d.length === 11) d = "0" + d.slice(2);
+  return /^0(3[2-9]|5[25689]|7[06-9]|8[1-9]|9[0-46-9])\d{7}$/.test(d) ? d : null;
+}
+
+/** "Nguyễn  Văn Đạt" and "dat van nguyen" → the same key (accents, case, spacing and word order ignored) */
+export function nameKey(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .split(" ")
+    .filter(Boolean)
+    .sort()
+    .join(" ");
+}
+
+const EMAIL_IN = /[^\s,;|<>()]+@[^\s,;|<>()]+/;
+
+/** a group's member list must contain a line "<leader's name> – <leader's email>", exactly as typed in the form above */
+export function listHasLeader(members: string, leaderName: string, leaderEmail: string): boolean {
+  const want = nameKey(leaderName);
+  const email = leaderEmail.trim().toLowerCase();
+  return members
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .some((line) => {
+      const m = line.match(EMAIL_IN);
+      if (!m || m[0].toLowerCase() !== email) return false;
+      return nameKey(line.replace(m[0], " ")) === want;
+    });
+}

@@ -70,7 +70,9 @@ escape-room tab). The next id is the highest one in the Sheet + 1, so deleting y
 - **Who may register (all matched by VinUni email only — two people can share a name, never an email):**
   1. every email — the contact person and each listed member — must end in **@vinuni.edu.vn**
      (so one person cannot slip in with a second, personal address);
-  2. a group's member list must have exactly the head count, one email per line, no repeated email;
+  2. a group's member list must have exactly the head count, one `Name – email` per line, no repeated email,
+     and must include the contact person (same name and email as typed in the form above);
+  2b. the phone must be a Vietnamese mobile number (10 digits; `+84…` accepted and stored as `0…`);
   3. **one session per person per game**: an email that already has a session of the same game is refused,
      whatever the time (switch off with `ONE_SESSION_PER_GAME = false` in the script);
   4. **no two games at overlapping session times**, compared as the whole windows the page shows

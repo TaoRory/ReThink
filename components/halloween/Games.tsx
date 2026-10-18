@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { ESCAPE_PRICING, GAME_CFG, money, promoMatches, slotsFor, type GameId, type RegType } from "@/lib/halloween-games";
+import { ESCAPE_PRICING, GAME_CFG, listHasLeader, money, normalizePhone, promoMatches, slotsFor, type GameId, type RegType } from "@/lib/halloween-games";
 import { Branch } from "./Scene";
 
 /**
@@ -56,6 +56,8 @@ export type GamesCopy = {
     membersHint: string;
     membersCount: string;
     membersEmail: string;
+    membersLeader: string;
+    phoneInvalid: string;
     payTitle: string;
     payLead: string;
     payQrMissing: string;
@@ -428,11 +430,14 @@ function RegisterForm({
     for (const k of ["name", "email", "studentId", "phone"]) if (!v(k)) errs[k] = f.required;
     if (size > 1 && !v("teamName")) errs.teamName = f.required;
     if (v("email") && !VINUNI_EMAIL.test(v("email"))) errs.email = f.emailDomain;
+    if (v("phone") && !normalizePhone(v("phone"))) errs.phone = f.phoneInvalid;
     if (!slotOk) errs.slot = slot ? f.noRoomForType : f.slotRequired;
     if (size > 1) {
       const lines = members.split("\n").map((l) => l.trim()).filter(Boolean);
       if (lines.length !== size) errs.members = f.membersCount.replace("{n}", String(size)).replace("{c}", String(lines.length));
       else if (lines.some((l) => !VINUNI_EMAIL.test(l.match(EMAIL_IN_LINE)?.[0] ?? ""))) errs.members = f.membersEmail;
+      else if (v("name") && v("email") && !listHasLeader(members, v("name"), v("email")))
+        errs.members = f.membersLeader.replace("{name}", v("name")).replace("{email}", v("email"));
       else {
         const emails = lines.map((l) => (l.match(/[^\s,;|<>()]+@[^\s,;|<>()]+/)?.[0] ?? "").toLowerCase());
         if (new Set(emails).size !== emails.length) errs.members = f.dupMember;
@@ -456,7 +461,7 @@ function RegisterForm({
           name: v("name"),
           email: v("email"),
           studentId: v("studentId"),
-          phone: v("phone"),
+          phone: normalizePhone(v("phone")) ?? v("phone"),
           teamName: size > 1 ? v("teamName") : "",
           members: size > 1 ? members.trim() : "",
           promo: pricing && promoOn ? ESCAPE_PRICING.promoCode : undefined,
@@ -487,6 +492,12 @@ function RegisterForm({
         setStatus("idle");
       } else if (json?.error === "email_domain") {
         setErrors({ email: f.emailDomain, members: size > 1 ? f.membersEmail : "" });
+        setStatus("idle");
+      } else if (json?.error === "phone") {
+        setErrors({ phone: f.phoneInvalid });
+        setStatus("idle");
+      } else if (json?.error === "leader_missing") {
+        setErrors({ members: f.membersLeader.replace("{name}", v("name")).replace("{email}", v("email")) });
         setStatus("idle");
       } else if (json?.error === "dup_member") {
         setErrors({ members: f.dupMember });

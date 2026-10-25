@@ -53,7 +53,7 @@ export const GAME_CFG: Record<GameId, Cfg> = {
     capacity: 32, // 4 teams × 8
     proof: false,
     groupMin: 2,
-    groupMax: 4,
+    groupMax: 8,
   },
 };
 

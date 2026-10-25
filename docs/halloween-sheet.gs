@@ -36,7 +36,7 @@ const SHEET_ID = "";
 // which is what the page shows and what the clash check compares.
 const GAMES = {
   escape: { slotMin: 50, capacity: 12, proof: true, pricing: { price: 67000, promoPrice: 50000, promoCode: "ELLIE1996" }, groupMin: 2, groupMax: 6 },
-  hunt: { slotMin: 40, capacity: 32, proof: false, groupMin: 2, groupMax: 4 },
+  hunt: { slotMin: 40, capacity: 32, proof: false, groupMin: 2, groupMax: 8 },
 };
 const ONE_SESSION_PER_GAME = true; // false = a person may take several different sessions of the same game
 const VINUNI_EMAIL = /^[^\s@,;|<>()]+@vinuni\.edu\.vn$/i;

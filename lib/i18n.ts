@@ -430,13 +430,13 @@ export const dict = {
           tag: "Scavenger hunt",
           name: "The Last Summer Camp",
           desc: "Pinewood, 1996. Một cuộc điều tra cuối cùng trước khi khu trại bị phá dỡ.",
-          facts: ["18:20 – 22:20", "Mỗi ca 30 phút chơi", "Tối đa 32 người mỗi ca", "Đăng ký lẻ hoặc nhóm 2 – 4 người"],
+          facts: ["18:20 – 22:20", "Mỗi ca 30 phút chơi", "Tối đa 32 người mỗi ca", "Đăng ký lẻ hoặc nhóm 2 – 8 người"],
           cta: "Chọn ca & đăng ký",
           storyCta: "Cốt truyện",
           formTitle: "Đăng ký Scavenger Hunt",
           types: {
             solo: { name: "Đăng ký lẻ", note: "1 người" },
-            group: { name: "Đăng ký nhóm", note: "2 – 4 người" },
+            group: { name: "Đăng ký nhóm", note: "2 – 8 người" },
           },
           slotNote: "Mỗi ca 30 phút chơi, tối đa 32 người. Giờ ca kế tiếp cách 40 phút.",
           story: {
@@ -975,13 +975,13 @@ export const dict = {
           tag: "Scavenger hunt",
           name: "The Last Summer Camp",
           desc: "Pinewood, 1996. One last investigation before the camp is torn down.",
-          facts: ["18:20 – 22:20", "30 minutes of play per session", "Up to 32 people per session", "Register alone or as a group of 2 – 4"],
+          facts: ["18:20 – 22:20", "30 minutes of play per session", "Up to 32 people per session", "Register alone or as a group of 2 – 8"],
           cta: "Pick a session & register",
           storyCta: "The story",
           formTitle: "Scavenger Hunt registration",
           types: {
             solo: { name: "Individual", note: "1 person" },
-            group: { name: "Group", note: "2 – 4 people" },
+            group: { name: "Group", note: "2 – 8 people" },
           },
           slotNote: "Each session is 30 minutes of play for up to 32 people. A new session starts every 40 minutes.",
           story: {

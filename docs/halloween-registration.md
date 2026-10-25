@@ -63,7 +63,7 @@ escape-room tab). The next id is the highest one in the Sheet + 1, so deleting y
 
 - **Required fields:** name, VinUni email, student ID and phone for everyone; a group also needs a team name and the full member list. The script refuses a registration with any of them empty.
 - **Escape room:** 12 people per session. Register alone (1 seat) or as a group of **2–6** people (that many seats).
-- **Scavenger hunt:** 32 people per session. Register alone (1 seat) or as a group of **2–4** people.
+- **Scavenger hunt:** 32 people per session. Register alone (1 seat) or as a group of **2–8** people.
 - A registration that would take a session over its capacity is refused with `full`, and the page
   asks the person to pick another session. Capacities and group sizes live in `GAMES` at the top of the script and in
   `GAME_CFG` in `lib/halloween-games.ts` — change both together.

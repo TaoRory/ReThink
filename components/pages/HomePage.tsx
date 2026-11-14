@@ -42,22 +42,36 @@ export function HomePage({ locale }: { locale: Locale }) {
         <Aurora sweep />
         <Galaxy />
         <Starfield density={1.35} />
-        <Cradle />
+        {/* the cradle falls behind the text as the hero scrolls away */}
+        <div data-parallax="0.22" data-parallax-anchor="top" className="pointer-events-none absolute inset-0">
+          <Cradle />
+        </div>
         <PointerGlow />
         <Sparkle className="absolute left-[8%] top-28 h-10 w-10 text-cyan-300/70" />
         <Sparkle className="absolute right-[10%] top-48 h-16 w-16 text-cyan-400/50" />
         <Sparkle className="absolute bottom-24 left-[16%] h-6 w-6 text-lilac-200/60" />
 
-        <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-6xl flex-col items-center justify-center px-5 py-24 text-center">
+        <div data-hero-out className="relative z-10 mx-auto flex min-h-[92vh] max-w-6xl flex-col items-center justify-center px-5 py-24 text-center">
           <p className="rise mb-6 text-xs font-semibold uppercase tracking-[0.5em] text-cyan-300/80">
             {t.weAre}
           </p>
 
           <h1 className="rise flex flex-wrap items-baseline justify-center gap-x-4 leading-none [animation-delay:0.1s]">
-            <span className="neon-breathe font-display text-neon text-[clamp(2.6rem,10.5vw,7.5rem)] font-extralight tracking-[0.16em]">
-              RETHINK
+            <span className="neon-breathe whitespace-nowrap font-display text-neon text-[clamp(2.6rem,10.5vw,7.5rem)] font-extralight tracking-[0.16em]">
+              <span className="sr-only">RETHINK</span>
+              <span aria-hidden="true">
+                {"RETHINK".split("").map((c, i) => (
+                  <span
+                    key={i}
+                    className="hero-letter"
+                    style={{ "--i": i } as React.CSSProperties}
+                  >
+                    {c}
+                  </span>
+                ))}
+              </span>
             </span>
-            <span className="font-display text-neon text-[clamp(1rem,3vw,2rem)] font-extralight tracking-[0.2em]">
+            <span className="hero-tail font-display text-neon text-[clamp(1rem,3vw,2rem)] font-extralight tracking-[0.2em]">
               26-27
             </span>
           </h1>
@@ -75,9 +89,11 @@ export function HomePage({ locale }: { locale: Locale }) {
           </p>
 
           <div className="rise mt-12 flex flex-wrap items-center justify-center gap-4 [animation-delay:0.4s]">
-            <Btn href={localePath(locale, "/join")} variant="primary">
-              {t.joinCta} <span className="text-cyan-300">▪</span>
-            </Btn>
+            <span data-magnetic>
+              <Btn href={localePath(locale, "/join")} variant="primary">
+                {t.joinCta} <span className="text-cyan-300">▪</span>
+              </Btn>
+            </span>
           </div>
         </div>
 
@@ -151,6 +167,8 @@ export function HomePage({ locale }: { locale: Locale }) {
           >
             <div className="grid grid-cols-2 gap-4">
               <Image
+                data-reveal-img
+                style={{ "--reveal-delay": "0.1s" } as React.CSSProperties}
                 src="/photos/community-3.jpg"
                 alt={t.altCommunity}
                 width={717}
@@ -158,6 +176,8 @@ export function HomePage({ locale }: { locale: Locale }) {
                 className="col-span-2 rounded-2xl border border-white/10 object-cover shadow-2xl shadow-violet-800/20"
               />
               <Image
+                data-reveal-img
+                style={{ "--reveal-delay": "0.3s" } as React.CSSProperties}
                 src="/photos/team-table.jpg"
                 alt={t.altTeam}
                 width={614}
@@ -165,6 +185,8 @@ export function HomePage({ locale }: { locale: Locale }) {
                 className="rounded-2xl border border-white/10 object-cover"
               />
               <Image
+                data-reveal-img
+                style={{ "--reveal-delay": "0.42s" } as React.CSSProperties}
                 src="/photos/balcony.jpg"
                 alt={t.altBalcony}
                 width={614}
@@ -226,9 +248,14 @@ export function HomePage({ locale }: { locale: Locale }) {
               const card = (
                 <article
                   key={title}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900/60 transition hover:border-cyan-400/40"
+                  data-tilt
+                  className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-ink-900/60 transition hover:border-cyan-400/40"
                 >
-                  <div className="relative h-56 overflow-hidden">
+                  <div
+                    data-reveal-img
+                    style={{ "--reveal-delay": `${0.1 + i * 0.12}s` } as React.CSSProperties}
+                    className="relative h-56 overflow-hidden"
+                  >
                     <Image
                       src={a.img}
                       alt={title}
@@ -270,7 +297,8 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       {/* ============ TEDx BAND ============ */}
       <section className="relative overflow-hidden border-y border-white/8">
-        <div className="absolute inset-0">
+        {/* taller than the band so it can drift behind the text */}
+        <div data-parallax="-0.14" className="absolute inset-x-0 -inset-y-[18%]">
           <Image
             src="/photos/tedx-audience.jpg"
             alt=""
@@ -296,7 +324,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="mt-10 grid max-w-2xl grid-cols-2 gap-6 sm:grid-cols-4">
             {t.tedxStats.map(([n, l]) => (
               <div key={l}>
-                <p className="font-display text-4xl font-bold text-pearl-100">
+                <p data-count className="font-display text-4xl font-bold tabular-nums text-pearl-100">
                   {n}
                 </p>
                 <p className="mt-1 text-xs uppercase tracking-[0.2em] text-pearl-100/60">
@@ -405,13 +433,11 @@ export function HomePage({ locale }: { locale: Locale }) {
           <p className="mx-auto mt-6 max-w-xl text-[15px] leading-relaxed text-pearl-100/70">
             {t.ctaLead}
           </p>
-          <Btn
-            href={localePath(locale, "/join")}
-            variant="primary"
-            className="mt-10"
-          >
-            {t.ctaBtn} <span className="text-cyan-300">▪</span>
-          </Btn>
+          <span data-magnetic className="mt-10">
+            <Btn href={localePath(locale, "/join")} variant="primary">
+              {t.ctaBtn} <span className="text-cyan-300">▪</span>
+            </Btn>
+          </span>
         </div>
       </section>
     </>

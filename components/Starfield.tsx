@@ -140,14 +140,28 @@ export function Starfield({
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
       }
-    } else {
-      raf = requestAnimationFrame(drawFrame);
     }
+
+    // only draw while the canvas is on screen — two of these on the home page
+    // used to keep redrawing the whole time the visitor read further down
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        cancelAnimationFrame(raf);
+        raf = 0;
+        if (entry.isIntersecting && !reduced) {
+          last = performance.now();
+          raf = requestAnimationFrame(drawFrame);
+        }
+      },
+      { rootMargin: "80px 0px" }
+    );
+    io.observe(canvas);
 
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
     return () => {
       cancelAnimationFrame(raf);
+      io.disconnect();
       ro.disconnect();
     };
   }, [density]);

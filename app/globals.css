@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
 /* the Halloween event page brings its own world; all of it scoped to `.hlw` */
 @import "./halloween.css";
@@ -508,6 +509,104 @@ body {
     transform: none;
     transition: none;
   }
+  .hero-letter, .hero-tail { animation: none !important; }
+  [data-split] .split-w > span,
+  [data-reveal-img],
+  [data-tilt] {
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+  .scroll-progress { display: none; }
+}
+
+/* ---------- Motion layer (driven by components/Reveal.tsx) ---------- */
+
+/* sections whose ambient loops are off screen stop animating */
+[data-offscreen] *,
+[data-offscreen] *::before,
+[data-offscreen] *::after {
+  animation-play-state: paused !important;
+}
+
+/* reading progress: a spectrum hairline above the header */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #d633e8, #7a15f0 50%, #22c9e8);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* hero wordmark: each letter swings down into the row like a cradle weight */
+.hero-letter {
+  display: inline-block;
+  --r: 16deg;
+  transform-origin: 50% -1.4em;
+  animation: hero-swing 1.3s cubic-bezier(0.3, 0.9, 0.3, 1) both;
+  animation-delay: calc(0.2s + var(--i) * 0.075s);
+}
+.hero-letter:nth-child(odd) { --r: -16deg; }
+@keyframes hero-swing {
+  0%   { opacity: 0; transform: translateY(-0.45em) rotate(var(--r)); }
+  55%  { opacity: 1; transform: translateY(0.03em) rotate(calc(var(--r) * -0.22)); }
+  80%  { transform: rotate(calc(var(--r) * 0.06)); }
+  100% { opacity: 1; transform: none; }
+}
+.hero-tail {
+  display: inline-block;
+  animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.95s;
+}
+
+/* section headings: words rise out of a mask, one after another */
+[data-split] .split-w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* room for Vietnamese stacked diacritics and descenders inside the mask */
+  padding: 0.18em 0.03em 0.16em;
+  margin: -0.18em -0.03em -0.16em;
+}
+[data-split] .split-w > span {
+  display: inline-block;
+  transform: translateY(115%);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i) * 0.06s);
+}
+[data-split].revealed .split-w > span {
+  transform: none;
+}
+
+/* photos: wipe open from the bottom while settling from a slight zoom */
+[data-reveal-img] {
+  clip-path: inset(100% -12% -12% -12%);
+  transform: scale(1.1);
+  transition:
+    clip-path 1.25s cubic-bezier(0.7, 0, 0.2, 1),
+    transform 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+    scale 0.7s ease;
+  transition-delay: var(--reveal-delay, 0s);
+}
+[data-reveal-img].revealed {
+  clip-path: inset(-12% -12% -12% -12%);
+  transform: none;
+}
+
+/* cards lean toward the pointer (vars set by Reveal.tsx on fine pointers) */
+[data-tilt] {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
+}
+
+[data-magnetic] {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.22, 1.2, 0.36, 1);
 }
 
 /* ---------- Buttons ---------- */

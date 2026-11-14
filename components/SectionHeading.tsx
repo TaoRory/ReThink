@@ -22,9 +22,19 @@ export function SectionHeading({
           {kicker}
         </p>
       )}
-      <h2 className="font-display text-3xl font-light leading-tight tracking-[0.02em] text-pearl-50 sm:text-4xl">
-        {script}
-        {rest}
+      <h2
+        data-split
+        className="font-display text-3xl font-light leading-tight tracking-[0.02em] text-pearl-50 sm:text-4xl"
+      >
+        {/* each word rises out of its own mask (see [data-split] in globals.css) */}
+        {`${script}${rest}`.split(" ").map((word, i, all) => (
+          <span key={i}>
+            <span className="split-w">
+              <span style={{ "--i": i } as React.CSSProperties}>{word}</span>
+            </span>
+            {i < all.length - 1 ? " " : null}
+          </span>
+        ))}
       </h2>
     </div>
   );

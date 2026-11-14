@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lexend, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { Reveal } from "@/components/Reveal";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -41,8 +42,9 @@ export default function RootLayout({
     >
       <body className="min-h-screen">
         <noscript>
-          <style>{`[data-reveal]{opacity:1 !important;transform:none !important}`}</style>
+          <style>{`[data-reveal],[data-split] .split-w>span,[data-reveal-img]{opacity:1 !important;transform:none !important;clip-path:none !important}`}</style>
         </noscript>
+        <SmoothScroll />
         <Reveal />
         <SiteNav />
         <main>{children}</main>

@@ -1,10 +1,14 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
-import { Aurora } from "@/components/Aurora";
+import Link from "next/link";
 import { Btn } from "@/components/Btn";
-import { SectionHeading } from "@/components/SectionHeading";
-import { Sparkle } from "@/components/Sparkle";
-import { Starfield } from "@/components/Starfield";
-import { dict, type Locale } from "@/lib/i18n";
+import { TedxText } from "@/components/Tedx";
+import { Magnetic } from "@/components/motion/Magnetic";
+import { Parallax } from "@/components/motion/Parallax";
+import { Rise } from "@/components/motion/Rise";
+import { SplitReveal } from "@/components/motion/SplitReveal";
+import { dict, localePath, type Locale } from "@/lib/i18n";
+import { FACEBOOK, JOIN_FORM, RECRUITING } from "@/lib/site-state";
 
 /** department names stay in English in both locales — they are the org's own labels */
 const POSITIONS = [
@@ -16,108 +20,217 @@ const POSITIONS = [
   "Art",
 ];
 
-const FB = "https://www.facebook.com/rethink.vinuni";
-/** Gen 5 application form, linked straight to the form rather than through
- *  the bit.ly short link that used to front it. */
-const FORM = "https://forms.gle/U6h51p5iVZwYFhoX6";
+/** "closed" is stated calmly: the keyword block goes neutral, fuchsia is kept for "open right now" */
+const QUIET_MARK = { "--kit-mark": "var(--line-strong)" } as CSSProperties;
 
+/**
+ * The page has two states, both fully built; `RECRUITING` (lib/site-state.ts)
+ * picks one. Closed: the hero says the round is over and the main action is
+ * following ReThink on Facebook — the form is not linked anywhere. Open: the
+ * hero invites applications and the main action is the form.
+ *
+ * Motion storyboard (docs/design-system.md has the rules):
+ *   hero         load    h1 lines rise out of a mask, the block wipes in behind
+ *                        the keyword ("đã đóng" / "Gen 5")           T1
+ *   hero photo   scroll  the frame opens, the team photo drifts      T2 (scene 1)
+ *   departments  scroll  the six rows rise into place, one by one    T1
+ *   quote        scroll  the statement rises (never hidden)          T1
+ *   members      scroll  the frame opens, the photo drifts           T2 (scene 2)
+ *   main action  pointer the one button that matters leans to the cursor
+ */
 export function JoinPage({ locale }: { locale: Locale }) {
   const t = dict[locale].join;
+  const s = RECRUITING ? t.open : t.closed;
+  const to = (path: string) => localePath(locale, path);
+  const en = locale === "vi" ? "en" : undefined; // brand phrases are English
+
+  const invitation = (
+    <>
+      {t.leadA}
+      <strong>{t.leadB}</strong>
+      {t.leadC}
+      <strong>{t.leadD}</strong>
+      {t.leadE}
+    </>
+  );
 
   return (
     <>
-      <section className="smoke grain relative overflow-hidden pt-16">
-        <Aurora sweep />
-        <Starfield density={0.8} />
-        <div className="relative mx-auto max-w-6xl px-5 py-24">
-          <div className="grid items-center gap-14 lg:grid-cols-2">
+      {/* ============ HERO: the state of recruitment, then what to do about it ============ */}
+      <section className="pt-16">
+        <div className="wrap pt-[clamp(2.5rem,6vw,5rem)]">
+          <p className="label mb-6 flex items-center gap-3">
+            <span
+              className={`mote ${RECRUITING ? "text-fuchsia-400" : "text-pearl-50"}`}
+              aria-hidden="true"
+            />
+            {s.label}
+          </p>
+
+          <SplitReveal as="h1" trigger="load" className="h-display max-w-5xl">
+            {s.h1a}
+            <span className="kit-mark text-white" style={RECRUITING ? undefined : QUIET_MARK}>
+              {s.h1Mark}
+            </span>
+            {s.h1b}
+          </SplitReveal>
+
+          <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-2 lg:gap-12">
             <div>
-              <p className="inline-block rounded-full border border-pearl-200/30 bg-ink-900/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-pearl-200">
-                {t.badge}
-              </p>
-              <h1 className="mt-6 font-display leading-tight">
-                <span className="block font-display text-neon text-6xl font-extralight tracking-[0.16em] sm:text-7xl">
-                  Gen 5
-                </span>
-                <span className="mt-2 block text-5xl font-bold text-pearl-100 sm:text-6xl">
-                  {t.heading2}
-                </span>
-              </h1>
-              <p className="mt-7 max-w-lg text-[15px] leading-relaxed text-pearl-100/75">
-                {t.leadA}
-                <strong className="text-pearl-100">{t.leadB}</strong>
-                {t.leadC}
-                <strong className="text-pearl-100">{t.leadD}</strong>
-                {t.leadE}
-              </p>
-              <div className="mt-9 flex flex-wrap items-center gap-4">
-                <Btn href={FORM} external variant="primary">
-                  {t.btnForm} <span className="text-cyan-300">▪</span>
-                </Btn>
-                <Btn href={FB} external variant="ghost">
-                  {t.btnFb}
-                </Btn>
+              {RECRUITING ? (
+                <p className="lead">{invitation}</p>
+              ) : (
+                <p className="lead">
+                  {t.closed.statusA}
+                  <strong>{t.closed.statusDates}</strong>
+                  {t.closed.statusB}
+                </p>
+              )}
+
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <Magnetic>
+                  <Btn
+                    variant={RECRUITING ? "brand" : "solid"}
+                    href={RECRUITING ? JOIN_FORM : FACEBOOK}
+                    external
+                    arrow
+                  >
+                    {s.mainCta}
+                  </Btn>
+                </Magnetic>
+                {RECRUITING ? (
+                  <Btn variant="line" href={FACEBOOK} external arrow>
+                    {s.secondCta}
+                  </Btn>
+                ) : (
+                  <Btn variant="line" href={to("/about")}>
+                    {s.secondCta}
+                  </Btn>
+                )}
               </div>
-              <p className="mt-6 text-sm font-semibold text-fuchsia-400">
-                {t.period}
-              </p>
-              <p className="mt-2 max-w-lg text-sm italic leading-relaxed text-pearl-100/60">
-                {t.periodNote}
-              </p>
+
+              {RECRUITING && (
+                <div className="mt-8 max-w-md">
+                  <p className="body">
+                    <strong>{t.period}</strong>
+                  </p>
+                  <p className="small mt-2">{t.periodNote}</p>
+                </div>
+              )}
             </div>
 
-            <div className="relative">
-              <Image
-                src="/photos/community-3.jpg"
-                alt={t.altGen}
-                width={1434}
-                height={956}
-                className="rounded-2xl border border-white/10 object-cover shadow-2xl shadow-violet-800/30"
-              />
-              <Image
-                src="/photos/balcony.jpg"
-                alt={t.altBalcony}
-                width={806}
-                height={454}
-                className="-mt-12 ml-auto w-2/3 rotate-2 rounded-2xl border border-white/10 object-cover shadow-2xl"
-              />
-              <Sparkle className="absolute -left-4 -top-5 h-10 w-10 text-cyan-300/80" />
-            </div>
+            <figure>
+              <Parallax className="photo photo-lg aspect-[4/3]" depth={8}>
+                <Image
+                  src="/photos/tedx-team.jpg"
+                  alt={t.altHero}
+                  fill
+                  priority
+                  sizes="(min-width: 1320px) 596px, (min-width: 1024px) 46vw, 100vw"
+                />
+              </Parallax>
+              <figcaption className="small mt-3 flex items-center gap-2.5">
+                <span className="mote text-cyan-300" aria-hidden="true" />
+                <span>
+                  <TedxText>{t.heroCaption}</TedxText>
+                </span>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-white/8 py-24">
-        <div className="mx-auto max-w-6xl px-5">
-          <SectionHeading script="O" rest={t.posHeading.slice(1)} kicker={t.posKicker} />
-          <div className="stagger mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
-            {POSITIONS.map((name, i) => (
-              <div
-                key={name}
-                className="hang frame-hairline group bg-ink-900/50 p-6 transition hover:bg-ink-800/60"
-              >
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-display text-xl font-semibold text-pearl-100 group-hover:text-lilac-200">
-                    {name}
-                  </h3>
-                  <span className="font-display text-lg font-light tracking-[0.2em] text-cyan-400/50">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
-                  {t.positions[i]}
-                </p>
-              </div>
-            ))}
+      {/* ============ DEPARTMENTS: sticky heading, six rows ============ */}
+      <section id="departments" className="sec">
+        <div className="wrap grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-28">
+              <SplitReveal as="h2" className="h-section">
+                {s.deptHeading}
+              </SplitReveal>
+              {/* open: the invitation is the hero's lead; closed: it introduces the departments */}
+              {!RECRUITING && <p className="lead mt-6">{invitation}</p>}
+            </div>
           </div>
 
-          <div className="mt-16 rounded-2xl border border-white/10 bg-gradient-to-r from-ink-900 via-ink-800/80 to-ink-900 p-10 text-center">
-            <p className="font-display text-2xl italic text-pearl-100/90">
-              {t.quote}
-            </p>
-            <p className="mt-4 text-xs uppercase tracking-[0.35em] text-cyan-300/70">
+          <dl className="rows lg:col-span-8">
+            {POSITIONS.map((name, i) => (
+              <Rise
+                key={name}
+                index={i}
+                className="grid gap-2 py-6 sm:grid-cols-[17rem_1fr] sm:gap-8 sm:py-7"
+              >
+                <dt className="h-card" lang={en}>
+                  {name}
+                </dt>
+                <dd className="body">{t.positions[i]}</dd>
+              </Rise>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* ============ THE INVITATION, AS A STATEMENT + the people it comes from ============ */}
+      <section className="sec !pt-0">
+        <div className="wrap">
+          <Rise as="figure" className="border-t border-[var(--line)] pt-[clamp(2.5rem,5vw,4.5rem)]">
+            <blockquote lang={en}>
+              <p className="h-section max-w-5xl">{t.quote}</p>
+            </blockquote>
+            <figcaption className="small mt-7 flex items-center gap-2.5" lang={en}>
+              <span className="mote text-fuchsia-400" aria-hidden="true" />
               {t.quoteBy}
-            </p>
+            </figcaption>
+          </Rise>
+
+          <figure className="mt-[clamp(3rem,6vw,5rem)]">
+            <Parallax className="photo photo-lg aspect-[4/3] sm:aspect-[21/9]" depth={8}>
+              <Image
+                src="/photos/balcony.jpg"
+                alt={t.altMembers}
+                fill
+                sizes="(min-width: 1320px) 1240px, 100vw"
+              />
+            </Parallax>
+            <figcaption className="small mt-3 flex items-center gap-2.5">
+              <span className="mote text-cyan-300" aria-hidden="true" />
+              {t.membersCaption}
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      {/* ============ NEXT STEP: one wide tile for the main action, one for About ============ */}
+      <section className="sec !pt-0">
+        <div className="wrap">
+          <SplitReveal as="h2" className="h-section max-w-3xl">
+            {s.nextA} <span className="tone-2">{s.nextB}</span>
+          </SplitReveal>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-12">
+            <a
+              href={RECRUITING ? JOIN_FORM : FACEBOOK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`tile md:col-span-7 ${RECRUITING ? "tile-brand" : ""}`}
+            >
+              <span className="small">{s.tileNote}</span>
+              <span className="flex items-end justify-between gap-6">
+                <span className="h-section">{s.tileTitle}</span>
+                <span className="tile-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </span>
+            </a>
+            <Link href={to("/about")} className="tile md:col-span-5">
+              <span className="small">{t.aboutTileNote}</span>
+              <span className="flex items-end justify-between gap-6">
+                <span className="h-section">{t.aboutTile}</span>
+                <span className="tile-arrow" aria-hidden="true">
+                  →
+                </span>
+              </span>
+            </Link>
           </div>
         </div>
       </section>

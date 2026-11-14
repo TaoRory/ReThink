@@ -1,6 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Btn } from "@/components/Btn";
+import { Rise } from "@/components/motion/Rise";
+import { SplitReveal } from "@/components/motion/SplitReveal";
 import type { Dict } from "@/lib/i18n";
 
 /** the game copy, widened to plain strings so both locale trees fit (the dict
@@ -92,7 +95,10 @@ const C = 200;
 /** a point on the rim at `deg` clockwise from 12 o'clock */
 function rim(deg: number, r: number): [number, number] {
   const a = ((deg - 90) * Math.PI) / 180;
-  return [C + r * Math.cos(a), C + r * Math.sin(a)];
+  // rounded: Node and the browser disagree in the last float digit of sin/cos,
+  // which React reports as a hydration mismatch on the SVG attributes
+  const round = (n: number) => Math.round(n * 100) / 100;
+  return [round(C + r * Math.cos(a)), round(C + r * Math.sin(a))];
 }
 
 function wedge(i: number): string {
@@ -101,7 +107,11 @@ function wedge(i: number): string {
   return `M ${C} ${C} L ${x0.toFixed(2)} ${y0.toFixed(2)} A ${R} ${R} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
 }
 
-export function WheelGame({ t }: { t: GameCopy }) {
+/**
+ * Renders two page sections: the game (wheel + result panel) and the full
+ * topic list. `topicLang` marks the English topics on the Vietnamese page.
+ */
+export function WheelGame({ t, topicLang }: { t: GameCopy; topicLang?: string }) {
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [winner, setWinner] = useState<number | null>(null);
@@ -186,262 +196,261 @@ export function WheelGame({ t }: { t: GameCopy }) {
 
   const exhausted = pool.length === 0;
 
+
   return (
     <>
-      <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        {/* ---------------- the wheel ---------------- */}
-        <div className="mx-auto w-full max-w-[27rem]">
-          {/* the disc and everything pinned to its centre live in their own
-              square box — the hint below must not pull `top: 50%` off-centre */}
-          <div className="relative">
-            <div className="wheel-halo" aria-hidden="true" />
+      {/* ============ THE GAME: the wheel, and what it landed on ============ */}
+      <section className="wrap pt-[clamp(1.5rem,3.5vw,3rem)]">
+        <div className="grid items-center gap-x-12 gap-y-10 lg:grid-cols-12">
+          {/* ---------------- the wheel ---------------- */}
+          <div className="mx-auto w-full max-w-[27rem] pt-10 lg:col-span-5 lg:mx-0">
+            {/* the disc and everything pinned to its centre live in their own
+                square box — the hint below must not pull `top: 50%` off-centre */}
+            <div className="relative">
+              {/* the pointer hangs like a pendulum bob — the KV motif */}
+              <div className="wheel-pointer" aria-hidden="true">
+                <span className="wheel-wire" />
+                <span className={`wheel-bob ${spinning ? "is-spinning" : ""}`} />
+              </div>
 
-            {/* the pointer hangs like a pendulum bob — the KV motif */}
-            <div className="wheel-pointer" aria-hidden="true">
-              <span className="wheel-wire" />
-              <span className={`wheel-bob ${spinning ? "is-spinning" : ""}`} />
+              <div
+                className="wheel-rotor"
+                style={{
+                  transform: `rotate(${rotation}deg)`,
+                  transitionDuration: `${spinMs}ms`,
+                  // flat system: no glow around the disc
+                  filter: "none",
+                }}
+              >
+                {/* the wedge labels are short forms; every topic is listed in
+                    full below, so the drawing is hidden from screen readers */}
+                <svg viewBox="0 0 400 400" className="block h-auto w-full" aria-hidden="true">
+                  {TOPICS.map((topic, i) => {
+                    const isDone = done.includes(i);
+                    const isWinner = winner === i;
+                    const dim = isDone && !isWinner;
+                    const centre = (i + 0.5) * SEG;
+                    const [lx, ly] = rim(centre, R * 0.63);
+                    // radial text points outward, which reads upside-down once the
+                    // wedge is past 6 o'clock — flip the left half so every label
+                    // sits upright with the wheel at rest
+                    const flip = centre > 180;
+                    const spin = centre - 90 + (flip ? 180 : 0);
+                    return (
+                      <g key={topic.short}>
+                        <path
+                          d={wedge(i)}
+                          fill={isWinner ? FILL_LIT[i] : FILL[i]}
+                          fillOpacity={dim ? 0.3 : 1}
+                          stroke="rgba(233,236,248,0.16)"
+                          strokeWidth="1"
+                        />
+                        {/* 16 units = 13px+ once the wheel is 330px wide */}
+                        <text
+                          x={lx}
+                          y={ly}
+                          fill={isWinner ? "#fff" : dim ? "#979eb6" : "#e9ecf8"}
+                          fontSize="16"
+                          fontWeight={isWinner ? 600 : 400}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          transform={`rotate(${spin.toFixed(2)}, ${lx.toFixed(2)}, ${ly.toFixed(2)})`}
+                          style={{ textDecoration: isDone ? "line-through" : "none" }}
+                        >
+                          {topic.short}
+                        </text>
+                      </g>
+                    );
+                  })}
+
+                  <circle
+                    cx={C}
+                    cy={C}
+                    r={R}
+                    fill="none"
+                    stroke="rgba(214,51,232,0.55)"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </div>
+
+              {/* hub = the spin button */}
+              <button
+                type="button"
+                onClick={spin}
+                disabled={spinning || exhausted}
+                className="wheel-hub"
+                aria-label={t.spin}
+              >
+                <span className="font-display text-[13px] font-semibold leading-none min-[481px]:text-[15px]">
+                  {spinning ? t.spinning : t.spin}
+                </span>
+                <span className="mt-1.5 text-[13px] leading-none tabular-nums text-[var(--text-2)]">
+                  {pool.length}/{N}
+                </span>
+              </button>
             </div>
 
-            <div
-              className="wheel-rotor"
-              style={{
-                transform: `rotate(${rotation}deg)`,
-                transitionDuration: `${spinMs}ms`,
-              }}
-            >
-              <svg viewBox="0 0 400 400" className="block h-auto w-full">
-                <defs>
-                  <radialGradient id="wheel-sheen" cx="32%" cy="22%" r="78%">
-                    <stop offset="0%" stopColor="#fff" stopOpacity="0.18" />
-                    <stop offset="55%" stopColor="#fff" stopOpacity="0.03" />
-                    <stop offset="100%" stopColor="#000" stopOpacity="0.35" />
-                  </radialGradient>
-                </defs>
-
-                {TOPICS.map((topic, i) => {
-                  const isDone = done.includes(i);
-                  const isWinner = winner === i;
-                  const centre = (i + 0.5) * SEG;
-                  const [lx, ly] = rim(centre, R * 0.63);
-                  // radial text points outward, which reads upside-down once the
-                  // wedge is past 6 o'clock — flip the left half so every label
-                  // sits upright with the wheel at rest
-                  const flip = centre > 180;
-                  const spin = centre - 90 + (flip ? 180 : 0);
-                  return (
-                    <g key={topic.short} opacity={isDone && !isWinner ? 0.28 : 1}>
-                      <path
-                        d={wedge(i)}
-                        fill={isWinner ? FILL_LIT[i] : FILL[i]}
-                        stroke="rgba(233,236,248,0.16)"
-                        strokeWidth="1"
-                      />
-                      <text
-                        x={lx}
-                        y={ly}
-                        fill={isWinner ? "#fff" : "rgba(233,236,248,0.9)"}
-                        fontSize="14"
-                        fontWeight={isWinner ? 600 : 400}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                        transform={`rotate(${spin.toFixed(2)}, ${lx.toFixed(2)}, ${ly.toFixed(2)})`}
-                        style={{
-                          textDecoration: isDone ? "line-through" : "none",
-                          letterSpacing: "0.01em",
-                        }}
-                      >
-                        {topic.short}
-                      </text>
-                    </g>
-                  );
-                })}
-
-                <circle cx={C} cy={C} r={R} fill="url(#wheel-sheen)" />
-                <circle
-                  cx={C}
-                  cy={C}
-                  r={R}
-                  fill="none"
-                  stroke="rgba(214,51,232,0.55)"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-
-            {/* hub = the spin button */}
-            <button
-              type="button"
-              onClick={spin}
-              disabled={spinning || exhausted}
-              className="wheel-hub"
-              aria-label={t.spin}
-            >
-              <span className="font-display text-[11px] font-semibold uppercase tracking-[0.24em]">
-                {spinning ? t.spinning : t.spin}
-              </span>
-              <span className="mt-1 text-[10px] tracking-[0.18em] text-pearl-100/50">
-                {pool.length}/{N}
-              </span>
-            </button>
-
+            <p className="small mt-5 flex items-center justify-center gap-2.5">
+              <span className="mote text-cyan-300" aria-hidden="true" />
+              {t.hint}
+            </p>
           </div>
-          <p className="mt-6 text-center text-xs uppercase tracking-[0.28em] text-pearl-100/40">
-            {t.hint}
-          </p>
-        </div>
 
-        {/* ---------------- result panel ---------------- */}
-        <div className="frame-hairline min-h-[22rem] bg-ink-900/50 p-8 sm:p-10">
-          <div aria-live="polite">
+          {/* ---------------- result panel ---------------- */}
+          <div className="panel flex min-h-[22rem] flex-col justify-center p-[clamp(1.5rem,3vw,2.5rem)] lg:col-span-7">
+            {/* only this block is announced: the countdown below would
+                otherwise be read out every second */}
+            <div aria-live="polite" aria-atomic="true">
+              {winner !== null ? (
+                <>
+                  <p className="label flex items-center gap-3">
+                    <span className="mote text-fuchsia-400" aria-hidden="true" />
+                    {t.topicLabel}
+                  </p>
+                  <p className="h-section mt-5" lang={topicLang}>
+                    {TOPICS[winner].text}
+                  </p>
+                </>
+              ) : exhausted ? (
+                <>
+                  <p className="h-section">{t.allDoneTitle}</p>
+                  <p className="body mt-4">{t.allDoneLead}</p>
+                </>
+              ) : (
+                <>
+                  <p className="h-section">{spinning ? `${t.spinning}…` : t.idleTitle}</p>
+                  <p className="body mt-4">{t.idleLead}</p>
+                  <p className="small mt-8 flex items-center gap-2.5">
+                    <span className="mote text-cyan-300" aria-hidden="true" />
+                    {pool.length} {t.remaining}
+                  </p>
+                </>
+              )}
+            </div>
+
             {winner !== null ? (
               <>
-                <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-300">
-                  <span className="h-px w-8 bg-gradient-to-r from-fuchsia-500 to-cyan-300" />
-                  {t.topicLabel}
-                </p>
-                <p className="mt-6 font-display text-2xl font-light leading-snug text-pearl-50 sm:text-[1.75rem]">
-                  {TOPICS[winner].text}
-                </p>
-
                 <div className="mt-8">
                   {left === null ? (
-                    <button
-                      type="button"
-                      onClick={startTimer}
-                      className="btn-lux btn-lux-ghost !px-6 !py-2.5 !text-[11px]"
-                    >
+                    <Btn type="button" variant="solid" onClick={startTimer}>
                       {t.timerStart}
-                    </button>
+                    </Btn>
                   ) : (
                     <div>
-                      <div className="flex items-baseline gap-3">
+                      <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
                         <span
-                          className={`font-display text-5xl font-extralight tabular-nums ${
-                            left === 0 ? "text-neon-red" : "text-neon"
-                          }`}
+                          role="timer"
+                          aria-live="off"
+                          aria-label={t.timerLabel}
+                          className={`figure tabular-nums ${left === 0 ? "!text-fuchsia-400" : ""}`}
                         >
                           {left === 0 ? t.timerDone : `${left}s`}
                         </span>
-                        <button
-                          type="button"
-                          onClick={stopTimer}
-                          className="text-xs uppercase tracking-[0.2em] text-pearl-100/50 hover:text-pearl-100"
-                        >
+                        <Btn type="button" variant="line" onClick={stopTimer}>
                           {t.timerReset}
-                        </button>
+                        </Btn>
                       </div>
-                      <div className="mt-4 h-px w-full bg-white/10">
+                      <div
+                        className="mt-5 h-1 w-full overflow-hidden rounded-full bg-white/12"
+                        aria-hidden="true"
+                      >
                         <div
-                          className="h-px bg-gradient-to-r from-fuchsia-500 to-cyan-300 transition-[width] duration-200 ease-linear"
-                          style={{ width: `${(left / TALK_SECONDS) * 100}%` }}
+                          className="h-full origin-left bg-cyan-300 transition-transform duration-200 ease-linear motion-reduce:transition-none"
+                          style={{ transform: `scaleX(${left / TALK_SECONDS})` }}
                         />
                       </div>
+                      {/* the one moment of the countdown worth announcing */}
+                      <span className="sr-only" role="status">
+                        {left === 0 ? t.timerDone : ""}
+                      </span>
                     </div>
                   )}
                 </div>
 
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <button
-                    type="button"
-                    onClick={spin}
-                    className="btn-lux btn-lux-primary !px-6 !py-2.5 !text-[11px]"
-                  >
-                    {t.again} <span className="text-cyan-300">&#9642;</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={markDone}
-                    className="btn-lux btn-lux-ghost !px-6 !py-2.5 !text-[11px]"
-                  >
+                {/* the solid button is the next step: start the clock, then
+                    (once time is up) spin again */}
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Btn type="button" variant={left === 0 ? "solid" : "line"} onClick={spin}>
+                    {t.again}
+                  </Btn>
+                  <Btn type="button" variant="line" onClick={markDone}>
                     {t.markDone}
-                  </button>
+                  </Btn>
                 </div>
               </>
             ) : exhausted ? (
-              <>
-                <p className="font-display text-2xl font-light text-pearl-50">
-                  {t.allDoneTitle}
-                </p>
-                <p className="mt-4 text-[15px] leading-relaxed text-pearl-100/70">
-                  {t.allDoneLead}
-                </p>
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="btn-lux btn-lux-primary mt-8 !px-6 !py-2.5 !text-[11px]"
-                >
+              <div className="mt-8">
+                <Btn type="button" variant="solid" onClick={reset}>
                   {t.reset}
-                </button>
-              </>
-            ) : (
-              <>
-                <p className="font-display text-2xl font-light text-pearl-50">
-                  {spinning ? `${t.spinning}…` : t.idleTitle}
-                </p>
-                <p className="mt-4 text-[15px] leading-relaxed text-pearl-100/70">
-                  {t.idleLead}
-                </p>
-                <p className="mt-8 text-xs uppercase tracking-[0.3em] text-cyan-300/70">
-                  {pool.length} {t.remaining}
-                </p>
-              </>
-            )}
+                </Btn>
+              </div>
+            ) : null}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ---------------- every topic, in full ---------------- */}
-      <div className="mt-20">
-        <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-300">
-          <span className="h-px w-8 bg-gradient-to-r from-fuchsia-500 to-cyan-300" />
-          {t.listKicker}
-        </p>
-        <h2 className="font-display text-3xl font-light tracking-[0.02em] text-pearl-50 sm:text-4xl">
-          {t.listHeading}
-        </h2>
-
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {TOPICS.map((topic, i) => {
-            const isDone = done.includes(i);
-            return (
-              <li
-                key={topic.short}
-                className={`frame-hairline bg-ink-900/40 p-5 transition ${
-                  isDone ? "opacity-40" : ""
-                } ${winner === i ? "!border-fuchsia-400/70" : ""}`}
-              >
-                <div className="flex items-baseline justify-between gap-4">
-                  <span className="font-display text-xs uppercase tracking-[0.22em] text-cyan-400/60">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  {isDone && (
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-fuchsia-400/80">
-                      {t.done}
-                    </span>
-                  )}
+      {/* ============ EVERY TOPIC, IN FULL: sticky heading, rows on the right ============ */}
+      <section className="sec">
+        <div className="wrap grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-28">
+              <SplitReveal as="h2" className="h-section">
+                {t.listHeading}
+              </SplitReveal>
+              <p className="small mt-4 flex items-center gap-2.5">
+                <span className="mote text-cyan-300" aria-hidden="true" />
+                {t.listKicker}
+              </p>
+              {done.length > 0 && (
+                <div className="mt-8">
+                  <Btn type="button" variant="line" onClick={reset}>
+                    {t.reset}
+                  </Btn>
                 </div>
-                <p
-                  className={`mt-3 text-sm leading-relaxed text-pearl-100/75 ${
-                    isDone ? "line-through" : ""
-                  }`}
-                >
-                  {topic.text}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+              )}
+            </div>
+          </div>
 
-        {done.length > 0 && (
-          <button
-            type="button"
-            onClick={reset}
-            className="btn-lux btn-lux-ghost mt-10 !px-6 !py-2.5 !text-[11px]"
-          >
-            {t.reset}
-          </button>
-        )}
-      </div>
+          <Rise as="ul" className="rows lg:col-span-8">
+            {TOPICS.map((topic, i) => {
+              const isDone = done.includes(i);
+              const isWinner = winner === i;
+              return (
+                <li
+                  key={topic.short}
+                  className="flex items-start gap-4 py-5"
+                  aria-current={isWinner ? "true" : undefined}
+                >
+                  <span
+                    className={`mote mt-[0.72rem] ${
+                      isWinner
+                        ? "text-fuchsia-400"
+                        : isDone
+                          ? "text-[var(--text-3)]"
+                          : "text-cyan-300"
+                    }`}
+                    aria-hidden="true"
+                  />
+                  <span
+                    lang={topicLang}
+                    className={`body flex-1 ${
+                      isWinner
+                        ? "!text-pearl-50"
+                        : isDone
+                          ? "!text-[var(--text-3)] line-through"
+                          : ""
+                    }`}
+                  >
+                    {topic.text}
+                  </span>
+                  {isDone && <span className="small mt-1.5 shrink-0">{t.done}</span>}
+                </li>
+              );
+            })}
+          </Rise>
+        </div>
+      </section>
     </>
   );
 }

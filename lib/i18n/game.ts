@@ -1,0 +1,81 @@
+/** Club Fair wheel game copy. */
+export const game = {
+  vi: {
+    meta: {
+      title: "Game — Club Fair",
+      description:
+        "TEDx in 30s — vòng quay chủ đề của ReThink tại Club Fair. Quay một chủ đề, rồi có 30 giây để nói quan điểm của mình.",
+    },
+    badge: "Club Fair · ReThink",
+    /* the h1 is `h1` + the game's name ("TEDx in 30s", verbatim in the component) */
+    h1: "Vòng quay chủ đề",
+    lead:
+      "Quay vòng để nhận một chủ đề, rồi có đúng 30 giây để bảo vệ quan điểm của mình — một TEDx talk thu nhỏ ngay tại gian hàng ReThink.",
+    spin: "Quay",
+    spinning: "Đang quay",
+    hint: "Nhấn vào tâm vòng quay để bắt đầu",
+    idleTitle: "Sẵn sàng chưa?",
+    idleLead: "Quay vòng và nhận chủ đề đầu tiên của bạn.",
+    topicLabel: "Chủ đề của bạn",
+    again: "Quay lần nữa",
+    markDone: "Đánh dấu đã nói",
+    reset: "Chơi lại từ đầu",
+    timerStart: "Bấm giờ 30 giây",
+    timerReset: "Dừng & đặt lại",
+    timerDone: "Hết giờ!",
+    timerLabel: "Thời gian còn lại",
+    remaining: "chủ đề còn lại",
+    allDoneTitle: "Hết chủ đề rồi!",
+    allDoneLead:
+      "Cả 11 chủ đề đều đã được nói. Chơi lại từ đầu để tiếp tục.",
+    listKicker: "11 chủ đề",
+    listHeading: "Các chủ đề trên vòng quay",
+    done: "Đã nói",
+    ctaHeading: "Thích cách chúng mình đặt câu hỏi?",
+    ctaLead:
+      "Đó cũng là cách ReThink làm việc: lấy một điều quen thuộc, lật nó lại, rồi kể thành một câu chuyện đáng nghe.",
+    ctaAbout: "Tìm hiểu về ReThink",
+    ctaAboutNote: "Câu chuyện, sáu ban và văn hoá của ReThinkers",
+    ctaJoin: "Gia nhập ReThink",
+    ctaJoinOpen: "Đang mở đơn ứng tuyển",
+    ctaJoinClosed: "Đợt tuyển thành viên hiện đã đóng",
+  },
+  en: {
+    meta: {
+      title: "Game — Club Fair",
+      description:
+        "TEDx in 30s — ReThink's topic wheel for Club Fair. Spin a topic, then take 30 seconds to make your case.",
+    },
+    badge: "Club Fair · ReThink",
+    h1: "The topic wheel",
+    lead:
+      "Spin for a topic, then take exactly 30 seconds to make your case — a TEDx talk in miniature, right at the ReThink booth.",
+    spin: "Spin",
+    spinning: "Spinning",
+    hint: "Tap the hub to spin",
+    idleTitle: "Ready?",
+    idleLead: "Give the wheel a spin and take your first topic.",
+    topicLabel: "Your topic",
+    again: "Spin again",
+    markDone: "Mark as spoken",
+    reset: "Start over",
+    timerStart: "Start 30 seconds",
+    timerReset: "Stop & reset",
+    timerDone: "Time!",
+    timerLabel: "Time left",
+    remaining: "topics left",
+    allDoneTitle: "That's all of them!",
+    allDoneLead: "All 11 topics have been spoken. Start over to keep playing.",
+    listKicker: "11 topics",
+    listHeading: "Topics on the wheel",
+    done: "Spoken",
+    ctaHeading: "Like the way we ask questions?",
+    ctaLead:
+      "That is how ReThink works every day: take something familiar, turn it over, then tell it as a story worth hearing.",
+    ctaAbout: "Get to know ReThink",
+    ctaAboutNote: "The story, six departments and the culture of ReThinkers",
+    ctaJoin: "Join ReThink",
+    ctaJoinOpen: "Applications are open",
+    ctaJoinClosed: "Applications are currently closed",
+  },
+} as const;

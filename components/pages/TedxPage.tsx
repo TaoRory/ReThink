@@ -1,287 +1,375 @@
 import Image from "next/image";
-import { Aurora } from "@/components/Aurora";
+import Link from "next/link";
 import { Btn } from "@/components/Btn";
-import { Sparkle } from "@/components/Sparkle";
+import { Tedx, TedxText } from "@/components/Tedx";
+import { Magnetic } from "@/components/motion/Magnetic";
+import { Parallax } from "@/components/motion/Parallax";
+import { Rise } from "@/components/motion/Rise";
+import { SplitReveal } from "@/components/motion/SplitReveal";
 import { dict, localePath, type Locale } from "@/lib/i18n";
+import { RECRUITING, TEDX_2026_SITE } from "@/lib/site-state";
 
-const TEDX_URL = "https://v0-tedxvinuni.vercel.app/";
+/* Theme names are brand phrases: verbatim in both languages */
+const FIRSTS = "The Firsts";
 
-/** earlier seasons — titles only for now, no write-up yet */
-const PAST_SEASONS = [
-  { year: "2023", title: "Reinvent the Wheel" },
-  { year: "2024", title: "The New Dawn" },
-];
+/**
+ * The season archive, newest first. What we may say about each season is
+ * fixed (see lib/i18n/tedx.ts): 2026 = name + year + its own site, 2025 = the
+ * season this page documents, 2024 / 2023 = name + year, write-up pending.
+ */
+const SEASONS = [
+  { year: "2026", title: "Limitless Decade", kind: "site" },
+  { year: "2025", title: FIRSTS, kind: "here", img: "/photos/tedx-thanks.jpg", alt: "altThumb2025" },
+  { year: "2024", title: "The New Dawn", kind: "pending", img: "/photos/tedx-purple-2.jpg", alt: "altThumb2024" },
+  { year: "2023", title: "Reinvent the Wheel", kind: "pending", img: "/photos/stage-2023.jpg", alt: "altThumb2023" },
+] as const;
 
-const GALLERY = [
-  { src: "/photos/tedx-stage.jpg", span: true },
-  { src: "/photos/tedx-speakers.jpg" },
-  { src: "/photos/tedx-redcarpet.jpg" },
-  { src: "/photos/tedx-team.jpg" },
-  { src: "/photos/tedx-expert.jpg" },
-  { src: "/photos/tedx-backdrop.jpg", span: true },
-];
-
+/**
+ * Motion storyboard (docs/design-system.md has the rules):
+ *   hero      load    h1 lines rise out of a mask; the stage photo opens
+ *                     and drifts in its frame                            T1 + T2 (scene 1)
+ *   seasons   scroll  the four rows rise one after another, newest first  T1
+ *   Firsts    scroll  the audience photo opens and drifts in its frame    T2 (scene 2)
+ *   photos    scroll  each frame wipes open (images only)                 T1
+ *   the rest  scroll  blocks rise into place (never hidden)               T1
+ * One <Magnetic>: the hero's main action.
+ */
 export function TedxPage({ locale }: { locale: Locale }) {
   const t = dict[locale].tedx;
+  const to = (path: string) => localePath(locale, path);
+  const en = locale === "vi" ? "en" : undefined; // brand phrases are English
 
   return (
     <>
-      {/* Hero */}
+      {/* ============ HERO: the name across the page, then the stage ============ */}
       <section className="relative overflow-hidden pt-16">
-        <div className="absolute inset-0">
-          <Image
-            src="/photos/tedx-audience.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/80 to-ink-950" />
-          <div className="absolute inset-0 bg-[radial-gradient(50rem_28rem_at_75%_10%,rgba(192,26,51,0.28),transparent_60%)]" />
-        </div>
-
-        <div className="relative mx-auto max-w-6xl px-5 py-28 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-pearl-100/70">
+        <div className="wrap pb-[clamp(2.5rem,6vw,5rem)] pt-[clamp(2rem,4.5vw,3.5rem)]">
+          <p className="label mb-5 flex items-center gap-3" lang={en}>
+            <span className="mote text-fuchsia-400" aria-hidden="true" />
             {t.presents}
           </p>
-          <h1 className="mt-6 font-display text-[clamp(1.6rem,7.4vw,4.5rem)] font-bold leading-none">
-            <span className="text-neon-red">TEDx</span>{" "}
-            <span className="text-pearl-100">VinUniversity</span>
-          </h1>
-          <p className="mt-4 font-display text-[clamp(1.9rem,7vw,3.1rem)] font-extralight uppercase tracking-[0.3em] text-neon-red">
-            The Firsts
-          </p>
-          <p className="mx-auto mt-8 max-w-2xl text-[15px] leading-relaxed text-pearl-100/80">
-            {t.heroLeadA}
-            <strong className="text-pearl-100">{t.heroTheme}</strong>
-            {t.heroLeadB}
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Btn href="#seasons" variant="red">
-              {t.heroBtn1} ▪
-            </Btn>
-            <Btn href={localePath(locale, "/join")} variant="ghost">
-              {t.heroBtn2}
-            </Btn>
-          </div>
-        </div>
-      </section>
 
-      {/* Stats */}
-      <section className="border-y border-white/8 bg-ink-900/40">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-5 py-16 sm:grid-cols-3 lg:grid-cols-6">
-          {t.stats.map(([n, label]) => (
-            <div key={label} className="text-center">
-              <p className="font-display text-4xl font-bold text-fuchsia-400">
-                {n}
-              </p>
-              <p className="mx-auto mt-2 max-w-[10rem] text-xs leading-relaxed text-pearl-100/60">
-                {label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+          <SplitReveal as="h1" trigger="load" className="h-display">
+            <Tedx /> VinUniversity <span className="tone-2">{t.h1Rest}</span>
+          </SplitReveal>
 
-      {/* Two seasons */}
-      <section id="seasons" className="relative overflow-hidden py-24">
-        <Aurora sweep className="opacity-60" />
-        <div className="relative mx-auto max-w-6xl px-5">
-          <div className="mb-12 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-fuchsia-400">
-              {t.seasonsKicker}
-            </p>
-            <h2 className="mt-4 font-display text-4xl text-pearl-100 sm:text-5xl">
-              {t.seasonsHeading}
-            </h2>
-          </div>
-
-          <div className="stagger grid gap-6 md:grid-cols-2" data-reveal>
-            {/* The Firsts 2025 */}
-            <article className="group relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900/60">
-              <div className="relative h-52 overflow-hidden">
+          <div className="mt-8 grid gap-8 lg:mt-11 lg:grid-cols-12 lg:gap-12">
+            <figure className="lg:col-span-8">
+              <Parallax className="photo photo-lg aspect-[3/2] lg:aspect-[16/10]" depth={8}>
                 <Image
                   src="/photos/tedx-stage.jpg"
-                  alt={t.gallery[0]}
+                  alt={t.altHero}
                   fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
+                  priority
+                  sizes="(min-width: 1320px) 820px, (min-width: 1024px) 66vw, 100vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/30 to-transparent" />
-                <span className="absolute left-5 top-5 rounded-full border border-white/20 bg-ink-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-pearl-100 backdrop-blur">
-                  {t.s1Badge}
-                </span>
-              </div>
-              <div className="p-7">
-                <h3 className="font-display text-3xl font-bold">
-                  <span className="text-neon-red">The</span>{" "}
-                  <span className="text-pearl-100">Firsts</span>
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
-                  {t.s1Desc}
-                </p>
-                <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-fuchsia-400">
-                  {t.s1Cue}
-                </p>
-              </div>
-            </article>
-
-            {/* Limitless Decade 2026 */}
-            <a
-              href={TEDX_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-fuchsia-500/30 bg-gradient-to-b from-fuchsia-700/25 via-ink-900/70 to-ink-900/60 transition hover:border-fuchsia-400/60"
-            >
-              <div className="relative flex h-52 items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(24rem_14rem_at_50%_120%,rgba(192,26,51,0.4),transparent_65%)] transition duration-700 group-hover:scale-110" />
-                <Sparkle className="absolute left-[12%] top-8 h-6 w-6 text-fuchsia-400/70" />
-                <Sparkle className="absolute right-[14%] bottom-8 h-9 w-9 text-lilac-200/50" />
-                <p className="relative font-display text-4xl font-extralight uppercase tracking-[0.28em] text-neon-red">
-                  Limitless
-                </p>
-                <span className="absolute left-5 top-5 rounded-full border border-fuchsia-400/40 bg-ink-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-fuchsia-400 backdrop-blur">
-                  {t.s2Badge}
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col p-7">
-                <h3 className="font-display text-3xl font-bold">
-                  <span className="text-neon-red">Limitless</span>{" "}
-                  <span className="text-pearl-100">Decade</span>
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
-                  {t.s2Desc}
-                </p>
-                <p className="mt-auto pt-5 text-sm font-semibold uppercase tracking-[0.2em] text-fuchsia-400 transition group-hover:text-fuchsia-300">
-                  {t.s2Cue}
-                </p>
-              </div>
-            </a>
-          </div>
-
-          {/* earlier seasons: listed for completeness, write-ups to come */}
-          <div className="mt-8">
-            <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-pearl-100/45">
-              <span className="h-px w-8 bg-gradient-to-r from-fuchsia-500/60 to-transparent" />
-              {t.pastKicker}
-            </p>
-            <div className="stagger grid gap-4 sm:grid-cols-2" data-reveal>
-              {PAST_SEASONS.map((s) => (
-                <div
-                  key={s.year}
-                  className="hang frame-hairline flex items-baseline justify-between gap-4 bg-ink-900/40 p-6"
-                >
-                  <h3 className="font-display text-xl font-semibold">
-                    <span className="text-neon-red">TEDx</span>{" "}
-                    <span className="text-pearl-100/85">{s.title}</span>
-                  </h3>
-                  <div className="shrink-0 text-right">
-                    <p className="font-display text-lg font-light tracking-[0.2em] text-pearl-100/60">
-                      {s.year}
-                    </p>
-                    <p className="mt-0.5 text-[11px] italic text-pearl-100/35">
-                      {t.pastNote}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Story */}
-      <section className="py-24">
-        <div className="mx-auto grid max-w-6xl items-start gap-14 px-5 lg:grid-cols-[1fr_1.15fr]">
-          <div className="lg:sticky lg:top-28">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-fuchsia-400">
-              {t.behindKicker}
-            </p>
-            <h2 className="mt-4 font-display text-4xl leading-tight text-pearl-100 sm:text-5xl">
-              {t.behindHeading1}
-              <br />
-              {t.behindHeading2}
-            </h2>
-            <div className="mt-7 space-y-5 text-[15px] leading-relaxed text-pearl-100/75">
-              <p>{t.behindP1}</p>
-              <p>
-                {t.behindP2[0]}
-                <strong className="text-pearl-100">{t.behindP2[1]}</strong>
-                {t.behindP2[2]}
-                <strong className="text-pearl-100">{t.behindP2[3]}</strong>
-                {t.behindP2[4]}
-                <strong className="text-pearl-100">{t.behindP2[5]}</strong>
-                {t.behindP2[6]}
-                <strong className="text-pearl-100">{t.behindP2[7]}</strong>
-                {t.behindP2[8]}
-                <strong className="text-pearl-100">{t.behindP2[9]}</strong>
-                {t.behindP2[10]}
-              </p>
-            </div>
-
-            {/* testimonial */}
-            <figure className="frame-hairline mt-8 bg-ink-900/50 p-6">
-              <blockquote className="font-display text-lg italic leading-relaxed text-pearl-100/90">
-                {t.testimonial}
-              </blockquote>
-              <figcaption className="mt-3 text-xs uppercase tracking-[0.25em] text-pearl-100/50">
-                {t.testimonialBy}
+              </Parallax>
+              <figcaption className="small mt-3 flex items-center gap-2.5">
+                <span className="mote text-cyan-300" aria-hidden="true" />
+                <span>{t.heroCaption}</span>
               </figcaption>
             </figure>
 
-            <a
-              href={TEDX_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-block text-sm font-semibold text-fuchsia-400 underline-offset-4 hover:underline"
-            >
-              {t.seasonLink}
-            </a>
-          </div>
-
-          {/* Gallery */}
-          <div className="stagger grid grid-cols-2 gap-4" data-reveal>
-            {GALLERY.map((g, i) => (
-              <div
-                key={g.src}
-                className={`group relative overflow-hidden rounded-2xl border border-white/10 ${
-                  g.span ? "col-span-2 aspect-[16/9]" : "aspect-[4/3]"
-                }`}
-              >
-                <Image
-                  src={g.src}
-                  alt={t.gallery[i]}
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 to-transparent opacity-0 transition group-hover:opacity-100" />
+            {/* lead at the photo's top edge, actions at its bottom edge */}
+            <div className="lg:col-span-4 lg:flex lg:flex-col lg:justify-between lg:pb-9">
+              <p className="lead">{t.heroLead}</p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Magnetic>
+                  <Btn variant="ted" href="#seasons" arrow>
+                    {t.heroBtn1}
+                  </Btn>
+                </Magnetic>
+                {RECRUITING ? (
+                  <Btn variant="brand" href={to("/join")} arrow>
+                    {t.heroBtn2}
+                  </Btn>
+                ) : (
+                  <Btn variant="line" href="#the-firsts">
+                    {t.heroBtnFirsts}
+                  </Btn>
+                )}
               </div>
-            ))}
+            </div>
+          </div>
+        </div>
+        <div className="spectrum-line" aria-hidden="true" />
+      </section>
+
+      {/* ============ THE SEASONS: one panel, a row per year, newest first ============ */}
+      <section id="seasons" className="mt-[clamp(2.5rem,6vw,5rem)] px-[calc(var(--gutter)/2)]">
+        <div className="panel">
+          <div className="wrap py-[clamp(3rem,7vw,6.5rem)]">
+            <SplitReveal as="h2" className="h-section">
+              {t.seasonsHeadingA} <span className="tone-2">{t.seasonsHeadingB}</span>
+            </SplitReveal>
+
+            <ol className="rows mt-10">
+              {SEASONS.map((season, i) => (
+                <Rise
+                  as="li"
+                  key={season.year}
+                  index={i}
+                  className="grid grid-cols-[1fr_7rem] items-start gap-x-5 gap-y-4 py-8 lg:grid-cols-12 lg:items-center lg:gap-x-8"
+                >
+                  <div
+                    className={`lg:col-span-5 lg:flex lg:items-baseline lg:gap-8 ${
+                      season.kind === "site" ? "col-span-2" : ""
+                    }`}
+                  >
+                    <p className="figure lg:w-[9.5rem] lg:flex-none">{season.year}</p>
+                    <h3 className="h-card mt-2 lg:mt-0" lang={en}>
+                      {season.title}
+                    </h3>
+                  </div>
+
+                  <div className="col-span-2 lg:col-span-4">
+                    <p className="body">
+                      {season.kind === "site" && t.s2026Desc}
+                      {season.kind === "here" && t.s1Desc}
+                      {season.kind === "pending" && t.pastNote}
+                    </p>
+                    {season.kind === "here" && (
+                      <Btn variant="line" href="#the-firsts" className="mt-5">
+                        {t.s1Btn}
+                      </Btn>
+                    )}
+                  </div>
+
+                  {season.kind === "site" ? (
+                    <div className="col-span-2 lg:col-span-3 lg:justify-self-end">
+                      <Btn variant="ted" href={TEDX_2026_SITE} external arrow>
+                        {t.s2026Btn}
+                      </Btn>
+                    </div>
+                  ) : (
+                    <div className="photo col-start-2 row-start-1 aspect-[3/2] lg:col-span-3 lg:col-start-10">
+                      <Image
+                        src={season.img}
+                        alt={t[season.alt]}
+                        fill
+                        sizes="(min-width: 1024px) 300px, 112px"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                </Rise>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative overflow-hidden border-t border-white/8 py-24 text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(42rem_24rem_at_50%_120%,rgba(192,26,51,0.25),transparent_65%)]" />
-        <Sparkle className="absolute left-[14%] top-14 h-8 w-8 text-fuchsia-400/50" />
-        <Sparkle className="absolute right-[12%] bottom-14 h-10 w-10 text-cyan-400/50" />
-        <div className="relative mx-auto max-w-2xl px-5">
-          <h2 className="font-display text-4xl leading-tight text-pearl-100">
-            {t.ctaHeading1}
-            <br />
-            <span className="font-display text-neon-red text-[1.15em] font-extralight uppercase tracking-[0.2em]">
-              {t.ctaHeading2}
-            </span>
-          </h2>
-          <p className="mt-6 text-[15px] leading-relaxed text-pearl-100/70">
-            {t.ctaLead}
+      {/* ============ THE FIRSTS, 2025: heading + lead, the room, the numbers ============ */}
+      <section id="the-firsts" className="sec">
+        <div className="wrap">
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+            <SplitReveal as="h2" className="h-section lg:col-span-5">
+              <span lang={en}>{FIRSTS}</span> <span className="tone-2">2025</span>
+            </SplitReveal>
+            <p className="lead lg:col-span-6 lg:col-start-7">
+              {t.heroLeadA}
+              <strong>{t.heroTheme}</strong>
+              {t.heroLeadB}
+            </p>
+          </div>
+
+          <figure className="mt-12">
+            <Parallax className="photo photo-lg aspect-[4/3] sm:aspect-[21/9]" depth={10}>
+              <Image
+                src="/photos/tedx-audience.jpg"
+                alt={t.altAudience}
+                fill
+                sizes="(min-width: 1320px) 1240px, 100vw"
+              />
+            </Parallax>
+            <figcaption className="small mt-3 flex items-center gap-2.5">
+              <span className="mote text-cyan-300" aria-hidden="true" />
+              <span>{t.audienceCaption}</span>
+            </figcaption>
+          </figure>
+
+          <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:gap-x-12">
+            {t.stats.map(([figure, label], i) => (
+              <Rise
+                key={label}
+                index={i % 3}
+                className="flex flex-col-reverse justify-end gap-3 border-t border-[var(--line-strong)] pt-5"
+              >
+                <dt className="max-w-[17rem] text-[0.9375rem] leading-snug text-[var(--text-2)]">{label}</dt>
+                <dd className="figure">{figure}</dd>
+              </Rise>
+            ))}
+          </dl>
+          <p className="small mt-8 flex items-center gap-2.5">
+            <span className="mote text-cyan-300" aria-hidden="true" />
+            <span>{t.statsSource}</span>
           </p>
-          <Btn href={localePath(locale, "/join")} variant="red" className="mt-9">
-            {t.ctaBtn} ▪
-          </Btn>
+        </div>
+      </section>
+
+      {/* ============ BEHIND THE STAGE: sticky heading, the account, one voice ============ */}
+      <section className="sec !pt-0">
+        <div className="wrap grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-28">
+              <p className="label mb-4" lang={en}>
+                {t.behindKicker}
+              </p>
+              <SplitReveal as="h2" className="h-section">
+                {t.behindHeading1} <span className="tone-2">{t.behindHeading2}</span>
+              </SplitReveal>
+            </div>
+          </div>
+
+          <div className="lg:col-span-7">
+            <Rise className="measure space-y-6">
+              <p className="lead">
+                <TedxText>{t.behindP1}</TedxText>
+              </p>
+              <p className="body">
+                {t.behindP2.map((part, i) =>
+                  i % 2 === 1 ? <strong key={i}>{part}</strong> : <TedxText key={i}>{part}</TedxText>,
+                )}
+              </p>
+            </Rise>
+
+            <Rise as="figure" className="mt-12 border-t border-[var(--line)] pt-10">
+              <blockquote
+                lang="en"
+                className="max-w-2xl font-display text-[clamp(1.5rem,1.1rem+1.5vw,2.25rem)] font-light leading-[1.3] text-pearl-50"
+              >
+                {t.testimonial}
+              </blockquote>
+              <figcaption className="small mt-5 flex items-center gap-2.5">
+                <span className="mote text-fuchsia-400" aria-hidden="true" />
+                <span>
+                  <TedxText>{t.testimonialBy}</TedxText>
+                </span>
+              </figcaption>
+            </Rise>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ PHOTOS: a mosaic, one tall frame against two uneven rows ============ */}
+      <section className="sec !pt-0">
+        <div className="wrap">
+          <SplitReveal as="h2" className="h-section">
+            {t.galleryHeading} <span lang={en}>{FIRSTS}</span>
+          </SplitReveal>
+
+          {/* phones: 2-column mosaic (wrappers are `contents`); desktop: tall frame + two justified rows */}
+          <div className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-12 lg:gap-4">
+            <Rise kind="wipe" className="photo order-2 row-span-2 lg:order-none lg:col-span-4 lg:row-auto">
+              <Image
+                src="/photos/tedx-redcarpet.jpg"
+                alt={t.altRedcarpet}
+                fill
+                sizes="(min-width: 1024px) 400px, 50vw"
+                className="object-cover"
+              />
+            </Rise>
+
+            <div className="contents lg:col-span-8 lg:flex lg:flex-col lg:gap-4">
+              <div className="contents lg:flex lg:items-start lg:gap-4">
+                <Rise
+                  kind="wipe"
+                  index={1}
+                  className="photo order-1 col-span-2 aspect-[10/7] lg:order-none lg:min-w-0 lg:flex-[1.43_1_0%]"
+                >
+                  <Image
+                    src="/photos/tedx-team.jpg"
+                    alt={t.altTeam}
+                    fill
+                    sizes="(min-width: 1024px) 440px, 100vw"
+                    className="object-cover"
+                  />
+                </Rise>
+                <Rise
+                  kind="wipe"
+                  index={2}
+                  className="photo order-3 aspect-[16/13] lg:order-none lg:min-w-0 lg:flex-[1.23_1_0%]"
+                >
+                  <Image
+                    src="/photos/tedx-speakers.jpg"
+                    alt={t.altSpeakers}
+                    fill
+                    sizes="(min-width: 1024px) 380px, 50vw"
+                    className="object-cover object-bottom"
+                  />
+                </Rise>
+              </div>
+              <div className="contents lg:flex lg:items-start lg:gap-4">
+                <Rise
+                  kind="wipe"
+                  index={1}
+                  className="photo order-5 col-span-2 aspect-[16/9] lg:order-none lg:min-w-0 lg:flex-[1.78_1_0%]"
+                >
+                  <Image
+                    src="/photos/tedx-backdrop.jpg"
+                    alt={t.altBackdrop}
+                    fill
+                    sizes="(min-width: 1024px) 450px, 100vw"
+                    className="object-cover object-[50%_60%]"
+                  />
+                </Rise>
+                <Rise
+                  kind="wipe"
+                  index={2}
+                  className="photo order-4 aspect-[3/2] lg:order-none lg:min-w-0 lg:flex-[1.5_1_0%]"
+                >
+                  <Image
+                    src="/photos/tedx-expert.jpg"
+                    alt={t.altExpert}
+                    fill
+                    sizes="(min-width: 1024px) 380px, 50vw"
+                    className="object-cover"
+                  />
+                </Rise>
+              </div>
+            </div>
+          </div>
+
+          <p className="small mt-4 flex items-center gap-2.5">
+            <span className="mote text-cyan-300" aria-hidden="true" />
+            <span>
+              <TedxText>{t.galleryCaption}</TedxText>
+            </span>
+          </p>
+        </div>
+      </section>
+
+      {/* ============ NEXT STEP: two uneven tiles ============ */}
+      <section className="sec !pt-0">
+        <div className="wrap">
+          <SplitReveal as="h2" className="h-display max-w-4xl">
+            {t.ctaHeading1} <span className="tone-2">{t.ctaHeading2}</span>
+          </SplitReveal>
+          <p className="lead measure mt-6">
+            {t.ctaLead}
+            {RECRUITING && ` ${t.ctaLeadOpen}`}
+          </p>
+
+          <div className="mt-12 grid gap-4 md:grid-cols-12">
+            <Link href={to("/about")} className={`tile md:col-span-7 ${RECRUITING ? "" : "tile-brand"}`}>
+              <span className="small">{t.ctaAboutNote}</span>
+              <span className="flex items-end justify-between gap-6">
+                <span className="h-section">{t.ctaAbout}</span>
+                <span className="tile-arrow" aria-hidden="true">
+                  →
+                </span>
+              </span>
+            </Link>
+            <Link href={to("/join")} className={`tile md:col-span-5 ${RECRUITING ? "tile-brand" : ""}`}>
+              <span className="small">{RECRUITING ? t.ctaJoinOpen : t.ctaJoinClosed}</span>
+              <span className="flex items-end justify-between gap-6">
+                <span className="h-section">{RECRUITING ? t.ctaBtn : t.ctaJoin}</span>
+                <span className="tile-arrow" aria-hidden="true">
+                  →
+                </span>
+              </span>
+            </Link>
+          </div>
         </div>
       </section>
     </>

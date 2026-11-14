@@ -3,6 +3,12 @@
 /* the Halloween event page brings its own world; all of it scoped to `.hlw` */
 @import "./halloween.css";
 
+/* Aegis motion foundation (Rise, SplitReveal, kit-mark, kit-roll…) and the
+   main-site design system built on it */
+@import "lenis/dist/lenis.css";
+@import "./motion.css";
+@import "./system.css";
+
 @theme {
   /* ============================================================
      ReThink AY 26-27 — "Pendulum" KV
@@ -55,10 +61,6 @@
   color-scheme: dark;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background: var(--color-ink-950);
   color: var(--color-pearl-100);
@@ -90,176 +92,6 @@ body {
     0 0 38px rgba(230, 43, 30, 0.7),
     0 0 80px rgba(196, 22, 18, 0.42);
 }
-
-/* Film-grain overlay — the KV spheres carry a fine noise */
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
-}
-
-/* Light-bloom backdrop, echoing the cover's halo rim */
-.smoke {
-  background:
-    radial-gradient(52rem 30rem at 82% -6%, rgba(122, 21, 240, 0.30), transparent 62%),
-    radial-gradient(44rem 30rem at -8% 30%, rgba(214, 51, 232, 0.24), transparent 60%),
-    radial-gradient(40rem 26rem at 55% 105%, rgba(34, 201, 232, 0.18), transparent 65%),
-    radial-gradient(34rem 24rem at 26% 70%, rgba(92, 24, 48, 0.34), transparent 62%);
-}
-
-/* ---------- Living aurora background ---------- */
-/* hue cycling re-rasterizes every blurred child each frame, so it only runs
-   on larger screens; phones keep the transform-only drift (GPU-composited) */
-@media (min-width: 769px) {
-  .aurora-field {
-    animation: aurora-hue 11s linear infinite alternate;
-  }
-}
-/* rotating conic color sweep for a visible "moving gradient" feel */
-.aurora-sweep {
-  position: absolute;
-  inset: -45%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(122, 21, 240, 0.5) 70deg,
-    rgba(214, 51, 232, 0.42) 130deg,
-    transparent 190deg,
-    rgba(34, 201, 232, 0.34) 260deg,
-    transparent 330deg
-  );
-  filter: blur(90px);
-  mix-blend-mode: screen;
-  opacity: 0.5;
-  animation: sweep-spin 14s linear infinite;
-  will-change: transform;
-}
-@keyframes sweep-spin {
-  to { transform: rotate(360deg); }
-}
-.aurora-blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(72px);
-  mix-blend-mode: screen;
-  will-change: transform, opacity;
-}
-.ab-1 {
-  width: 46rem; height: 32rem; left: -12%; top: -18%;
-  background: radial-gradient(closest-side, rgba(214, 51, 232, 0.55), transparent 72%);
-  animation: drift-1 8s ease-in-out infinite;
-}
-.ab-2 {
-  width: 42rem; height: 36rem; right: -14%; top: -4%;
-  background: radial-gradient(closest-side, rgba(122, 21, 240, 0.6), transparent 72%);
-  animation: drift-2 10s ease-in-out infinite;
-}
-.ab-3 {
-  width: 38rem; height: 28rem; left: 18%; bottom: -26%;
-  background: radial-gradient(closest-side, rgba(34, 201, 232, 0.4), transparent 72%);
-  animation: drift-3 12s ease-in-out infinite;
-}
-.ab-4 {
-  width: 26rem; height: 22rem; left: 42%; top: 22%;
-  background: radial-gradient(closest-side, rgba(37, 64, 208, 0.42), transparent 72%);
-  animation: drift-4 7s ease-in-out infinite;
-}
-
-@keyframes aurora-hue {
-  from { filter: hue-rotate(-18deg); }
-  to { filter: hue-rotate(22deg); }
-}
-@keyframes drift-1 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  33% { transform: translate(16%, 18%) scale(1.28) rotate(16deg); }
-  66% { transform: translate(-10%, 8%) scale(0.88) rotate(-12deg); }
-}
-@keyframes drift-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  40% { transform: translate(-20%, 16%) scale(1.22); }
-  75% { transform: translate(-6%, -14%) scale(0.85); }
-}
-@keyframes drift-3 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate(22%, -20%) scale(1.35) rotate(22deg); }
-}
-@keyframes drift-4 {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
-  50% { transform: translate(-26%, 24%) scale(1.45); opacity: 1; }
-}
-
-/* ---------- Galaxy backdrop ---------- */
-.galaxy {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.galaxy-disc {
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  width: min(160vw, 92rem);
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  opacity: 0.55;
-  filter: blur(64px);
-  background:
-    radial-gradient(circle, rgba(233, 236, 248, 0.09) 0%, transparent 26%),
-    conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      rgba(214, 51, 232, 0.2) 38deg,
-      transparent 92deg,
-      rgba(34, 201, 232, 0.17) 172deg,
-      transparent 224deg,
-      rgba(122, 21, 240, 0.21) 302deg,
-      transparent 348deg
-    );
-  animation: galaxy-spin 120s linear infinite;
-  will-change: transform;
-}
-@keyframes galaxy-spin { to { transform: rotate(360deg); } }
-
-/* tilted orbital paths — Default Orbit, drawn */
-.orbit-ring {
-  position: absolute;
-  left: 50%;
-  top: 34%;
-  translate: -50% -50%;
-  border: 1px solid rgba(168, 240, 251, 0.055);
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  filter: blur(0.4px);
-  will-change: transform;
-  /* keep the lit part of each orbit up by the cradle; let it dissolve before
-     it can cut across the copy below */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.4) 42%, transparent 72%);
-  mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.4) 42%, transparent 72%);
-}
-.ring-1 {
-  width: min(120vw, 74rem); height: min(38vw, 23rem);
-  animation: ring-drift-1 58s linear infinite;
-}
-.ring-2 {
-  width: min(96vw, 58rem); height: min(26vw, 15rem);
-  border-color: rgba(242, 160, 251, 0.05);
-  animation: ring-drift-2 76s linear infinite;
-}
-.ring-3 {
-  width: min(150vw, 96rem); height: min(52vw, 32rem);
-  border-color: rgba(154, 77, 255, 0.038);
-  animation: ring-drift-3 96s linear infinite;
-}
-@keyframes ring-drift-1 { from { transform: rotate(-8deg); } to { transform: rotate(352deg); } }
-@keyframes ring-drift-2 { from { transform: rotate(14deg); } to { transform: rotate(-346deg); } }
-@keyframes ring-drift-3 { from { transform: rotate(-3deg); } to { transform: rotate(357deg); } }
 
 /* ---------- Newton's cradle (hero signature) ---------- */
 /*
@@ -424,21 +256,6 @@ body {
   );
 }
 
-
-/* ---------- Pointer spotlight (hero) ---------- */
-.pointer-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    38rem circle at var(--mx, 50%) var(--my, 40%),
-    rgba(154, 77, 255, 0.16),
-    rgba(34, 201, 232, 0.06) 45%,
-    transparent 70%
-  );
-  transition: background 0.12s linear;
-}
-
 /* ---------- Scroll reveal ---------- */
 /* content swings into place on an arc — pivot sits far above the block, so
    the small rotation reads as the end of a pendulum stroke, not a slide */
@@ -459,23 +276,7 @@ body {
 /* lighter textures on phones: smaller blobs + softer blur = cheaper
    one-time rasterization, same motion */
 @media (max-width: 768px) {
-  .aurora-blob {
-    filter: blur(44px);
-  }
-  .ab-1 { width: 26rem; height: 19rem; }
-  .ab-2 { width: 24rem; height: 20rem; }
-  .ab-3 { width: 22rem; height: 16rem; }
-  .ab-4 { display: none; }
-  .aurora-sweep {
-    inset: -30%;
-    filter: blur(52px);
-    opacity: 0.42;
-  }
-  .grain::after {
-    opacity: 0.04;
-  }
   .orb-swirl { display: none; }
-  .ring-3 { display: none; }
   /* phones: shorter wires bring the row into the visible middle of the frame,
      and smaller weights leave the end ones room to swing without leaving it */
   .cradle {
@@ -491,17 +292,12 @@ body {
       transparent 82%
     );
   }
-  .galaxy-disc { filter: blur(40px); opacity: 0.42; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aurora-field, .aurora-blob, .aurora-sweep, .sparkle-anim, .marquee-track,
-  .swing-l, .swing-r, .orb-pulse, .impact, .neon-breathe,
-  .galaxy-disc, .orbit-ring, .orb-swirl, .wheel-bob {
+  .sparkle-anim, .swing-l, .swing-r, .orb-pulse, .impact, .orb-swirl, .wheel-bob {
     animation: none !important;
   }
-  [data-reveal].revealed.stagger > *,
-  [data-reveal].revealed .kicker-rule { animation: none !important; }
   .hang, .hang:hover { transform: none; transition: none; }
   [data-reveal] {
     opacity: 1;
@@ -509,122 +305,6 @@ body {
     transition: none;
   }
 }
-
-/* ---------- Buttons ---------- */
-.btn-lux {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  overflow: hidden;
-  border-radius: 999px;
-  padding: 0.95rem 2.2rem;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* moving light sweep on hover */
-.btn-lux::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.22) 50%, transparent 58%);
-  transform: translateX(-130%);
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.btn-lux:hover::after {
-  transform: translateX(130%);
-}
-
-/* hairline spectrum border + deep fill */
-.btn-lux-primary {
-  border: 1px solid transparent;
-  background:
-    linear-gradient(rgba(10, 12, 22, 0.92), rgba(10, 12, 22, 0.92)) padding-box,
-    linear-gradient(115deg, #d633e8, #7a15f0 52%, #22c9e8) border-box;
-  color: var(--color-pearl-50);
-}
-.btn-lux-primary:hover {
-  box-shadow: 0 0 34px rgba(122, 21, 240, 0.4), 0 0 14px rgba(214, 51, 232, 0.3);
-  color: #fff;
-  transform: translateY(-1px);
-}
-
-.btn-lux-ghost {
-  border: 1px solid rgba(233, 236, 248, 0.26);
-  color: rgba(233, 236, 248, 0.88);
-  background: transparent;
-}
-.btn-lux-ghost:hover {
-  border-color: rgba(112, 224, 240, 0.65);
-  color: var(--color-cyan-200);
-  box-shadow: 0 0 26px rgba(34, 201, 232, 0.2);
-  transform: translateY(-1px);
-}
-
-.btn-lux-red {
-  border: 1px solid transparent;
-  background:
-    linear-gradient(rgba(10, 12, 22, 0.9), rgba(10, 12, 22, 0.9)) padding-box,
-    linear-gradient(115deg, #f2a0fb, #d633e8 45%, #8a17a3) border-box;
-  color: #fce9ff;
-}
-.btn-lux-red:hover {
-  box-shadow: 0 0 34px rgba(214, 51, 232, 0.45);
-  color: #fff;
-  transform: translateY(-1px);
-}
-
-/* Hairline frame — the thin lit box the KV sets its pearl inside */
-.frame-hairline {
-  border: 1px solid rgba(154, 77, 255, 0.3);
-  border-radius: 1rem;
-  background-image: linear-gradient(
-    160deg,
-    rgba(214, 51, 232, 0.06),
-    transparent 45%,
-    rgba(34, 201, 232, 0.05)
-  );
-}
-
-/* Staggered cascade: children of a revealed grid settle one after another.
-   Transform-only — the children never control their own opacity, so if the
-   animation never runs they are simply already in place. */
-[data-reveal].revealed.stagger > * {
-  animation: nudge-in 0.72s cubic-bezier(0.22, 1.1, 0.36, 1) both;
-}
-.stagger > *:nth-child(2) { animation-delay: 0.07s; }
-.stagger > *:nth-child(3) { animation-delay: 0.14s; }
-.stagger > *:nth-child(4) { animation-delay: 0.21s; }
-.stagger > *:nth-child(5) { animation-delay: 0.28s; }
-.stagger > *:nth-child(6) { animation-delay: 0.35s; }
-@keyframes nudge-in {
-  from { transform: translateY(16px) rotate(-1deg); }
-  to   { transform: none; }
-}
-
-/* Real neon tubing never sits perfectly still */
-@keyframes neon-breathe {
-  0%, 100% { opacity: 1; }
-  42% { opacity: 0.93; }
-  47% { opacity: 1; }
-  62% { opacity: 0.96; }
-}
-.neon-breathe { animation: neon-breathe 6.5s ease-in-out infinite; }
-
-/* the kicker's lit rule draws itself in */
-[data-reveal].revealed .kicker-rule,
-.rise .kicker-rule {
-  animation: rule-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes rule-draw {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-.kicker-rule { transform-origin: 0 50%; }
 
 /* Suspended card: hovering nudges it on its wire */
 .hang {
@@ -642,23 +322,6 @@ body {
   transform: rotate(-0.5deg) translateY(-3px);
 }
 
-/* Trajectory guide lines */
-.guides {
-  background-image:
-    linear-gradient(to right, rgba(233, 236, 248, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(233, 236, 248, 0.045) 1px, transparent 1px);
-  background-size: 25% 100%, 100% 33.5%;
-}
-
-/* Soft reveal on scroll (pure CSS) */
-@keyframes rise {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.rise {
-  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
 /* square sparkle, replacing the booklet's 4-point star */
 @keyframes shimmer {
   0%, 100% { opacity: 0.45; transform: translate3d(0, 0, 0) scale(0.86); }
@@ -667,14 +330,6 @@ body {
 }
 .sparkle-anim {
   animation: shimmer 3.6s ease-in-out infinite;
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.marquee-track {
-  animation: marquee 36s linear infinite;
 }
 
 /* ---------- Club Fair topic wheel ---------- */

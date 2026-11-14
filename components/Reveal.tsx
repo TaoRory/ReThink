@@ -38,7 +38,8 @@ export function Reveal() {
     /* ---------- reveal on enter ---------- */
     const countUp = (el: HTMLElement) => {
       const m = (el.textContent ?? "").match(/^(\d+)(.*)$/);
-      if (!m || reduced) return;
+      if (!m || reduced || el.dataset.counted) return;
+      el.dataset.counted = "1";
       const end = Number(m[1]);
       const suffix = m[2];
       const t0 = performance.now();
@@ -52,12 +53,18 @@ export function Reveal() {
       requestAnimationFrame(step);
     };
 
+    // A `data-reveal-img` starts clipped to nothing (clip-path), and the browser's
+    // IntersectionObserver measures the CLIPPED box — it would see 0×0 and never
+    // fire. So images are observed through their parent and revealed from there.
+    const imgHosts = new Map<Element, HTMLElement[]>();
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue;
           const el = e.target as HTMLElement;
-          el.classList.add("revealed");
+          if (el.matches("[data-reveal], [data-split]")) el.classList.add("revealed");
+          imgHosts.get(el)?.forEach((img) => img.classList.add("revealed"));
           io.unobserve(el);
           el.querySelectorAll<HTMLElement>("[data-count]").forEach(countUp);
           if (el.hasAttribute("data-count")) countUp(el);
@@ -68,8 +75,13 @@ export function Reveal() {
       { threshold: 0, rootMargin: "1000% 0px -8% 0px" },
     );
     document
-      .querySelectorAll("[data-reveal]:not(.revealed), [data-split]:not(.revealed), [data-reveal-img]:not(.revealed)")
+      .querySelectorAll("[data-reveal]:not(.revealed), [data-split]:not(.revealed), [data-count]")
       .forEach((el) => io.observe(el));
+    document.querySelectorAll<HTMLElement>("[data-reveal-img]:not(.revealed)").forEach((img) => {
+      const host = img.parentElement ?? img;
+      imgHosts.set(host, [...(imgHosts.get(host) ?? []), img]);
+      io.observe(host);
+    });
     cleanups.push(() => io.disconnect());
 
     /* ---------- pause ambient loops off screen ---------- */

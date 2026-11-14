@@ -82,14 +82,9 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a
-                  className="hover:text-pearl-100"
-                  href="https://v0-tedxvinuni.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link className="hover:text-pearl-100" href={localePath(locale, "/tedx/2026")}>
                   {t.tedxSite}
-                </a>
+                </Link>
               </li>
               <li className="text-pearl-100/45">{t.address}</li>
             </ul>

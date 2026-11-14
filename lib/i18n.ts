@@ -7,6 +7,8 @@
  * pieces, not strings to translate.
  */
 
+import { tedx2026 } from "./i18n-tedx2026";
+
 export const LOCALES = ["vi", "en"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "vi";
@@ -39,7 +41,7 @@ export const dict = {
       join: "Gia nhập Gen 5",
       menu: "Mở menu",
       seasonFirsts: "Mùa 2025 — hành trình của ReThink",
-      seasonLimitless: "Mùa 2026 — website chính thức ↗",
+      seasonLimitless: "Mùa 2026 — The Limitless Decade",
       seasonArchive: "Nội dung đang được cập nhật",
       langLabel: "Chuyển sang tiếng Anh",
     },
@@ -55,7 +57,7 @@ export const dict = {
       halloween: "Halloween 2026",
       game: "Game — Club Fair",
       fb: "Facebook — ReThink",
-      tedxSite: "Website TEDx VinUniversity",
+      tedxSite: "TEDx 2026 — The Limitless Decade",
       address: "VinUniversity, Gia Lâm, Hà Nội",
       rights: "ReThink — VinUniversity. Rethink & Let Rethink.",
     },
@@ -143,7 +145,7 @@ export const dict = {
         ["60+", "Thành viên BTC"],
       ] as [string, string][],
       tedxBtn1: "The Firsts · 2025 →",
-      tedxBtn2: "Limitless Decade · 2026 ↗",
+      tedxBtn2: "Limitless Decade · 2026 →",
 
       thisYearKicker: "Năm học 2026–2027",
       thisYearHeading: "Projects This Year",
@@ -279,10 +281,10 @@ export const dict = {
       s1Desc:
         "Người Tiên Phong — 7 diễn giả, 500+ khán giả và những câu chuyện về khoảnh khắc dám làm điều đầu tiên. Bạn đang xem hành trình của mùa này ngay tại trang này.",
       s1Cue: "Cuộn xuống để khám phá ↓",
-      s2Badge: "Mùa 2026 · Mới",
+      s2Badge: "Mùa 2026 · 09/05/2026",
       s2Desc:
-        "Thập kỷ không giới hạn — mùa TEDx VinUniversity tiếp theo đã khởi động. Khám phá chủ đề, diễn giả và đặt chỗ trên website chính thức của mùa mới.",
-      s2Cue: "Mở website chính thức ↗",
+        "Thập kỷ không giới hạn — 5 diễn giả, ngày 09/05/2026 tại VinUniversity, Hà Nội. Xem diễn giả, bài nói và lịch trình của mùa này.",
+      s2Cue: "Xem mùa 2026 →",
 
       behindKicker: "Behind the stage",
       behindHeading1: "ReThink đứng sau",
@@ -305,7 +307,7 @@ export const dict = {
       testimonial:
         "“Huge congratulations! Such an amazing and inspiring event! Well done guys!”",
       testimonialBy: "— Khán giả TEDx VinUniversity 2025",
-      seasonLink: "Mùa 2026 — Limitless Decade: website chính thức ↗",
+      seasonLink: "Mùa 2026 — The Limitless Decade →",
       gallery: [
         "Toàn cảnh sân khấu TEDx VinUniversity — The Firsts",
         "Các diễn giả TEDx VinUniversity nhận hoa",
@@ -320,6 +322,8 @@ export const dict = {
         "Đằng sau mỗi đêm TEDx là hơn 60 ReThinker làm việc suốt 5 tháng — từ tuyển chọn diễn giả, xây dựng nội dung, thiết kế trải nghiệm đến vận hành đêm sự kiện. Mùa tới đang cần thêm những người sẵn sàng nhận lấy ownership và làm điều chưa ai làm.",
       ctaBtn: "Ứng tuyển Gen 5",
     },
+
+    tedx2026: tedx2026.vi,
 
     join: {
       meta: {
@@ -590,7 +594,7 @@ export const dict = {
       join: "Join Gen 5",
       menu: "Open menu",
       seasonFirsts: "2025 season — ReThink's own story",
-      seasonLimitless: "2026 season — official site ↗",
+      seasonLimitless: "2026 season — The Limitless Decade",
       seasonArchive: "Details coming soon",
       langLabel: "Switch to Vietnamese",
     },
@@ -606,7 +610,7 @@ export const dict = {
       halloween: "Halloween 2026",
       game: "Game — Club Fair",
       fb: "Facebook — ReThink",
-      tedxSite: "TEDx VinUniversity site",
+      tedxSite: "TEDx 2026 — The Limitless Decade",
       address: "VinUniversity, Gia Lam, Hanoi",
       rights: "ReThink — VinUniversity. Rethink & Let Rethink.",
     },
@@ -693,7 +697,7 @@ export const dict = {
         ["60+", "Organisers"],
       ] as [string, string][],
       tedxBtn1: "The Firsts · 2025 →",
-      tedxBtn2: "Limitless Decade · 2026 ↗",
+      tedxBtn2: "Limitless Decade · 2026 →",
 
       thisYearKicker: "Academic year 2026–2027",
       thisYearHeading: "Projects This Year",
@@ -829,10 +833,10 @@ export const dict = {
       s1Desc:
         "The Firsts — 7 speakers, 500+ in the audience, and stories about the moment someone dared to do a thing first. You're looking at that season's story right now.",
       s1Cue: "Scroll to explore ↓",
-      s2Badge: "2026 season · New",
+      s2Badge: "2026 season · May 09, 2026",
       s2Desc:
-        "A decade without limits — the next TEDx VinUniversity season is under way. Explore the theme, the speakers and book a seat on the season's official site.",
-      s2Cue: "Open the official site ↗",
+        "A decade without limits — 5 speakers, May 09, 2026 at VinUniversity, Hà Nội. See the speakers, the talks and the day's schedule.",
+      s2Cue: "See the 2026 season →",
 
       behindKicker: "Behind the stage",
       behindHeading1: "ReThink behind",
@@ -855,7 +859,7 @@ export const dict = {
       testimonial:
         "“Huge congratulations! Such an amazing and inspiring event! Well done guys!”",
       testimonialBy: "— A TEDx VinUniversity 2025 attendee",
-      seasonLink: "2026 — Limitless Decade: official site ↗",
+      seasonLink: "2026 — The Limitless Decade →",
       gallery: [
         "The TEDx VinUniversity stage — The Firsts",
         "TEDx VinUniversity speakers receiving flowers",
@@ -870,6 +874,8 @@ export const dict = {
         "Behind every TEDx night are more than 60 ReThinkers working across five months — choosing speakers, building content, designing the experience and running the night. The next season needs more people ready to take ownership and do what hasn't been done.",
       ctaBtn: "Apply for Gen 5",
     },
+
+    tedx2026: tedx2026.en,
 
     join: {
       meta: {

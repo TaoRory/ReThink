@@ -35,7 +35,7 @@ if (offenders.length) {
 }
 
 // 2. isolation gate
-const pages = ["index", "about", "tedx", "join", "game", "en", "en/about", "en/tedx", "en/join", "en/game"];
+const pages = ["index", "about", "tedx", "tedx/2026", "join", "game", "en", "en/about", "en/tedx", "en/tedx/2026", "en/join", "en/game"];
 const leaks = [];
 for (const p of pages) {
   const f = `.next/server/app/${p}.html`;

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 
-type Variant = "primary" | "ghost" | "red";
+type Variant = "primary" | "ghost" | "red" | "ted";
 
 const VARIANT_CLASS: Record<Variant, string> = {
   primary: "btn-lux btn-lux-primary",
   ghost: "btn-lux btn-lux-ghost",
   red: "btn-lux btn-lux-red",
+  ted: "btn-lux btn-lux-ted",
 };
 
 type CommonProps = {

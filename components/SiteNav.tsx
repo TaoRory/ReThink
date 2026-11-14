@@ -8,8 +8,6 @@ import { HalloweenBrand, HalloweenNavDecor } from "./halloween/Chrome";
 import { LangToggle } from "./LangToggle";
 import { dict, localeFromPathname, localePath, stripLocale } from "@/lib/i18n";
 
-const LIMITLESS_URL = "https://v0-tedxvinuni.vercel.app/";
-
 export function SiteNav() {
   const pathname = usePathname();
   const locale = localeFromPathname(pathname);
@@ -33,8 +31,8 @@ export function SiteNav() {
   const archive = `${localePath(locale, "/tedx")}#seasons`;
   const tedxSeasons = [
     {
-      href: LIMITLESS_URL,
-      external: true,
+      href: localePath(locale, "/tedx/2026"),
+      external: false,
       title: "Limitless Decade",
       desc: t.seasonLimitless,
     },

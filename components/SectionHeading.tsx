@@ -2,23 +2,35 @@
  * AY 26-27 heading: a lit rule + kicker above monoline display caps.
  * The `script` letter is kept in the API (callers pass the first character)
  * and is rejoined to the rest — the KV has no calligraphic initial.
+ * `tone="ted"` swaps the spectrum for TED red (TEDx pages).
  */
 export function SectionHeading({
   script,
   rest,
   kicker,
   className = "",
+  tone,
 }: {
   script: string;
   rest: string;
   kicker?: string;
   className?: string;
+  tone?: "ted";
 }) {
+  const ted = tone === "ted";
   return (
     <div className={className}>
       {kicker && (
-        <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-300">
-          <span className="kicker-rule h-px w-8 bg-gradient-to-r from-fuchsia-500 to-cyan-300" />
+        <p
+          className={`mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] ${
+            ted ? "text-ted-soft" : "text-cyan-300"
+          }`}
+        >
+          <span
+            className={`kicker-rule h-px w-8 bg-gradient-to-r ${
+              ted ? "from-ted to-ted/0" : "from-fuchsia-500 to-cyan-300"
+            }`}
+          />
           {kicker}
         </p>
       )}
@@ -30,7 +42,18 @@ export function SectionHeading({
         {`${script}${rest}`.split(" ").map((word, i, all) => (
           <span key={i}>
             <span className="split-w">
-              <span style={{ "--i": i } as React.CSSProperties}>{word}</span>
+              <span style={{ "--i": i } as React.CSSProperties}>
+                {/* the word "TEDx" is always TED red neon, even inside a longer word */}
+                {word.split(/(TEDx)/).map((part, j) =>
+                  part === "TEDx" ? (
+                    <span key={j} className="text-neon-red">
+                      TEDx
+                    </span>
+                  ) : (
+                    part
+                  ),
+                )}
+              </span>
             </span>
             {i < all.length - 1 ? " " : null}
           </span>

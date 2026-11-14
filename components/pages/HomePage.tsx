@@ -337,7 +337,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <Btn href={localePath(locale, "/tedx")} variant="red">
               {t.tedxBtn1}
             </Btn>
-            <Btn href="https://v0-tedxvinuni.vercel.app/" external variant="ghost">
+            <Btn href={localePath(locale, "/tedx/2026")} variant="ghost">
               {t.tedxBtn2}
             </Btn>
           </div>

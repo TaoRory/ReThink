@@ -1,10 +1,8 @@
 import Image from "next/image";
-import { Aurora } from "@/components/Aurora";
+import Link from "next/link";
 import { Btn } from "@/components/Btn";
 import { Sparkle } from "@/components/Sparkle";
 import { dict, localePath, type Locale } from "@/lib/i18n";
-
-const TEDX_URL = "https://v0-tedxvinuni.vercel.app/";
 
 /** earlier seasons — titles only for now, no write-up yet */
 const PAST_SEASONS = [
@@ -25,7 +23,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
   const t = dict[locale].tedx;
 
   return (
-    <>
+    <div className="tedx-scope">
       {/* Hero */}
       <section className="relative overflow-hidden pt-16">
         <div className="absolute inset-0">
@@ -37,11 +35,12 @@ export function TedxPage({ locale }: { locale: Locale }) {
             sizes="100vw"
             className="object-cover opacity-30"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/80 to-ink-950" />
-          <div className="absolute inset-0 bg-[radial-gradient(50rem_28rem_at_75%_10%,rgba(192,26,51,0.28),transparent_60%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black" />
+          <div className="ted-spot" aria-hidden="true" />
         </div>
+        <div className="ted-rug" aria-hidden="true" />
 
-        <div className="relative mx-auto max-w-6xl px-5 py-28 text-center">
+        <div data-hero-out className="relative z-10 mx-auto max-w-6xl px-5 py-28 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.45em] text-pearl-100/70">
             {t.presents}
           </p>
@@ -58,7 +57,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
             {t.heroLeadB}
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Btn href="#seasons" variant="red">
+            <Btn href="#seasons" variant="ted">
               {t.heroBtn1} ▪
             </Btn>
             <Btn href={localePath(locale, "/join")} variant="ghost">
@@ -69,14 +68,17 @@ export function TedxPage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Stats */}
-      <section className="border-y border-white/8 bg-ink-900/40">
+      <section className="border-y border-white/10 bg-black">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-5 py-16 sm:grid-cols-3 lg:grid-cols-6">
           {t.stats.map(([n, label]) => (
             <div key={label} className="text-center">
-              <p className="font-display text-4xl font-bold text-fuchsia-400">
+              <p
+                data-count={/^\d+\+?$/.test(n) ? "" : undefined}
+                className="font-display text-4xl font-bold tabular-nums text-ted"
+              >
                 {n}
               </p>
-              <p className="mx-auto mt-2 max-w-[10rem] text-xs leading-relaxed text-pearl-100/60">
+              <p className="mx-auto mt-2 max-w-[10rem] text-xs leading-relaxed text-pearl-100/75">
                 {label}
               </p>
             </div>
@@ -86,10 +88,10 @@ export function TedxPage({ locale }: { locale: Locale }) {
 
       {/* Two seasons */}
       <section id="seasons" className="relative overflow-hidden py-24">
-        <Aurora sweep className="opacity-60" />
+        <div className="ted-spot opacity-60" aria-hidden="true" />
         <div className="relative mx-auto max-w-6xl px-5">
           <div className="mb-12 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-fuchsia-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-ted-soft">
               {t.seasonsKicker}
             </p>
             <h2 className="mt-4 font-display text-4xl text-pearl-100 sm:text-5xl">
@@ -99,7 +101,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
 
           <div className="stagger grid gap-6 md:grid-cols-2" data-reveal>
             {/* The Firsts 2025 */}
-            <article className="group relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900/60">
+            <article className="group relative overflow-hidden rounded-2xl border border-white/15 bg-black">
               <div className="relative h-52 overflow-hidden">
                 <Image
                   src="/photos/tedx-stage.jpg"
@@ -108,8 +110,8 @@ export function TedxPage({ locale }: { locale: Locale }) {
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-cover transition duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/30 to-transparent" />
-                <span className="absolute left-5 top-5 rounded-full border border-white/20 bg-ink-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-pearl-100 backdrop-blur">
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                <span className="absolute left-5 top-5 rounded-full border border-white/25 bg-black/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-pearl-100 backdrop-blur">
                   {t.s1Badge}
                 </span>
               </div>
@@ -118,30 +120,28 @@ export function TedxPage({ locale }: { locale: Locale }) {
                   <span className="text-neon-red">The</span>{" "}
                   <span className="text-pearl-100">Firsts</span>
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
+                <p className="mt-3 text-sm leading-relaxed text-pearl-100/80">
                   {t.s1Desc}
                 </p>
-                <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-fuchsia-400">
+                <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-ted-soft">
                   {t.s1Cue}
                 </p>
               </div>
             </article>
 
             {/* Limitless Decade 2026 */}
-            <a
-              href={TEDX_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-fuchsia-500/30 bg-gradient-to-b from-fuchsia-700/25 via-ink-900/70 to-ink-900/60 transition hover:border-fuchsia-400/60"
+            <Link
+              href={localePath(locale, "/tedx/2026")}
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-ted/50 bg-gradient-to-b from-ted/25 via-black to-black transition hover:border-ted"
             >
               <div className="relative flex h-52 items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(24rem_14rem_at_50%_120%,rgba(192,26,51,0.4),transparent_65%)] transition duration-700 group-hover:scale-110" />
-                <Sparkle className="absolute left-[12%] top-8 h-6 w-6 text-fuchsia-400/70" />
-                <Sparkle className="absolute right-[14%] bottom-8 h-9 w-9 text-lilac-200/50" />
+                <div className="absolute inset-0 bg-[radial-gradient(24rem_14rem_at_50%_120%,rgba(230,43,30,0.5),transparent_65%)] transition duration-700 group-hover:scale-110" />
+                <Sparkle className="absolute left-[12%] top-8 h-6 w-6 text-ted/80" />
+                <Sparkle className="absolute right-[14%] bottom-8 h-9 w-9 text-ted/60" />
                 <p className="relative font-display text-4xl font-extralight uppercase tracking-[0.28em] text-neon-red">
                   Limitless
                 </p>
-                <span className="absolute left-5 top-5 rounded-full border border-fuchsia-400/40 bg-ink-950/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-fuchsia-400 backdrop-blur">
+                <span className="absolute left-5 top-5 rounded-full border border-ted/60 bg-black/70 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-ted-soft backdrop-blur">
                   {t.s2Badge}
                 </span>
               </div>
@@ -150,37 +150,37 @@ export function TedxPage({ locale }: { locale: Locale }) {
                   <span className="text-neon-red">Limitless</span>{" "}
                   <span className="text-pearl-100">Decade</span>
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-pearl-100/70">
+                <p className="mt-3 text-sm leading-relaxed text-pearl-100/80">
                   {t.s2Desc}
                 </p>
-                <p className="mt-auto pt-5 text-sm font-semibold uppercase tracking-[0.2em] text-fuchsia-400 transition group-hover:text-fuchsia-300">
+                <p className="mt-auto pt-5 text-sm font-semibold uppercase tracking-[0.2em] text-ted-soft transition group-hover:text-white">
                   {t.s2Cue}
                 </p>
               </div>
-            </a>
+            </Link>
           </div>
 
           {/* earlier seasons: listed for completeness, write-ups to come */}
           <div className="mt-8">
-            <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-pearl-100/45">
-              <span className="h-px w-8 bg-gradient-to-r from-fuchsia-500/60 to-transparent" />
+            <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-pearl-100/70">
+              <span className="h-px w-8 bg-gradient-to-r from-ted to-transparent" />
               {t.pastKicker}
             </p>
             <div className="stagger grid gap-4 sm:grid-cols-2" data-reveal>
               {PAST_SEASONS.map((s) => (
                 <div
                   key={s.year}
-                  className="hang frame-hairline flex items-baseline justify-between gap-4 bg-ink-900/40 p-6"
+                  className="hang frame-ted flex items-baseline justify-between gap-4 p-6"
                 >
                   <h3 className="font-display text-xl font-semibold">
                     <span className="text-neon-red">TEDx</span>{" "}
                     <span className="text-pearl-100/85">{s.title}</span>
                   </h3>
                   <div className="shrink-0 text-right">
-                    <p className="font-display text-lg font-light tracking-[0.2em] text-pearl-100/60">
+                    <p className="font-display text-lg font-light tracking-[0.2em] text-pearl-100/80">
                       {s.year}
                     </p>
-                    <p className="mt-0.5 text-[11px] italic text-pearl-100/35">
+                    <p className="mt-0.5 text-[11px] italic text-pearl-100/65">
                       {t.pastNote}
                     </p>
                   </div>
@@ -195,7 +195,7 @@ export function TedxPage({ locale }: { locale: Locale }) {
       <section className="py-24">
         <div className="mx-auto grid max-w-6xl items-start gap-14 px-5 lg:grid-cols-[1fr_1.15fr]">
           <div className="lg:sticky lg:top-28">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-fuchsia-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-ted-soft">
               {t.behindKicker}
             </p>
             <h2 className="mt-4 font-display text-4xl leading-tight text-pearl-100 sm:text-5xl">
@@ -221,23 +221,21 @@ export function TedxPage({ locale }: { locale: Locale }) {
             </div>
 
             {/* testimonial */}
-            <figure className="frame-hairline mt-8 bg-ink-900/50 p-6">
+            <figure className="frame-ted mt-8 p-6">
               <blockquote className="font-display text-lg italic leading-relaxed text-pearl-100/90">
                 {t.testimonial}
               </blockquote>
-              <figcaption className="mt-3 text-xs uppercase tracking-[0.25em] text-pearl-100/50">
+              <figcaption className="mt-3 text-xs uppercase tracking-[0.25em] text-pearl-100/70">
                 {t.testimonialBy}
               </figcaption>
             </figure>
 
-            <a
-              href={TEDX_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-block text-sm font-semibold text-fuchsia-400 underline-offset-4 hover:underline"
+            <Link
+              href={localePath(locale, "/tedx/2026")}
+              className="mt-8 inline-block text-sm font-semibold text-ted-soft underline-offset-4 hover:underline"
             >
               {t.seasonLink}
-            </a>
+            </Link>
           </div>
 
           {/* Gallery */}
@@ -245,6 +243,8 @@ export function TedxPage({ locale }: { locale: Locale }) {
             {GALLERY.map((g, i) => (
               <div
                 key={g.src}
+                data-reveal-img
+                style={{ "--reveal-delay": `${(i % 2) * 0.12}s` } as React.CSSProperties}
                 className={`group relative overflow-hidden rounded-2xl border border-white/10 ${
                   g.span ? "col-span-2 aspect-[16/9]" : "aspect-[4/3]"
                 }`}
@@ -264,10 +264,10 @@ export function TedxPage({ locale }: { locale: Locale }) {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden border-t border-white/8 py-24 text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(42rem_24rem_at_50%_120%,rgba(192,26,51,0.25),transparent_65%)]" />
-        <Sparkle className="absolute left-[14%] top-14 h-8 w-8 text-fuchsia-400/50" />
-        <Sparkle className="absolute right-[12%] bottom-14 h-10 w-10 text-cyan-400/50" />
+      <section className="relative overflow-hidden border-t border-white/10 py-24 text-center">
+        <div className="ted-rug opacity-70" aria-hidden="true" />
+        <Sparkle className="absolute left-[14%] top-14 h-8 w-8 text-ted/60" />
+        <Sparkle className="absolute right-[12%] bottom-14 h-10 w-10 text-ted/50" />
         <div className="relative mx-auto max-w-2xl px-5">
           <h2 className="font-display text-4xl leading-tight text-pearl-100">
             {t.ctaHeading1}
@@ -276,14 +276,14 @@ export function TedxPage({ locale }: { locale: Locale }) {
               {t.ctaHeading2}
             </span>
           </h2>
-          <p className="mt-6 text-[15px] leading-relaxed text-pearl-100/70">
+          <p className="mt-6 text-[15px] leading-relaxed text-pearl-100/80">
             {t.ctaLead}
           </p>
-          <Btn href={localePath(locale, "/join")} variant="red" className="mt-9">
+          <Btn href={localePath(locale, "/join")} variant="ted" className="mt-9">
             {t.ctaBtn} ▪
           </Btn>
         </div>
       </section>
-    </>
+    </div>
   );
 }

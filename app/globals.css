@@ -48,6 +48,13 @@
   /* deep wine halo that rims the KV cover */
   --color-wine-800: #5c1830;
 
+  /* TEDx sub-brand: TED red on black. Not part of the ReThink spectrum.
+     `ted` for big type and graphics (4.4:1 on black); `ted-soft` for small
+     text (6.6:1) */
+  --color-ted: #e62b1e;
+  --color-ted-deep: #b3180f;
+  --color-ted-soft: #ff6b5b;
+
   --font-display: var(--font-display-var), system-ui, sans-serif;
   --font-sans: var(--font-body-var), system-ui, sans-serif;
 }
@@ -520,6 +527,38 @@ body {
   .scroll-progress { display: none; }
 }
 
+/* ---------- TEDx pages: black stage, TED red ---------- */
+/* static, no looping animation — the stage light is a gradient, not a loop */
+.tedx-scope {
+  background: #000;
+  color: #fff;
+}
+/* light pooling from the top of the frame, like a stage rig */
+.ted-spot {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 75%;
+  pointer-events: none;
+  background: radial-gradient(60rem 30rem at 50% -10%, rgba(230, 43, 30, 0.4), transparent 70%);
+}
+/* the red circle every TED stage stands on, seen from the audience */
+.ted-rug {
+  position: absolute;
+  left: 50%;
+  bottom: -9rem;
+  width: min(64rem, 150%);
+  height: 18rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(230, 43, 30, 0.5), rgba(230, 43, 30, 0.14) 62%, transparent 100%);
+}
+.frame-ted {
+  border: 1px solid rgba(230, 43, 30, 0.38);
+  border-radius: 1rem;
+  background: linear-gradient(160deg, rgba(230, 43, 30, 0.09), transparent 55%);
+}
+
 /* ---------- Motion layer (driven by components/Reveal.tsx) ---------- */
 
 /* sections whose ambient loops are off screen stop animating */
@@ -661,6 +700,20 @@ body {
   border-color: rgba(112, 224, 240, 0.65);
   color: var(--color-cyan-200);
   box-shadow: 0 0 26px rgba(34, 201, 232, 0.2);
+  transform: translateY(-1px);
+}
+
+/* TEDx: solid TED red, white type */
+.btn-lux-ted {
+  border: 1px solid var(--color-ted);
+  background: var(--color-ted);
+  color: #fff;
+}
+.btn-lux-ted:hover {
+  background: var(--color-ted-deep);
+  border-color: var(--color-ted-deep);
+  box-shadow: 0 0 30px rgba(230, 43, 30, 0.45);
+  color: #fff;
   transform: translateY(-1px);
 }
 
